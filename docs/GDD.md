@@ -51,7 +51,7 @@ Het thema is **de stad zonder hart**: Rotterdam verloor op 14 mei 1940 zijn oude
 - Mystiek: de onderstad, waar de dromen hem tonen wat Het Hart met de stad gaat doen.
 - Modern: het netwerk van Het Hart zelf, dat elke nacht verder groeit. De bezorgorders die hem naar de doelwitten sturen komen ook uit dat netwerk. Wie stuurt ze?
 
-**Toon**: melancholisch, sober, volwassen. Geweld is kort, hard en zonder spektakel. Tijdens het verkennen is er weinig dialoog; op sleutelmomenten volgen lange, gespannen gesprekken (zie Regiestijl).
+**Toon**: melancholisch, sober, volwassen. Geweld is kort, hard en zonder spektakel. Tijdens het verkennen is er weinig dialoog; op sleutelmomenten volgen lange, gespannen gesprekken (zie Regiestijl). Richards stem ligt vast in `docs/stem/stemvoorbeeld.md`: kort en precies bij het verkennen, lange monologen die vanuit één detail escaleren op sleutelmomenten; objectbeschrijvingen spreekt een sobere verteller in de derde persoon.
 
 **Tijd**: de game begint op zaterdag 1 januari 2022, net na middernacht, en loopt tot de ochtend van vrijdag 7 januari 2022. Nederland zit in de lockdown van december 2021: horeca, winkels en musea zijn dicht, er geldt een vuurwerkverbod (er wordt toch geknald), mensen mogen weinig bezoek ontvangen. De stad is 's nachts leeg, op bezorgers na; flitsbezorgers zijn drukker dan ooit. Flitsbezorgers bezorgen tot ongeveer 23:00, dus orders komen 's avonds binnen; wat daarna gebeurt, gebeurt in een lege stad. Achter gesloten deuren gaat het leven door: kleine huisfeestjes (op oudejaarsavond mochten vier gasten komen) en hier en daar een illegale bar, alleen voor genodigden. Elk hoofdstuk toetst de locatie aan de maatregelen van die week. Het jaartal wordt niet nadrukkelijk getoond, maar alles in de wereld (data in berichten, de krant, de maatregelen) moet ermee kloppen.
 
@@ -525,7 +525,7 @@ De game speelt in de eerste week van januari. Kerst is net voorbij, en dat zie j
 
 | Locatie | Wat logisch is |
 | --- | --- |
-| Studentenkamer | Eén snoer lampjes langs het raam, een kerstkaart van thuis op het bureau (bij het ongeopende bericht) |
+| Studentenkamer | Eén snoer lampjes langs het raam, een kerstkaart van thuis op het bureau (bij het ongeopende bericht); na de eerste droom staat op de achterkant de naam van het doelwit, in Richards handschrift maar netter |
 | Trappenhuis studentenhuis | Een boompje dat de huisgenoten hebben achtergelaten, verdroogd, met naalden op de mat |
 | Bar Witte de Withstraat | Lampjes boven de bar die in de dichte zaak blijven branden, een half losgeraakte slinger, een kerstmuts op de tap |
 | Katendrecht | Lichtjes in een paar ramen, een kerstboom naast de container |
@@ -684,7 +684,7 @@ De vertical slice is 20 à 30 minuten speeltijd van hub tot eerste droom, met de
 
 **Verloop**
 
-1. **Kamer (hub)**: nieuwjaarsnacht, alleen op zijn studentenkamer, illegaal vuurwerk boven de daken. Verken de kamer; het vuurwerk gaat over in de eerste droom. Daarna wakker: leer pakken en gebruiken. Pak bezorgtas en jas.
+1. **Kamer (hub)**: nieuwjaarsnacht, alleen op zijn studentenkamer, illegaal vuurwerk boven de daken. Verken de kamer; het vuurwerk gaat over in de eerste droom. Daarna wakker: op de achterkant van de kerstkaart van thuis staat een naam, in zijn eigen handschrift maar netter. Leer pakken en gebruiken. Pak bezorgtas en jas.
 2. **Order**: Richard slaapt de dag door. Zaterdagavond rond 21:00 toont de app een order naar een adres in Katendrecht, op een naam uit de droom: Daan Heijsteeg.
 3. **Hub, de bar**: op weg naar buiten laat de barman van de dichte bar aan de Witte de Withstraat Richard via de zijdeur binnen. Bij het noemen van de naam roddelt hij: "die van het pakhuis op de Kaap", en hij laat iets los over een bar achterom op Katendrecht.
 4. **Katendrecht, buiten**: het verbouwde pakhuis is zelf de bouwplaats. Daan woont al in de afgebouwde loft; de verdiepingen erboven zijn nog in aanbouw, met bouwhekken, een bouwlift en bewaking. Er geldt een bouwstop van kerst tot en met 9 januari, maar de bewaking draait door. Richard belt aan, maar niemand doet open, hoewel het licht in de loft brandt en er een schaduw achter het raam beweegt. Later blijkt Daan thuis te zijn geweest. Het pakket blijft in zijn tas: boodschappen voor één (een fles wijn, crackers, een kaars), besteld via Daans account, met een bon op zijn naam en adres. Wie het echt bestelde, blijft open (zie waarheid.md). Bij een bankje ligt een verloren telefoon: die van de uitvoerder. Hij was die dag op de bouw om de bouwlift klaar te zetten voor de keuring van maandag 3 januari, ging daarna nog langs de bar achterom, en verloor de telefoon daar of onderweg.
@@ -725,7 +725,7 @@ Nodig vóór de eerste iteratie:
 
 - [ ] Hoofdpersoon in de basis: naam, leeftijd, studie, waarom alleen met oud en nieuw, wat er in het ongeopende bericht van thuis staat
 - [ ] Eerste personageblad van doelwit 1 (projectontwikkelaar) en korte schetsen van buurvrouw, barman en beveiliger van de bouwplaats
-- [ ] Stemvoorbeeld: één pagina eigen dialoog en objectbeschrijvingen als anker voor de schrijver
+- [x] Stemvoorbeeld: `docs/stem/stemvoorbeeld.md` (variant B), anker voor de schrijver
 - [x] 5 à 10 visuele referenties (games, Rotterdam bij nacht, palet) als basis voor de stijlgids
 - [x] Technische keuzes: Godot 4.7.2, Blender 5.2.3, repo Tackinardie/Dreamweb-Rotterdam, Windows 11, CI ja
 - [x] Fictief universum: Bringbroh (bezorgapp), VrachtGo (vervoerder), MaasLijn (openbaar vervoer), Crispy & Co (snackbar), BB-drink (energiedrank), Havenlicht (sigaretten), Kardia (officiële naam van Het Hart)
@@ -908,6 +908,7 @@ tools: Read, Grep, Glob, Edit, Write
 model: opus
 ---
 Je schrijft voor Onderstad. Stijl: kort, sober, direct, Rotterdamse nuchterheid; geen grappen als toon; geen uitleg die de speler zelf kan afleiden.
+- Stem: docs/stem/stemvoorbeeld.md is het anker. Richard spreekt kort bij het verkennen en in lange monologen die vanuit één detail escaleren op sleutelmomenten; hij noemt het slaaponderzoek nooit als oorzaak. Objectbeschrijvingen spreekt een sobere verteller in de derde persoon.
 - Objectbeschrijving: maximaal 2 zinnen, iets wat je ziet plus iets wat het zegt over de eigenaar.
 - Dialoog: maximaal 3 keuzes; elke regel onder 20 woorden. Sleutelgesprekken mogen lang zijn: ze beginnen alledaags (eten, voetbal, de snackbar) en kantelen pas laat.
 - Volg de sectie Regiestijl in docs/GDD.md: personages tekenen via hoe ze praten, spanning via wat de speler weet en het personage niet, het eigen fictieve merkenuniversum, nooit tekst of scènes uit bestaande films.

@@ -12,6 +12,8 @@ Vastgestelde feiten, met hoofdstuk en bron. Alleen de lore-keeper wijzigt dit be
 | De bar in Katendrecht is officieel dicht, maar draait achterom in het geheim door, alleen voor genodigden. | 1 | GDD (Vertical slice) |
 | De bar aan de Witte de Withstraat (hub) is dicht. | 0 | GDD (Setting en thema > Tijd; Kenmerkende details) |
 | De hoofdpersoon heet Richard; zijn achternaam wordt nooit genoemd. | — | GDD |
+| Op Richards bureau staat een kerstkaart van thuis. Na de eerste droom staat op de achterkant de naam van het doelwit, in Richards handschrift maar netter. | 0 | Keuze Martijn (#8); GDD (Vertical slice, stap 1; kamerdetail Studentenkamer) |
+| Richard noemt het slaaponderzoek nooit als oorzaak van wat hij meemaakt. Objectbeschrijvingen komen van een sobere verteller in de derde persoon, niet van Richard. | — | Keuze Martijn (#8); docs/stem/stemvoorbeeld.md; GDD (Toon) |
 | Doelwit 1 heet Daan Heijsteeg, een projectontwikkelaar van 44 (geboren rond 1977). Hij groeide op elders op Zuid, niet op Katendrecht, en kent de Kaap uit de verhalen van zijn vader. | 1 | Keuze Martijn (#44); docs/personages/daan-heijsteeg.md |
 | De vader van Daan werkte in de haven en werd overbodig gemaakt door containers en automatisering. Hij is overleden. | 1 | Keuze Martijn (#44); docs/personages/daan-heijsteeg.md |
 | Daans geheim: het pand van de kroegbazin, eerder van zijn bedrijf, is al verkocht aan Kardia (de officiële naam van Het Hart). Haar huur loopt af en zij weet dat niet. De stukken liggen in zijn loft. | 1 | Keuze Martijn (#44); GDD (Vertical slice, stap 7); docs/personages/daan-heijsteeg.md |
