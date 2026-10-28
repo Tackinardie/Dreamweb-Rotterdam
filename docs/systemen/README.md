@@ -125,8 +125,7 @@ Bovenop het JSON Schema controleert `tools/validate.py --all`:
 - V14. Elke kamer van een hoofdstuk zit in minstens één scène; `start.kamer` zit in `start.scene`; `start.uitgang` bestaat in die kamer.
 - V15. Scènewissels (`naar_scene` in effecten en op uitgangen): de nieuwe scènetijd ≥ de huidige, behalve als een van beide `niet_lineair` heeft. Zonder `kamer` moet de huidige kamer in de nieuwe scène zitten (voor alle kamers waar de trigger kan gebeuren).
 - V16. Over alle hoofdstukken hoogstens twee verschillende `niet_lineair`-moment-ids.
-- V17. Een `naar_scene` in een knoop met trigger `automatisch` of `gebeurtenis` mag geen kamers uit de huidige scène laten wegvallen (objecten-en-inventaris.md, O9).
-- V18. Elke gebeurtenis die in een conditie voorkomt is merkbaar: `cue_start`, `cue_einde`, of een NPC wiens `aanwezig` ervan afhangt.
+- V17. Een `naar_scene` in een knoop mag, bij **elke** triggersoort (ook `betreed`, `dialoog`, `gebruik`, `automatisch`, `gebeurtenis`), geen kamers uit de huidige scène laten wegvallen (objecten-en-inventaris.md, O9; state-en-flags.md, vuurregel 2a). Fout. Waarschuwing als in dezelfde effectenlijst een `geef_object` of `verplaats_object` vóór de `naar_scene` staat (valt buiten de O9-voorcontrole). "Huidige scène" = elke scène waarin de trigger van de knoop kan gebeuren.- V18. Elke gebeurtenis die in een conditie voorkomt is merkbaar: `cue_start`, `cue_einde`, of een NPC wiens `aanwezig` ervan afhangt.
 - V19. Waarschuwing: uitgang naar een kamer met een `niveau` zonder `niveau`-, `token`- of `heeft`-atoom in `vereist`.
 
 **Puzzelgraaf, flags en tokens**

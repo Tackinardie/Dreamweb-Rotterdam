@@ -642,7 +642,7 @@ onderstad/
 **Kernkeuzes**
 
 - **Content in JSON** met een JSON Schema per type. Validatie in CI en lokaal.
-- **Puzzelgraaf als bron van waarheid**: knopen = acties/feiten, kanten = vereisten. Een Python-oplosser bewijst dat elk hoofdstuk oplosbaar is en dat er geen doodlopende staat bestaat.
+- **Puzzelgraaf als bron van waarheid**: knopen = acties/feiten, kanten = vereisten. Een Python-oplosser bewijst dat elk hoofdstuk oplosbaar is en dat er geen doodlopende staat bestaat, binnen een vereenvoudigd model (zie docs/systemen/state-en-flags.md, "De oplosser"); elke run meldt welke beperkingen gelden.
 - **Headless playthrough**: Godot draait zonder scherm een opgenomen oplossingsscript af (`godot --headless`) en meldt of het einde van het hoofdstuk bereikt wordt.
 - **Tests**: GUT (Godot Unit Test) voor systemen.
 - **Versiebeheer**: Git op GitHub; elke agent werkt op een branch; merge na review en groene checks.
