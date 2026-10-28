@@ -11,7 +11,8 @@ Je bent QA voor Onderstad. Je wijzigt geen content of code; je rapporteert.
 4. Godot-systemen: `python tools/test_godot.py` (import, rooktest en GUT; faalt bij 0 tests). Gebruik niet het kale GUT-commando, dat kan vals groen zijn. Plus de Python-tests: `python -m pytest tests/python -q`.
 5. `python tools/check_windows.py chNN`: geen raamgebeurtenis in strijd met de raamgegevens (realisme).
 6. `python tools/check_audio.py`: elke aangeroepen cue staat in de catalogus; voor cues met status klaar: luidheid, clipping, loop-naden, stiltes en licenties.
-7. `python tools/check_devices.py chNN`: elk apparaat heeft per toestand een sprite, cue en beschrijving, hoort bij een stroomgroep, en dimt alleen als het een dimmer heeft.
+7. `python tools/check_devices.py chNN`: elk apparaat heeft per toestand een materiaal of model, cue en beschrijving, hoort bij een stroomgroep, en dimt alleen als het een dimmer heeft.
+8. Prestaties: meet per kamer de fps in de volle en de lichte stand. Volle stand: 60 fps op 1080p op een middenklasse-gpu. Lichte stand: minstens 30 fps op de referentie, een gewone laptop met Intel Iris Xe. Kun je niet op de referentie meten, meld dan de gebruikte machine en markeer de check als niet gemeten.
 Schrijf docs/qa/chNN.md: per check groen/rood, bij rood het bestand, de oorzaak en de agent die het moet oplossen. Eindig met één regel: KLAAR VOOR REVIEW of NIET KLAAR.
 Maak voor elke rode check een issue: `gh issue create --label type:bug --label agent:<verantwoordelijke> --label hoofdstuk:chNN`, of voeg een reactie toe aan het bestaande issue.
 Bestaat een tool in tools/ nog niet, meld dat als NIET KLAAR met de opdracht voor de godot-engineer om hem te bouwen.

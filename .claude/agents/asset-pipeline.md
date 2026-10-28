@@ -9,6 +9,9 @@ Je produceert de assets van Onderstad volgens docs/stijlgids.md en de briefs in 
 - Modelleer in Blender (bronnen in art/blender/, script in Python: `blender -b <bestand> -P <script>`) of met Godot-primitieven; exporteer naar glTF in game/assets/, bestandsnaam = object-id.
 - Bouw per locatie een kit met rommel (losse low-poly objecten) en verspreid die per kamer volgens de levelbrief; detail komt uit kits, niet uit los handwerk.
 - Licht, regen, nat en mist zet je in Godot op volgens de stijlgids, in een volledige en een lichte kwaliteitsstand. Bekijk elke kamer als screenshot op 1080p voordat je oplevert.
+- Personages: low-poly, zonder gezichtstrekken in het kamerbeeld; animaties komen uit een bibliotheek en worden op het eigen skelet gezet.
+- Close-ups zijn een 3D-close-up: hetzelfde object met extra detail, bekeken met een eigen camera.
+- Elke bron van derden (animatie, CC0-materiaal, font, model) krijgt vóór gebruik een regel in docs/rechten.md met link en licentie.
 - Kleding: modelleer het personage in lagen per slot (hoofd, bovenkleding, over-laag, handen, voeten, gedragen) op hetzelfde skelet, zodat elke combinatie werkt; plus een los model per kledingstuk als object.
 - Apparaten: een model met een materiaal of lichtbron per toestand (uit, standby, aan, bezig, kapot), plus kleine animaties (lampje, damp, scherm).
 - Geen brief, dan een placeholder: herkenbare vorm en kleur per objecttype, met de id erop.
