@@ -53,7 +53,7 @@ Het thema is **de stad zonder hart**: Rotterdam verloor op 14 mei 1940 zijn oude
 
 **Toon**: melancholisch, sober, volwassen. Geweld is kort, hard en zonder spektakel. Tijdens het verkennen is er weinig dialoog; op sleutelmomenten volgen lange, gespannen gesprekken (zie Regiestijl).
 
-**Tijd**: de game begint op zaterdag 1 januari 2022, net na middernacht, en loopt tot de ochtend van vrijdag 7 januari 2022. Nederland zit in de lockdown van december 2021: horeca, winkels en musea zijn dicht, er geldt een vuurwerkverbod (er wordt toch geknald), mensen mogen weinig bezoek ontvangen. De stad is 's nachts leeg, op bezorgers na; flitsbezorgers zijn drukker dan ooit. Het jaartal wordt niet nadrukkelijk getoond, maar alles in de wereld (data in berichten, de krant, de maatregelen) moet ermee kloppen.
+**Tijd**: de game begint op zaterdag 1 januari 2022, net na middernacht, en loopt tot de ochtend van vrijdag 7 januari 2022. Nederland zit in de lockdown van december 2021: horeca, winkels en musea zijn dicht, er geldt een vuurwerkverbod (er wordt toch geknald), mensen mogen weinig bezoek ontvangen. De stad is 's nachts leeg, op bezorgers na; flitsbezorgers zijn drukker dan ooit. Flitsbezorgers bezorgen tot ongeveer 23:00, dus orders komen 's avonds binnen; wat daarna gebeurt, gebeurt in een lege stad. Achter gesloten deuren gaat het leven door: kleine huisfeestjes (op oudejaarsavond mochten vier gasten komen) en hier en daar een illegale bar, alleen voor genodigden. Elk hoofdstuk toetst de locatie aan de maatregelen van die week. Het jaartal wordt niet nadrukkelijk getoond, maar alles in de wereld (data in berichten, de krant, de maatregelen) moet ermee kloppen.
 
 **Realiteit en fictie**: Rotterdam is herkenbaar, maar alle personages en organisaties zijn fictief. Echte instellingen krijgen een gefictionaliseerde naam (zie Hoofdstukstructuur).
 
@@ -96,7 +96,7 @@ Het verhaal volgt zeven nachten en zeven doelwitten voordat Het Hart live gaat, 
 
 **Openingsscène: de jaarwisseling**
 
-Het spel begint net na middernacht in de nieuwjaarsnacht. De hoofdpersoon is alleen op zijn studentenkamer. Door het raam zie je losse illegale vuurpijlen boven de daken, met de Erasmusbrug als verlichte lijn in de verte; je hoort knallen in lege straten, de buren feesten, zijn telefoon blijft stil.
+Het spel begint net na middernacht in de nieuwjaarsnacht. De hoofdpersoon is alleen op zijn studentenkamer. Door het raam zie je losse illegale vuurpijlen boven de daken, met de Erasmusbrug als verlichte lijn in de verte; je hoort knallen in lege straten, de buren houden een klein feestje achter de muur, zijn telefoon blijft stil.
 
 - **Contrast**: de hele stad viert samen, hij is alleen. Dat is de toon van de game in één beeld.
 - **Echo van 1940**: de flitsen en knallen van het vuurwerk gaan langzaam over in het bombardement. Zo begint de eerste droom: het vuurwerk wordt de brand van de oude stad, en daarna toont de onderstad wat Het Hart gaat doen.
@@ -114,7 +114,7 @@ Het spel begint net na middernacht in de nieuwjaarsnacht. De hoofdpersoon is all
 | De app | Bezorgplatform op zijn telefoon | Stuurt hem naar de doelwitten; onduidelijk wie erachter zit |
 | Het Hart | Stadsproject: toren aan de Maas + datanetwerk | De dreiging; groeit elke nacht |
 | Buurvrouw | Oudere Rotterdamse in de hub | Anker in de realiteit, kent hem van vroeger |
-| Barman | Witte de Withstraat | Informatiebron, geruchten, roddel |
+| Barman | Witte de Withstraat; zijn bar is dicht door de lockdown, hij woont erboven en klust 's avonds alleen in de zaak | Informatiebron, geruchten, roddel; laat Richard via de zijdeur binnen |
 | Zeven doelwitten | De bouwers van Het Hart (zie hieronder) | Samen één netwerk; elk hoofdstuk legt een stuk bloot |
 
 **De zeven bouwers van Het Hart**
@@ -500,8 +500,8 @@ Van bovenaf zie je vooral vloeren, bedden, tafels en daken, en weinig gevels. Da
 | Locatie | Wat logisch en mogelijk is |
 | --- | --- |
 | Studentenkamer (hub) | Rood-wit vloerkleed, clubsjaal over de stoel, een leeg kapsalon-bakje op het bureau, een fietskaart van de stad, het uitzicht op illegaal vuurwerk boven de daken |
-| Bar Witte de Withstraat | Bierviltjes met de skyline, een stadsvlag achter de bar, een voetbalwedstrijd op tv |
-| Katendrecht | Klinkers in keperverband, oude kaaimuren en bolders, maquette van de nieuwe wijk in de loft van de ontwikkelaar, ingelijste luchtfoto van de haven |
+| Bar Witte de Withstraat (dicht) | Bierviltjes met de skyline, een stadsvlag achter de bar, stoelen op de tafels, een tv die uit staat |
+| Katendrecht | Klinkers in keperverband, oude kaaimuren en bolders, de achterdeur van een illegale bar, maquette van de nieuwe wijk in de loft van de ontwikkelaar, ingelijste luchtfoto van de haven |
 | Woontoren aan de Maas | Uitzicht op de rivier en de brug vanaf het penthouse, design-vloerkleed met een abstracte plattegrond van de stad |
 | Markthal / Centraal | De beschilderde boog van de Markthal als plafondrand, het dak van Centraal als herkenbare vorm, kapsalon-tentje |
 | Maasvlakte | Containers in rijen, kranen, de lijnen op het asfalt, schepen aan de kade |
@@ -526,7 +526,7 @@ De game speelt in de eerste week van januari. Kerst is net voorbij, en dat zie j
 | --- | --- |
 | Studentenkamer | Eén snoer lampjes langs het raam, een kerstkaart van thuis op het bureau (bij het ongeopende bericht) |
 | Trappenhuis studentenhuis | Een boompje dat de huisgenoten hebben achtergelaten, verdroogd, met naalden op de mat |
-| Bar Witte de Withstraat | Lampjes boven de bar, een half losgeraakte slinger, een kerstmuts op de tap |
+| Bar Witte de Withstraat | Lampjes boven de bar die in de dichte zaak blijven branden, een half losgeraakte slinger, een kerstmuts op de tap |
 | Katendrecht | Lichtjes in een paar ramen, een kerstboom naast de container |
 | Woontoren aan de Maas | Strakke designboom in de lobby, verdwijnt halverwege de week |
 | Markthal / Centraal | Grote winterverlichting die nog brandt, wordt in de loop van de week afgebroken |
@@ -684,9 +684,9 @@ De vertical slice is 20 à 30 minuten speeltijd van hub tot eerste droom, met de
 **Verloop**
 
 1. **Kamer (hub)**: nieuwjaarsnacht, alleen op zijn studentenkamer, illegaal vuurwerk boven de daken. Verken de kamer; het vuurwerk gaat over in de eerste droom. Daarna wakker: leer pakken en gebruiken. Pak bezorgtas en jas.
-2. **Order**: de app toont een order naar een adres in Katendrecht, op een naam uit de droom.
+2. **Order**: Richard slaapt de dag door. Zaterdagavond rond 21:00 toont de app een order naar een adres in Katendrecht, op een naam uit de droom.
 3. **Katendrecht, buiten**: verbouwd pakhuis met bouwhekken. Bij een bankje ligt een verloren telefoon.
-4. **Telefoon kraken**: de pincode staat niet op het toestel maar volgt uit een foto in de bar (verjaardagstaart op een social-post).
+4. **Telefoon kraken**: de pincode staat niet op het toestel maar volgt uit een foto in een bar (verjaardagstaart op een social-post). Door de lockdown is die bar officieel dicht; achterom draait hij in het geheim door, alleen voor genodigden. Binnenkomen is zelf een kleine toegangspuzzel.
 5. **Toegang**: via berichten op de telefoon vind je de toegangscode van de bouwlift en het tijdstip waarop de beveiliger pauzeert.
 6. **Binnen**: loft van de ontwikkelaar; maquettes van de nieuwe wijk, een foto van zijn vader in de haven (de menselijke kant).
 7. **Confrontatie**: kort, buiten beeld, geluid valt weg.
