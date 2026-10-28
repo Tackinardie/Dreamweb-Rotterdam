@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://onderstad.local/schemas/room.schema.json",
   "title": "Onderstad: kamer (content/chapters/<chNN_naam>/rooms/<kamer_id>.json)",
-  "description": "Eén kamer: begin-plek van objecten (de objectboom), uitgangen met toegang, NPC's. Bestandsnaam = id. De Godot-scène volgt de conventie game/scenes/rooms/<hoofdstuk>/<id>.tscn. Zie docs/systemen/objecten-en-inventaris.md en toegang.md.",
+  "description": "Eén kamer: begin-plek van objecten (de objectboom), uitgangen met toegang, NPC's, en wat de 3D-weergave nodig heeft (vakken, camera, lichten, model). Bestandsnaam = id. De kamerweergave bouwt de 3D-scène uit dit bestand; een eventuele handgemaakte aanvulling staat in game/scenes/rooms/<hoofdstuk>/<id>.tscn. Zie docs/systemen/kamerweergave.md, objecten-en-inventaris.md en toegang.md.",
   "type": "object",
   "required": ["id", "naam", "soort", "afmeting", "objecten", "uitgangen"],
   "properties": {
@@ -18,7 +18,7 @@
       "enum": ["binnen", "buiten", "droom"]
     },
     "afmeting": {
-      "description": "Loopgebied in tegels (richtwaarde 10x8).",
+      "description": "Vloer in vakken van 1x1 m: breedte = kolommen langs X, hoogte = rijen in de diepte langs Z (niet omhoog). Richtwaarde 4x5 tot 10x8, open ruimte hooguit 24x14. Zie docs/systemen/kamerweergave.md.",
       "type": "object",
       "required": ["breedte", "hoogte"],
       "properties": {
@@ -30,6 +30,44 @@
     "start_positie": {
       "description": "Waar de speler verschijnt zonder uitgang (hoofdstukstart, naar_kamer zonder uitgang).",
       "$ref": "common.schema.json#/$defs/positie"
+    },
+    "plafond": {
+      "description": "Hoogte van muren en plafond in m (alleen weergave). Standaard 2,6 binnen; buiten en droom zonder plafond.",
+      "type": "number",
+      "minimum": 2.0,
+      "maximum": 12.0
+    },
+    "model": {
+      "description": "Kamermodel (.glb) onder game/assets/. Afwezig of niet gevonden = placeholder uit afmeting, plafond en geblokkeerd. Alleen weergave; logica leest het nooit.",
+      "$ref": "common.schema.json#/$defs/asset_id"
+    },
+    "camera": {
+      "description": "Vaste camera van deze kamer. Afwezige velden krijgen de standaard. Kamers van één gebouw horen dezelfde kanteling en draaiing te hebben (stijlgids 3.1).",
+      "type": "object",
+      "properties": {
+        "kanteling": { "description": "Graden omlaag.", "type": "number", "minimum": 35, "maximum": 41, "default": 38 },
+        "draaiing": {
+          "description": "Graden om de verticale as; positief = camera rechtsvoor, negatief = linksvoor.",
+          "type": "number",
+          "oneOf": [ { "minimum": 20, "maximum": 35 }, { "minimum": -35, "maximum": -20 } ],
+          "default": 27
+        },
+        "fov": { "description": "Verticale FOV in graden.", "type": "number", "minimum": 15, "maximum": 20, "default": 17 },
+        "afstand": { "description": "Afstand in m tot het kamermidden. Afwezig = automatisch passend (kamerweergave.md, W11).", "type": "number", "minimum": 10, "maximum": 200 },
+        "volgt": { "description": "Alleen buitenruimtes groter dan het eiland: camera schuift mee met Richard.", "type": "boolean", "default": false }
+      },
+      "additionalProperties": false
+    },
+    "geblokkeerd": {
+      "description": "Vakken waar niemand kan staan of iets kan liggen, naast uitgangen, objecten en NPC's: decor zoals bed, bureau, pilaar. Mag een vak met een niet-pakbaar object overlappen (laptop op een bureau).",
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/vakgebied" }
+    },
+    "lichten": {
+      "description": "Vaste lichtbronnen van de kamer (lampen, raamlicht). Ambient, randlicht en levende bronnen komen hier niet in. Budget: kamerweergave.md, W8 en W22.",
+      "type": "array",
+      "maxItems": 16,
+      "items": { "$ref": "#/$defs/licht" }
     },
     "gebouw": {
       "description": "Gebouw-id uit chapter.json (gebouwen).",
@@ -81,10 +119,38 @@
       "properties": {
         "object": { "$ref": "common.schema.json#/$defs/item_id" },
         "positie": { "$ref": "common.schema.json#/$defs/positie" },
+        "stand": { "$ref": "#/$defs/stand" },
         "inhoud": {
           "type": "array",
           "items": { "$ref": "#/$defs/inhoud" }
         }
+      },
+      "additionalProperties": false
+    },
+    "stand": {
+      "description": "Alleen weergave: waar het model binnen zijn vak staat. De logica kent alleen het vak.",
+      "type": "object",
+      "properties": {
+        "dx": { "description": "Verschuiving in m langs X vanaf het vakmidden.", "type": "number", "minimum": -0.5, "maximum": 0.5, "default": 0 },
+        "dz": { "description": "Verschuiving in m langs Z vanaf het vakmidden.", "type": "number", "minimum": -0.5, "maximum": 0.5, "default": 0 },
+        "hoogte": { "description": "Hoogte van het voetpunt boven de vloer in m (bijv. 0,75 op een bureau).", "type": "number", "minimum": 0, "maximum": 3, "default": 0 },
+        "draai": { "description": "Graden om de verticale as; 0 = voorkant naar de camerakant (+Z).", "type": "number", "minimum": 0, "maximum": 359, "default": 0 }
+      },
+      "additionalProperties": false
+    },
+    "licht": {
+      "type": "object",
+      "required": ["id", "soort", "positie", "kleur", "energie"],
+      "properties": {
+        "id": { "description": "Uniek binnen de kamer.", "$ref": "common.schema.json#/$defs/id" },
+        "soort": { "description": "punt = OmniLight3D; spot = SpotLight3D die recht omlaag schijnt.", "enum": ["punt", "spot"] },
+        "positie": { "$ref": "common.schema.json#/$defs/positie" },
+        "hoogte": { "description": "Hoogte boven de vloer in m. Standaard 0,2 onder het plafond.", "type": "number", "minimum": 0, "maximum": 12 },
+        "kleur": { "$ref": "common.schema.json#/$defs/kleur" },
+        "energie": { "type": "number", "minimum": 0, "maximum": 16 },
+        "bereik": { "description": "Bereik in m.", "type": "number", "minimum": 0.5, "maximum": 30, "default": 5 },
+        "kegel": { "description": "Alleen spot: openingshoek in graden.", "type": "number", "minimum": 5, "maximum": 90, "default": 60 },
+        "schaduw": { "description": "Werpt schaduw. Hoogstens 6 per kamer; de lichte stand houdt de eerste 3 (volgorde in deze lijst = belang).", "type": "boolean", "default": false }
       },
       "additionalProperties": false
     },

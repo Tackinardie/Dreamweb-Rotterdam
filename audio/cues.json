@@ -100,6 +100,33 @@
       "status": "verwacht"
     },
     {
+      "id": "ui.closeup.open",
+      "beschrijving": "Zachte, korte luchtverplaatsing: de blik zoomt in op een voorwerp (close-up)",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface, kamerweergave",
+      "prioriteit": "laag",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.closeup.sluit",
+      "beschrijving": "Dezelfde luchtverplaatsing omgekeerd: terug naar het kamerbeeld",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface, kamerweergave",
+      "prioriteit": "laag",
+      "status": "verwacht"
+    },
+    {
+      "id": "droom.overgang",
+      "beschrijving": "Omslag naar de droom: geluid vertraagt en vervormt, een vertraagde gabberkick, dan sepia stilte",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "droomovergang (kamerweergave)",
+      "prioriteit": "hoog",
+      "status": "verwacht"
+    },
+    {
       "id": "ui.notitie.nieuw",
       "beschrijving": "Pen krast kort op papier: een nieuw token in het notitieboek",
       "laag": "effect",

@@ -23,7 +23,7 @@ Schema's: `tools/schemas/item.schema.json` (catalogus `content/items.json`), `to
 
 - O6. De inventaris heeft 8 slots (`spel.json` → `inventaris_slots`). Objecten bovenin de inventaris kosten hun `grootte`; samen hoogstens 8. Gedragen containers geven extra ruimte via hun eigen capaciteit. Er is geen raster: de strook schuift aaneen, er ontstaan geen gaten.
 - O7. **Pakken** (automatisch plaatsen): eerst in de vrije bovenste slots; past het daar niet, dan in de eerste gedragen container (strookvolgorde, van links naar rechts, diepte eerst) waar het in past (capaciteit en `max_grootte`). Past het nergens: het blijft liggen, mompel `systeem.inventaris.vol`, cue `ui.weiger`. Een container die je pakt, gaat mee met al zijn inhoud.
-- O8. **Neerleggen** gebeurt waar de speler staat: het object komt op zijn tegel; ligt daar al iets, dan op de dichtstbijzijnde vrije beloopbare tegel binnen 1 tegel; is die er niet, dan lukt het niet (mompel `systeem.neerleggen.geen_plek`). Nooit in een muur, op een uitgang of op een NPC. Neergelegde objecten blijven liggen en worden per kamer bewaard. In kamers met `neerleggen: false` kan het niet (mompel `systeem.neerleggen.niet_hier`).
+- O8. **Neerleggen** gebeurt waar de speler staat: het object komt op zijn vak (1×1 m, zie kamerweergave.md W1–W5); ligt daar al iets, dan op het dichtstbijzijnde vrije beloopbare vak binnen 1 vak; is die er niet, dan lukt het niet (mompel `systeem.neerleggen.geen_plek`). Nooit op een `geblokkeerd` vak, op een uitgang of op een NPC. Neergelegde objecten blijven liggen en worden per kamer bewaard. In kamers met `neerleggen: false` kan het niet (mompel `systeem.neerleggen.niet_hier`).
 - O9. **Niets wordt onbereikbaar.** Een scènewissel die kamers onbereikbaar maakt (de nieuwe scène heeft die kamer niet in `kamers`), gaat niet door zolang er een onmisbaar object (zie state-en-flags.md) in zo'n kamer ligt, ook niet genest. Richard mompelt `systeem.niet_zonder` met de objectnaam ("Mijn {object} ligt er nog.") en de speler kan het gaan halen. Dit geldt voor elke weg naar een scènewissel: een uitgang met `naar_scene` en een knoop met een `naar_scene`-effect, bij **elke** triggersoort (ook `betreed` en `dialoog`). Bij een knoop wordt de controle gedaan vóór het eerste effect; wordt de wissel geweigerd, dan **vuurt de knoop niet**: geen enkel effect, niet opgelost (state-en-flags.md, vuurregel 2a). De speler kan het later opnieuw proberen. "Onmisbaar" wordt afgeleid uit content van het huidige hoofdstuk plus `ch00_hub` (state-en-flags.md). Daarnaast mag een knoop met een `naar_scene`-effect, bij welke trigger ook, volgens de validator geen kamers uit de huidige scène laten wegvallen (V17). De weigering hierboven is dan het vangnet in de engine voor content die de validator niet passeerde of voor saves van oudere content; bij `automatisch` en `gebeurtenis` zou de speler zonder V17 niet begrijpen waarom niets gebeurt. Een scènewissel die kamers laat wegvallen hoort op een uitgang (de speler kiest dan zelf het moment).
 - O10. Overbrengen naar een container in de wereld: alleen naar een geopende container in de huidige kamer, met dezelfde capaciteitsregels.
 - O11. Objecten in de inventaris tellen overal: `heeft` vindt ze op elke diepte.
@@ -40,14 +40,14 @@ Inventaris als UI: `dicht` (alleen de strook) of `container_open` (boven de stro
 
 | Speler doet | Wat er gebeurt | Cue |
 | --- | --- | --- |
-| Beweegt de muis over een object | naam bij de cursor; vergrootglas-detail in een hoek | — |
-| Houdt spatie ingedrukt | alle interactieve objecten krijgen randlicht | `ui.highlight` |
+| Beweegt de muis over een object | naam bij de cursor, contour, vergrootglas in een hoek (kamerweergave.md) | — |
+| Houdt spatie ingedrukt | alle interactieve objecten krijgen een contour (kamerweergave.md) | `ui.highlight` |
 | Linksklik op een object in de wereld | Richard loopt erheen en doet de `standaard_actie` (anders: pak > open > lees > gebruik > bekijk) | per actie |
 | Rechtsklik op een object | Richard loopt niet; de beschrijving verschijnt | — |
 | Pakt een object | object verdwijnt uit de kamer en schuift in de strook (of in een container, met een korte puls op die container) | `object.pak` |
 | Opent een container (wereld) | paneel met de inhoud boven het object; inhoud sleepbaar naar de strook | `container.open` |
 | Klikt op een container in de strook | tweede strook schuift open met inhoud en kruimelpad | `container.open` |
-| Sleept een object uit de strook naar de vloer | Richard legt het neer op zijn eigen tegel (hij loopt niet) | `object.leg` |
+| Sleept een object uit de strook naar de vloer | Richard legt het neer op zijn eigen vak (hij loopt niet) | `object.leg` |
 | Sleept een object op een container (strook of wereld) | object gaat erin als het past; anders schudt de container kort | `object.in_container` / `ui.weiger` |
 | Sleept een object op een wereldobject of NPC | trigger `gebruik X met Y` of `geef X aan NPC` | per knoop |
 | Linksklik op een leesbaar object in de strook | leestekst in een paneel | `object.lees` |
@@ -77,7 +77,7 @@ Teksten zijn sober en kort; Richard mompelt alleen bij een weigering.
 | OI-05 | Een container in zichzelf of in een nakomeling stoppen faalt en verandert niets. |
 | OI-06 | De som van de groottes van de directe inhoud van een container is nooit groter dan zijn capaciteit, na elke actie in een gerandomiseerde test van 1000 acties. |
 | OI-07 | De inventaris bevat bovenin nooit meer dan 8 slots aan groottes, in dezelfde gerandomiseerde test. |
-| OI-08 | Neerleggen plaatst het object op de tegel van de speler; is die bezet, op een vrije beloopbare buurtegel; anders faalt het. |
+| OI-08 | Neerleggen plaatst het object op het vak van de speler; is dat bezet, op een vrij beloopbaar buurvak (nooit op een `geblokkeerd` vak); anders faalt het. |
 | OI-09 | Een neergelegd object ligt na verlaten en terugkomen van de kamer (en na opslaan en laden) op dezelfde positie. |
 | OI-10 | Een scènewissel die kamer K onbereikbaar maakt, wordt geweigerd zolang een onmisbaar object (ook genest in een container) in K ligt; na ophalen gaat hij door. |
 | OI-11 | Een container met `open_vereist` die niet klopt, gaat niet open en toont `geweigerd`; als de conditie klopt gaat hij open en blijft hij open na laden. |

@@ -98,6 +98,19 @@
           },
           "additionalProperties": false
         },
+        "model": {
+          "description": "Model (.glb) onder game/assets/, voetpunt in het midden op de grond. Afwezig of niet gevonden = placeholder (docs/systemen/kamerweergave.md, W6). Alleen weergave.",
+          "$ref": "common.schema.json#/$defs/asset_id"
+        },
+        "closeup": {
+          "description": "Bekijken opent een 3D-close-up: een tweede camera op het object in de echte scène (docs/systemen/kamerweergave.md, W19). Zonder dit veld toont bekijken alleen de beschrijving.",
+          "type": "object",
+          "properties": {
+            "model": { "description": "Detailversie (.glb), alleen zichtbaar in de close-up. Afwezig = het gewone model.", "$ref": "common.schema.json#/$defs/asset_id" },
+            "afstand": { "description": "Afstand van de close-up-camera tot het object in m.", "type": "number", "minimum": 0.2, "maximum": 4, "default": 0.8 }
+          },
+          "additionalProperties": false
+        },
         "notitie": {
           "description": "Ontwerpnotitie (niet spelerszichtbaar, niet vertaald): reden van het object (puzzel, verhaal, sfeer, red herring).",
           "type": "string"

@@ -81,7 +81,7 @@
       "maxLength": 96
     },
     "asset_id": {
-      "description": "Bestandsnaam zonder extensie in game/assets/ (afbeelding bij een bericht, close-up).",
+      "description": "Bestandsnaam zonder extensie onder game/assets/ (afbeelding bij een bericht, close-up, .glb-model van een kamer of object).",
       "$ref": "#/$defs/id"
     },
     "kloktijd": {
@@ -106,7 +106,7 @@
       ]
     },
     "positie": {
-      "description": "Tegelpositie in de kamer (16x16 px), oorsprong linksboven.",
+      "description": "Vak in de kamer: een vak is 1x1 m, gehele getallen. x = kolom van links naar rechts (3D +X), y = rij van de achterwand naar de camerakant (3D +Z). Vak (0,0) ligt linksachter. Middelpunt in 3D = (x + 0,5; 0; y + 0,5) m in de kamerruimte. Zie docs/systemen/kamerweergave.md, W1-W5.",
       "type": "object",
       "required": ["x", "y"],
       "properties": {
@@ -114,6 +114,23 @@
         "y": { "type": "integer", "minimum": 0, "maximum": 63 }
       },
       "additionalProperties": false
+    },
+    "vakgebied": {
+      "description": "Rechthoek van vakken: vak (x,y) linksachter, breedte in kolommen (+X), hoogte in rijen (+Z, de diepte, niet omhoog).",
+      "type": "object",
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "integer", "minimum": 0, "maximum": 63 },
+        "y": { "type": "integer", "minimum": 0, "maximum": 63 },
+        "breedte": { "type": "integer", "minimum": 1, "maximum": 64, "default": 1 },
+        "hoogte": { "type": "integer", "minimum": 1, "maximum": 64, "default": 1 }
+      },
+      "additionalProperties": false
+    },
+    "kleur": {
+      "description": "Kleur als #RRGGBB, uit het palet in docs/stijlgids.md.",
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
     },
     "plek": {
       "description": "Waar een object kan liggen: 'inventaris', een kamer-id (chNN_...) of een item-id (container).",

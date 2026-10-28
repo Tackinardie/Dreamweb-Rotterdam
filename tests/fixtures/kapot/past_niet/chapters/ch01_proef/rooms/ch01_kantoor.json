@@ -15,6 +15,49 @@
   "niveau": "proef.kantoor",
   "vloer": "linoleum",
   "galm": "klein",
+  "plafond": 2.6,
+  "camera": {
+    "kanteling": 38,
+    "draaiing": 27,
+    "fov": 17
+  },
+  "geblokkeerd": [
+    {
+      "x": 3,
+      "y": 1,
+      "breedte": 2,
+      "hoogte": 1
+    }
+  ],
+  "lichten": [
+    {
+      "id": "tl_plafond",
+      "soort": "spot",
+      "positie": {
+        "x": 3,
+        "y": 3
+      },
+      "hoogte": 2.5,
+      "kleur": "#F0F6F0",
+      "energie": 2.0,
+      "bereik": 6,
+      "kegel": 80,
+      "schaduw": true
+    },
+    {
+      "id": "bureaulamp",
+      "soort": "punt",
+      "positie": {
+        "x": 3,
+        "y": 1
+      },
+      "hoogte": 1.1,
+      "kleur": "#FFD8A0",
+      "energie": 1.2,
+      "bereik": 3,
+      "schaduw": true
+    }
+  ],
   "objecten": [
     {
       "object": "kluisje",
@@ -36,6 +79,9 @@
       "positie": {
         "x": 4,
         "y": 1
+      },
+      "stand": {
+        "hoogte": 0.75
       }
     },
     {

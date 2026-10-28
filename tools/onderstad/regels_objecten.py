@@ -122,8 +122,14 @@ def v11_posities(ctx: Ctx) -> None:
 
         def check(pos: dict, pad: str, wat: str) -> None:
             if pos["x"] >= b or pos["y"] >= h:
-                ctx.fout("V11", doc, pad, f"{wat} op ({pos['x']},{pos['y']}) ligt buiten de kamer van {b}x{h} tegels")
+                ctx.fout("V11", doc, pad, f"{wat} op ({pos['x']},{pos['y']}) ligt buiten de kamer van {b}x{h} vakken")
 
+        for i, g in enumerate(d.get("geblokkeerd", [])):
+            gb, gh = g.get("breedte", 1), g.get("hoogte", 1)
+            if g["x"] + gb > b or g["y"] + gh > h:
+                ctx.fout("V11", doc, f"$.geblokkeerd[{i}]", f"geblokkeerd gebied ({g['x']},{g['y']}) {gb}x{gh} ligt buiten de kamer van {b}x{h} vakken")
+        for i, lamp in enumerate(d.get("lichten", [])):
+            check(lamp["positie"], f"$.lichten[{i}].positie", f"licht '{lamp['id']}'")
         if "start_positie" in d:
             check(d["start_positie"], "$.start_positie", "start_positie")
         for i, o in enumerate(d.get("objecten", [])):

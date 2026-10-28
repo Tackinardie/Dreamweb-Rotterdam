@@ -116,7 +116,10 @@
       "acties": [
         "bekijk",
         "gebruik"
-      ]
+      ],
+      "closeup": {
+        "afstand": 0.8
+      }
     },
     {
       "id": "prullenbak",
