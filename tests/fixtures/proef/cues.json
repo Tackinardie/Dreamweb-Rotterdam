@@ -101,6 +101,33 @@
       "status": "verwacht"
     },
     {
+      "id": "ui.closeup.open",
+      "beschrijving": "Zoom naar een close-up",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "laag",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.closeup.sluit",
+      "beschrijving": "Terug naar het kamerbeeld",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "laag",
+      "status": "verwacht"
+    },
+    {
+      "id": "droom.overgang",
+      "beschrijving": "Omslag naar de droom",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "droomovergang",
+      "prioriteit": "hoog",
+      "status": "verwacht"
+    },
+    {
       "id": "ui.notitie.nieuw",
       "beschrijving": "Nieuw token in het notitieboek",
       "laag": "effect",

@@ -1,0 +1,5 @@
+{
+  "omschrijving": "Waar de hoofdscene de testkamer start als content/ nog geen spel heeft (alleen ontwikkelbuilds).",
+  "kamer": "ch01_kantoor",
+  "uitgang": "deur_hal"
+}

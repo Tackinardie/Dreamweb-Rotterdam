@@ -46,7 +46,7 @@ func uitpakken(item: String) -> Dictionary:
 	return {"ok": false, "reden": "vol"}
 
 
-## Neerleggen (O8) op de tegel van de speler, anders op de dichtstbijzijnde vrije tegel binnen 1 tegel.
+## Neerleggen (O8) op het vak van de speler, anders op het dichtstbijzijnde vrije vak binnen 1 vak.
 func leg_neer(item: String, kamer: String, tegel: Vector2i, geblokkeerd: Array = []) -> Dictionary:
 	if not heeft(item) or not is_pakbaar(item):
 		return {"ok": false, "reden": "niet_in_inventaris"}
@@ -64,6 +64,8 @@ func leg_neer(item: String, kamer: String, tegel: Vector2i, geblokkeerd: Array =
 	return {"ok": true, "tegel": vrij}
 
 
+## Eerste vrije vak op `start` of een van de 8 buren; geblokkeerde vakken uit de kamerdata (`geblokkeerd`) tellen
+## altijd mee, `geblokkeerd` is voor extra vakken. Naam blijft `tegel` (publieke API).
 func vrije_tegel(kamer: String, start: Vector2i, geblokkeerd: Array = []) -> Variant:
 	var k: Dictionary = content.kamers.get(kamer, {})
 	var b: int = int(k.get("afmeting", {}).get("breedte", 0))
@@ -71,6 +73,8 @@ func vrije_tegel(kamer: String, start: Vector2i, geblokkeerd: Array = []) -> Var
 	var bezet: Array[Vector2i] = []
 	for g: Variant in geblokkeerd:
 		bezet.append(g)
+	for gebied: Dictionary in k.get("geblokkeerd", []):
+		bezet.append_array(Vak.gebied_vakken(gebied))
 	for u: Dictionary in k.get("uitgangen", []):
 		bezet.append(Vector2i(u["positie"]["x"], u["positie"]["y"]))
 	for o: String in kinderen.get(kamer, []):
@@ -120,7 +124,7 @@ func open_container(item: String, ctx: ConditieContext) -> Dictionary:
 	return {"ok": true}
 
 
-## Een object komt in de inventaris (geef_object). Past het niet: op de vloer bij `tegel` en mompelen.
+## Een object komt in de inventaris (geef_object). Past het niet: op de vloer bij vak `tegel` en mompelen.
 func geef(item: String, kamer: String, tegel: Vector2i, geblokkeerd: Array = []) -> Dictionary:
 	if plek.get(item, NERGENS) == INVENTARIS or not content.items.has(item):
 		return {"ok": plek.get(item) == INVENTARIS}

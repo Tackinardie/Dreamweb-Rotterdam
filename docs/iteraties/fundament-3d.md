@@ -34,3 +34,19 @@ Niet in deze iteratie: verhaal, locaties, puzzels, art-assets (behalve placehold
 - [ ] `python tools/test_godot.py` groen
 - [ ] QA eindigt op KLAAR VOOR REVIEW; code-review zonder blokkerende punten
 - [ ] Martijn heeft de testkamer gestart en gezien
+
+## Starten
+
+De testkamer is `ch01_kantoor` uit `tests/fixtures/proef` (8×6 vakken, bureau geblokkeerd, twee lichten, laptop met close-up). Zolang `content/` nog geen `spel.json` heeft, laadt de hoofdscene in een ontwikkelbuild die fixture en zet Richard bij `deur_hal` (de keuze staat in `tests/fixtures/testscene.json`).
+
+```
+godot --path game                          # de testkamer, kwaliteitsstand uit user://instellingen.cfg (eerste start: 3 s meten)
+godot --path game -- --stand licht         # forceer vol of licht
+godot --path game -- --kamer ch01_hal      # andere kamer uit de fixture
+godot --path game -- --meet ch01_kantoor --stand licht   # prestatiemeting naar user://meting/<kamer>_<stand>.json
+godot --path game -- --spatie --foto docs/qa/shots/x.png --frames 60   # schermfoto (QA)
+```
+
+Bediening: linksklik loopt (op een object: ernaartoe en de standaardactie; op een uitgang: erdoorheen), rechtsklik bekijkt (laptop: 3D-close-up, sluiten met rechtsklik, klik of Esc), spatiebalk ingedrukt houden toont alles wat interactief is, hover geeft contour, naam en vergrootglas. In ontwikkelbuilds: F2 geluidsvenster, F3 meetoverlay met vakkenraster, F4 wisselt vol/licht.
+
+Tests: `python tools/test_godot.py` (logica in `tests/gut/test_vak_logica.gd`, weergave headless in `tests/gut/test_kamerweergave.gd`). Code: logica in `game/systems/` (`vak.gd`, `kamer_raster.gd`, `camera_stand.gd`, `kwaliteit.gd`, `loper.gd`, `interactie.gd`), weergave in `game/weergave/`.
