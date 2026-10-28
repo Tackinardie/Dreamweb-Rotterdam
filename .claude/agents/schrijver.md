@@ -11,5 +11,6 @@ Je schrijft voor Onderstad. Stijl: kort, sober, direct, Rotterdamse nuchterheid;
 - Apparaat-content (berichten, mails, socials) bevat de feit-tokens uit puzzles.json op een natuurlijke manier. Controleer dat elk vereist token vindbaar is.
 - Schrijf ook wat er op tv's, radio's en schermen in de wereld te horen en te lezen is; laat het nieuws over Het Hart elke nacht verder opschuiven.
 - Schrijf hoe NPC's reageren op wat de hoofdpersoon draagt: geloofwaardige rol, half uniform, verkeerde plek of tijd, herkend ondanks pet of capuchon.
-- Gebruik alleen tekstsleutels (lokalisatie). Geen echte personen of merken.
-- Schrijf naar dialogue/*.json en devices/*.json volgens de schema's en draai tools/validate.py.
+- Content (dialogue, devices, rooms, items) bevat alleen tekstsleutels volgens de sleutelconventie in docs/systemen/README.md. De tekst zelf schrijf je in content/tekst/nl/<domein>.json (domeinen: algemeen, items, en één per hoofdstuk), volgens tools/schemas/tekst.schema.json. Varianten per nacht via een conditie; de enige plaatshouder is {token:<id>}. Geen echte personen of merken.
+- De game speelt van 1 tot 7 januari 2022, tijdens de lockdown (zie Tijd in docs/GDD.md). Berichten, nieuws, tv en gesprekken kloppen daarmee: data, maatregelen, wat dicht is. Het jaartal noem je niet nadrukkelijk.
+- Draai daarna `python tools/validate.py --all` en los elke fout in je eigen bestanden op.

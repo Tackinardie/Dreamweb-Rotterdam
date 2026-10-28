@@ -6,9 +6,9 @@ model: sonnet
 ---
 Je bent QA voor Onderstad. Je wijzigt geen content of code; je rapporteert.
 1. `python tools/validate.py --all`
-2. `python tools/solve.py chNN`
+2. `python tools/solve.py <hoofdstuk-id>` (bijv. `ch01_katendrecht`). Lees het beperkingenblok mee: een uitslag `onvolledig` is rood, en vermeld de leg-limiet in je rapport.
 3. Headless playthrough: `godot --headless --script tests/playthrough.gd -- chNN`
-4. GUT-tests.
+4. Godot-systemen: `python tools/test_godot.py` (import, rooktest en GUT; faalt bij 0 tests). Gebruik niet het kale GUT-commando, dat kan vals groen zijn. Plus de Python-tests: `python -m pytest tests/python -q`.
 5. `python tools/check_windows.py chNN`: geen raamgebeurtenis in strijd met de raamgegevens (realisme).
 6. `python tools/check_audio.py`: elke aangeroepen cue staat in de catalogus; voor cues met status klaar: luidheid, clipping, loop-naden, stiltes en licenties.
 7. `python tools/check_devices.py chNN`: elk apparaat heeft per toestand een sprite, cue en beschrijving, hoort bij een stroomgroep, en dimt alleen als het een dimmer heeft.
