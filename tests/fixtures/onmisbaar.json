@@ -1,0 +1,24 @@
+{
+ "proef": [
+  "bezorgtas",
+  "briefje",
+  "jas",
+  "koffiekop",
+  "laptop",
+  "pasje",
+  "prullenbak",
+  "rapport"
+ ],
+ "scope_hoofdstukken": [
+  "bezorgtas",
+  "briefje",
+  "jas",
+  "koffiekop",
+  "kopje_wit",
+  "laptop",
+  "pasje",
+  "prullenbak",
+  "rapport"
+ ],
+ "beschrijving": "Afgeleide onmisbare objecten voor hoofdstuk ch01_proef (SF-22). Python en GDScript moeten dit allebei afleiden; scope_hoofdstukken = proef plus overlay kapot/scope_hoofdstukken (hub telt mee, ch02 niet)."
+}

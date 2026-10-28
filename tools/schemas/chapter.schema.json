@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/chapter.schema.json",
+  "title": "Onderstad: hoofdstuk (content/chapters/<chNN_naam>/chapter.json)",
+  "description": "Hoofdstukgegevens: titelkaart, start, doel, scènes met tijd en gebeurtenissen, lokale flags, feit-tokens, gebouwen met toegangsniveaus en lokale benoemde condities. De hub is hoofdstuk ch00_hub. Zie docs/systemen/klok-en-scenetijd.md en state-en-flags.md.",
+  "type": "object",
+  "required": ["id", "nummer", "titel", "start", "doel", "scenes"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "description": "Gelijk aan de mapnaam.",
+      "$ref": "common.schema.json#/$defs/hoofdstuk_id"
+    },
+    "nummer": { "type": "integer", "minimum": 0, "maximum": 7 },
+    "titel": {
+      "description": "Titelkaart, bijv. 'Hoofdstuk 1: Katendrecht'.",
+      "$ref": "common.schema.json#/$defs/tekstsleutel"
+    },
+    "doelwit": { "$ref": "common.schema.json#/$defs/personage_id" },
+    "start": {
+      "type": "object",
+      "required": ["scene", "kamer"],
+      "properties": {
+        "scene": { "$ref": "common.schema.json#/$defs/scene_id" },
+        "kamer": { "$ref": "common.schema.json#/$defs/kamer_id" },
+        "uitgang": {
+          "description": "Verschijn bij deze uitgang; zonder: start_positie van de kamer.",
+          "$ref": "common.schema.json#/$defs/id"
+        }
+      },
+      "additionalProperties": false
+    },
+    "doel": {
+      "description": "Het hoofdstuk is af zodra dit klopt (meestal een doel-knoop).",
+      "$ref": "common.schema.json#/$defs/conditie"
+    },
+    "aanname_bij_start": {
+      "description": "Toestand die dit hoofdstuk aanneemt bij binnenkomst (uit eerdere hoofdstukken). Wordt gebruikt bij los starten (ontwikkeling, oplosser, playthrough) en door de validator tegen het vorige hoofdstuk gecontroleerd.",
+      "type": "object",
+      "properties": {
+        "inventaris": {
+          "description": "Objectboom in de inventaris.",
+          "type": "array",
+          "items": { "$ref": "room.schema.json#/$defs/inhoud" }
+        },
+        "flags": {
+          "type": "object",
+          "propertyNames": { "$ref": "common.schema.json#/$defs/globaal_id" },
+          "additionalProperties": { "type": ["boolean", "integer"] }
+        },
+        "tokens": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/token_id" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/scene" }
+    },
+    "flags": {
+      "description": "Lokale flags (id met chNN_-prefix van dit hoofdstuk).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/flag" }
+    },
+    "tokens": {
+      "description": "Feit-tokens die in dit hoofdstuk te vinden zijn. Tokens zijn globaal en blijven het hele spel in het notitieboek.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/token" }
+    },
+    "gebouwen": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/gebouw" }
+    },
+    "condities": {
+      "description": "Lokale benoemde condities (naam met chNN_-prefix).",
+      "type": "object",
+      "propertyNames": { "$ref": "common.schema.json#/$defs/lokaal_id" },
+      "additionalProperties": { "$ref": "common.schema.json#/$defs/conditie" }
+    },
+    "notitie": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "flag": {
+      "type": "object",
+      "required": ["id", "type", "start"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/flag_id" },
+        "type": { "enum": ["bool", "int"] },
+        "start": { "type": ["boolean", "integer"] },
+        "omschrijving": { "type": "string", "description": "Ontwerpnotitie; zichtbaar in het flagsvenster, niet vertaald." }
+      },
+      "additionalProperties": false,
+      "if": { "properties": { "type": { "const": "bool" } } },
+      "then": { "properties": { "start": { "type": "boolean" } } },
+      "else": { "properties": { "start": { "type": "integer" } } }
+    },
+    "token": {
+      "type": "object",
+      "required": ["id", "categorie", "notitie"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/token_id" },
+        "categorie": {
+          "description": "Tabblad in het notitieboek.",
+          "enum": ["persoon", "plek", "code", "tijd"]
+        },
+        "waarde": {
+          "description": "Exacte waarde voor codes (bijv. '0412'). Niet vertaald.",
+          "type": "string",
+          "maxLength": 32
+        },
+        "notitie": {
+          "description": "Regel in het notitieboek.",
+          "$ref": "common.schema.json#/$defs/tekstsleutel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "gebouw": {
+      "type": "object",
+      "required": ["id", "naam", "niveaus"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "niveaus": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "naam"],
+            "properties": {
+              "id": { "$ref": "common.schema.json#/$defs/id" },
+              "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "scene": {
+      "description": "Een tijdvak met een vaste kloktijd, geldig voor een set kamers.",
+      "type": "object",
+      "required": ["id", "tijd", "kamers"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/scene_id" },
+        "tijd": { "$ref": "common.schema.json#/$defs/scenetijd" },
+        "kamers": {
+          "description": "Kamers die in deze scène bereikbaar zijn (mag hubkamers uit ch00_hub bevatten).",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/kamer_id" }
+        },
+        "niet_lineair": {
+          "description": "Id van het niet-lineaire moment waar deze scène bij hoort. Alleen dan mag de klok teruglopen. Maximaal twee momenten in de hele game.",
+          "$ref": "common.schema.json#/$defs/id"
+        },
+        "titelkaart": {
+          "description": "Toon de titelkaart van het hoofdstuk bij het begin van deze scène.",
+          "type": "boolean",
+          "default": false
+        },
+        "muziek": {
+          "description": "Doorlopende muziekcue (laag muziek) tijdens deze scène.",
+          "$ref": "common.schema.json#/$defs/cue_id"
+        },
+        "gebeurtenissen": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/gebeurtenis" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "gebeurtenis": {
+      "description": "Iets wat binnen een scène gebeurt zonder dat de klok verandert (pauze van de beveiliger, een telefoon die gaat).",
+      "type": "object",
+      "required": ["id", "start"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/gebeurtenis_id" },
+        "omschrijving": { "type": "string" },
+        "start": {
+          "description": "bij_begin = actief zodra de scène begint; handmatig = alleen via effect start_gebeurtenis; of een conditie.",
+          "oneOf": [
+            { "enum": ["bij_begin", "handmatig"] },
+            {
+              "type": "object",
+              "required": ["als"],
+              "properties": { "als": { "$ref": "common.schema.json#/$defs/conditie" } },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "duur_s": {
+          "description": "Hoe lang de gebeurtenis actief blijft, in seconden speeltijd. Afwezig = tot stop_gebeurtenis of einde scène.",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "herhaal_na_s": {
+          "description": "Na afloop opnieuw actief na zoveel seconden speeltijd (routine). Vereist duur_s.",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "start_vertraging_s": {
+          "description": "Seconden speeltijd tussen 'start klopt' en actief worden.",
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "cue_start": { "$ref": "common.schema.json#/$defs/cue_id" },
+        "cue_einde": { "$ref": "common.schema.json#/$defs/cue_id" }
+      },
+      "additionalProperties": false,
+      "dependentRequired": { "herhaal_na_s": ["duur_s"] }
+    }
+  }
+}

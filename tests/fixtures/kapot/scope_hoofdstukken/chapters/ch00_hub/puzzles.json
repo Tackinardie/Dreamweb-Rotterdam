@@ -1,0 +1,34 @@
+{
+  "hoofdstuk": "ch00_hub",
+  "knopen": [
+    {
+      "id": "ch00_auto",
+      "type": "actie",
+      "pad": "zij",
+      "waarom": "Een knoop voor de scope-test.",
+      "trigger": {
+        "automatisch": true
+      },
+      "effecten": [
+        {
+          "zet_flag": "hub_vlag",
+          "waarde": true
+        }
+      ]
+    },
+    {
+      "id": "ch00_klaar",
+      "type": "doel",
+      "pad": "hoofd",
+      "waarom": "Het doel van dit proefhoofdstuk.",
+      "trigger": {
+        "gebruik": "kopje_wit"
+      },
+      "hints": {
+        "vaag": "hint.ch00_klaar.vaag",
+        "richting": "hint.ch00_klaar.richting",
+        "bijna": "hint.ch00_klaar.bijna"
+      }
+    }
+  ]
+}

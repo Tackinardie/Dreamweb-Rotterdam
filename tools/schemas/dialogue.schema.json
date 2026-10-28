@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/dialogue.schema.json",
+  "title": "Onderstad: gesprek (content/chapters/<chNN_naam>/dialogue/<dialoog_id>.json)",
+  "description": "Eén gesprek als lijst regels. Regels wijzigen zelf geen toestand: puzzelknopen vuren op het bereiken van een regel (trigger dialoog/regel). Maximaal 3 keuzes per regel. Bestandsnaam = id.",
+  "type": "object",
+  "required": ["id", "deelnemers", "start", "regels"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "$ref": "common.schema.json#/$defs/dialoog_id" },
+    "deelnemers": {
+      "description": "Personages behalve Richard.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/personage_id" }
+    },
+    "start": {
+      "description": "Startregel: een regel-id, of een lijst waarvan de eerste met kloppende 'als' wint (laatste zonder 'als').",
+      "oneOf": [
+        { "$ref": "common.schema.json#/$defs/id" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["regel"],
+            "properties": {
+              "als": { "$ref": "common.schema.json#/$defs/conditie" },
+              "regel": { "$ref": "common.schema.json#/$defs/id" }
+            },
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "regels": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/regel" }
+    },
+    "notitie": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "regel": {
+      "type": "object",
+      "required": ["id", "spreker", "tekst"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "spreker": {
+          "description": "'richard' of een personage uit deelnemers.",
+          "$ref": "common.schema.json#/$defs/personage_id"
+        },
+        "tekst": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "cue": { "$ref": "common.schema.json#/$defs/cue_id" },
+        "volgende": { "$ref": "common.schema.json#/$defs/id" },
+        "keuzes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/keuze" }
+        },
+        "einde": { "const": true }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        { "required": ["volgende"] },
+        { "required": ["keuzes"] },
+        { "required": ["einde"] }
+      ]
+    },
+    "keuze": {
+      "type": "object",
+      "required": ["id", "tekst"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "tekst": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "als": {
+          "description": "Keuze alleen zichtbaar als dit klopt.",
+          "$ref": "common.schema.json#/$defs/conditie"
+        },
+        "eenmalig": {
+          "description": "Verdwijnt nadat hij gekozen is (blijft bewaard in de save).",
+          "type": "boolean",
+          "default": false
+        },
+        "volgende": {
+          "description": "Afwezig = gesprek eindigt.",
+          "$ref": "common.schema.json#/$defs/id"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

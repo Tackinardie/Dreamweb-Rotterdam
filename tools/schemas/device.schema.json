@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/device.schema.json",
+  "title": "Onderstad: apparaat met scherm (content/chapters/<chNN_naam>/devices/<apparaat_id>.json)",
+  "description": "Minimaal model voor telefoons, panelen en werkplekken: vergrendeling en apps met inhoud. Bewust uitbreidbaar: de telefoon-UI (Fase 1) en elektrische apparaten (toestanden, bediening, stroomgroepen) voegen later velden toe. Bestandsnaam = id.",
+  "type": "object",
+  "required": ["id", "type", "naam", "object", "vergrendeling", "apps"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "$ref": "common.schema.json#/$defs/apparaat_id" },
+    "type": { "enum": ["telefoon", "tablet", "laptop", "werkplek", "deurpaneel", "liftpaneel"] },
+    "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+    "object": {
+      "description": "Het fysieke object uit items.json waar dit scherm bij hoort. Het apparaat is bruikbaar als dat object bereikbaar is.",
+      "$ref": "common.schema.json#/$defs/item_id"
+    },
+    "eigenaar": { "$ref": "common.schema.json#/$defs/personage_id" },
+    "vergrendeling": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["geen", "pincode", "patroon", "wachtwoord"] },
+        "sleutel_token": {
+          "description": "Feit-token dat het apparaat ontgrendelt. De waarde (de code) staat bij het token in chapter.json.",
+          "$ref": "common.schema.json#/$defs/token_id"
+        },
+        "extra_vereist": {
+          "description": "Aanvullende conditie (bijv. alleen met een pas erbij).",
+          "$ref": "common.schema.json#/$defs/conditie"
+        },
+        "hint": {
+          "description": "Tekst op het vergrendelscherm (bijv. 'pincode vergeten?').",
+          "$ref": "common.schema.json#/$defs/tekstsleutel"
+        }
+      },
+      "additionalProperties": false,
+      "if": { "properties": { "type": { "const": "geen" } } },
+      "then": { "not": { "required": ["sleutel_token"] } },
+      "else": { "required": ["sleutel_token"] }
+    },
+    "apps": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/app" }
+    },
+    "notitie": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "app": {
+      "type": "object",
+      "required": ["id", "type", "items"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "type": { "enum": ["berichten", "mail", "fotos", "socials", "notities", "agenda", "contacten", "bellen", "rooster", "toegang", "smart_home", "bezorg"] },
+        "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "als": {
+          "description": "App alleen zichtbaar als dit klopt.",
+          "$ref": "common.schema.json#/$defs/conditie"
+        },
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/app_item" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "app_item": {
+      "description": "Generiek inhoudsitem (bericht, mail, foto, post, afspraak). De telefoon-UI bepaalt per apptype welke velden het toont.",
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "afzender": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "titel": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "tekst": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "tijdstip": { "$ref": "common.schema.json#/$defs/tijdstip" },
+        "bijlage": { "$ref": "common.schema.json#/$defs/asset_id" },
+        "als": {
+          "description": "Item alleen zichtbaar als dit klopt (bijv. een bericht dat later binnenkomt).",
+          "$ref": "common.schema.json#/$defs/conditie"
+        },
+        "cue": {
+          "description": "Cue bij binnenkomen (zichtbaar worden) van dit item.",
+          "$ref": "common.schema.json#/$defs/cue_id"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [ { "required": ["tekst"] }, { "required": ["bijlage"] }, { "required": ["titel"] } ]
+    }
+  }
+}

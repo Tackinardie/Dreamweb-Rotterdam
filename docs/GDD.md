@@ -53,6 +53,8 @@ Het thema is **de stad zonder hart**: Rotterdam verloor op 14 mei 1940 zijn oude
 
 **Toon**: melancholisch, sober, volwassen. Geweld is kort, hard en zonder spektakel. Tijdens het verkennen is er weinig dialoog; op sleutelmomenten volgen lange, gespannen gesprekken (zie Regiestijl).
 
+**Tijd**: de game begint op zaterdag 1 januari 2022, net na middernacht, en loopt tot de ochtend van vrijdag 7 januari 2022. Nederland zit in de lockdown van december 2021: horeca, winkels en musea zijn dicht, er geldt een vuurwerkverbod (er wordt toch geknald), mensen mogen weinig bezoek ontvangen. De stad is 's nachts leeg, op bezorgers na; flitsbezorgers zijn drukker dan ooit. Het jaartal wordt niet nadrukkelijk getoond, maar alles in de wereld (data in berichten, de krant, de maatregelen) moet ermee kloppen.
+
 **Realiteit en fictie**: Rotterdam is herkenbaar, maar alle personages en organisaties zijn fictief. Echte instellingen krijgen een gefictionaliseerde naam (zie Hoofdstukstructuur).
 
 ## Regiestijl: Tarantino als aanpak
@@ -230,8 +232,8 @@ Tien systemen dragen de game. Alle content staat in data (JSON of Godot-resource
 
 **1. Objectsysteem**
 
-- Elk object heeft: `id`, `naam`, `beschrijving`, `grootte` (1–3 slots), `pakbaar`, `container` (ja/nee, capaciteit), `acties` (bekijk, gebruik, open, lees).
-- Objecten vormen een boom: kamer → kast → jas → portemonnee → pasje.
+- Elk object heeft: `id`, `naam`, `beschrijving`, `grootte` (1–3 slots), `pakbaar`, `container` (ja/nee, capaciteit, maximale grootte van wat erin past), `acties` (bekijk, gebruik, open, lees, pak).
+- Objecten vormen een boom: kamer → kast → jas → portemonnee → pasje. Elk object bestaat één keer en ligt altijd op één plek.
 - Neergelegde objecten blijven waar ze liggen, per locatie opgeslagen.
 - Inventaris: 8 slots; containers die je draagt tellen als extra ruimte.
 
@@ -243,7 +245,8 @@ Tien systemen dragen de game. Alle content staat in data (JSON of Godot-resource
 
 **3. Toegangssysteem**
 
-- Deuren, liften, poorten en slagbomen hebben een `vereist`-regel: object, token, flag, tijd of combinatie.
+- Deuren, liften, poorten en slagbomen hebben een `vereist`-regel: object, token, flag, tijd of combinatie. Een deur heeft per kant een eigen regel. Tijd betekent kloktijd, scènetijd of een scènegebeurtenis (zoals de pauze van de beveiliger), niet lopende minuten.
+- Toegang, puzzelgraaf en dialoog gebruiken één gedeelde conditietaal (zie docs/systemen/state-en-flags.md); toestand verandert alleen via de puzzelgraaf.
 - Toegangsniveaus per gebouw (lobby, verdieping, dak, airside).
 - Onzichtbaarheid: met bezorgtas zichtbaar als bezorger; NPC's reageren daarop.
 
@@ -425,7 +428,7 @@ De interface is minimaal: het speelveld vult het scherm, alles anders schuift in
 
 **Besturing**: muis als primair (links: lopen/gebruiken, rechts: bekijken). Controller- en Steam Deck-ondersteuning later, met een cursor die naar objecten snapt.
 
-**Klok en datum**: in beeld staat altijd een klok met datum, bijvoorbeeld *wo 1 jan · 00:07*. De klok staat stil op de tijd van de scène; hij tikt niet mee terwijl je speelt.
+**Klok en datum**: rechtsboven in beeld staat altijd een klok met datum, bijvoorbeeld *za 1 jan · 00:07*. De klok staat stil op de tijd van de scène; hij tikt niet mee terwijl je speelt.
 
 - **Tijd springt per scène**: elke scène heeft een vast tijdstip, vastgelegd door de level-designer. Na een reis, een droom of een kamerwissel die tijd kost, toont de klok de nieuwe tijd.
 - **Binnen een scène**: wat er gebeurt (drogende schoenen, koffie zetten, NPC-routines zoals de pauze van een beveiliger) loopt als gebeurtenis in de scène, niet als klok. Timing-puzzels draaien om wat je ziet gebeuren, niet om minuten.
@@ -624,6 +627,9 @@ onderstad/
     scenes/rooms/        # kamers per locatie (.tscn)
     ui/
   content/               # ALLE content als data
+    spel.json            # startdatum, hoofdstukvolgorde, slots, talen, globale flags en condities
+    tekst/<taal>/*.json  # alle spelerszichtbare tekst; content bevat alleen sleutels
+    chapters/ch00_hub/   # de hub is een eigen hoofdstuk
     chapters/ch01_katendrecht/
       chapter.json       # flags, doelwit, volgorde
       rooms/*.json       # objecten, deuren, NPC's per kamer
@@ -638,7 +644,7 @@ onderstad/
 **Kernkeuzes**
 
 - **Content in JSON** met een JSON Schema per type. Validatie in CI en lokaal.
-- **Puzzelgraaf als bron van waarheid**: knopen = acties/feiten, kanten = vereisten. Een Python-oplosser bewijst dat elk hoofdstuk oplosbaar is en dat er geen doodlopende staat bestaat.
+- **Puzzelgraaf als bron van waarheid**: knopen = acties/feiten, kanten = vereisten. Een Python-oplosser bewijst dat elk hoofdstuk oplosbaar is en dat er geen doodlopende staat bestaat, binnen een vereenvoudigd model (zie docs/systemen/state-en-flags.md, "De oplosser"); elke run meldt welke beperkingen gelden.
 - **Headless playthrough**: Godot draait zonder scherm een opgenomen oplossingsscript af (`godot --headless`) en meldt of het einde van het hoofdstuk bereikt wordt.
 - **Tests**: GUT (Godot Unit Test) voor systemen.
 - **Versiebeheer**: Git op GitHub; elke agent werkt op een branch; merge na review en groene checks.

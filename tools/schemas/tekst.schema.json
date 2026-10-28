@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/tekst.schema.json",
+  "title": "Onderstad: tekstbestand (content/tekst/<taal>/<domein>.json)",
+  "description": "Alle spelerszichtbare tekst, per taal en domein. Domein = 'algemeen', 'items' of een hoofdstuk-id. Content verwijst alleen met sleutels. Zie docs/systemen/README.md, sectie Lokalisatie.",
+  "type": "object",
+  "required": ["taal", "domein", "teksten"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "taal": { "type": "string", "pattern": "^[a-z]{2}$" },
+    "domein": {
+      "oneOf": [
+        { "enum": ["algemeen", "items"] },
+        { "$ref": "common.schema.json#/$defs/hoofdstuk_id" }
+      ]
+    },
+    "teksten": {
+      "type": "object",
+      "propertyNames": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      }
+    },
+    "notities": {
+      "description": "Optionele context voor schrijver of vertaler per sleutel. Niet spelerszichtbaar.",
+      "type": "object",
+      "propertyNames": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

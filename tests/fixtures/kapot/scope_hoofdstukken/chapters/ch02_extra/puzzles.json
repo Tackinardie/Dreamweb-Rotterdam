@@ -1,0 +1,48 @@
+{
+  "hoofdstuk": "ch02_extra",
+  "knopen": [
+    {
+      "id": "ch02_auto",
+      "type": "actie",
+      "pad": "zij",
+      "waarom": "Een knoop voor de scope-test.",
+      "trigger": {
+        "automatisch": true
+      },
+      "effecten": [
+        {
+          "zet_flag": "ch02_vlag",
+          "waarde": true
+        }
+      ]
+    },
+    {
+      "id": "ch02_blauw",
+      "type": "actie",
+      "pad": "zij",
+      "waarom": "Gebruikt een object alleen in dit hoofdstuk.",
+      "trigger": {
+        "gebruik": "kopje_blauw"
+      },
+      "effecten": [
+        {
+          "zet_flag": "ch02_vlag"
+        }
+      ]
+    },
+    {
+      "id": "ch02_klaar",
+      "type": "doel",
+      "pad": "hoofd",
+      "waarom": "Het doel van dit proefhoofdstuk.",
+      "trigger": {
+        "gebruik": "kopje_wit"
+      },
+      "hints": {
+        "vaag": "hint.ch02_klaar.vaag",
+        "richting": "hint.ch02_klaar.richting",
+        "bijna": "hint.ch02_klaar.bijna"
+      }
+    }
+  ]
+}

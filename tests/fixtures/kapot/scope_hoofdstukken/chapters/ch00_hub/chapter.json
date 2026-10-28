@@ -1,0 +1,24 @@
+{
+  "id": "ch00_hub",
+  "nummer": 0,
+  "titel": "hoofdstuk.ch00_hub.titel",
+  "start": {
+    "scene": "ch00_s1",
+    "kamer": "ch00_kamer"
+  },
+  "doel": {
+    "knoop": "ch00_klaar"
+  },
+  "scenes": [
+    {
+      "id": "ch00_s1",
+      "tijd": {
+        "dag": 2,
+        "tijd": "00:10"
+      },
+      "kamers": [
+        "ch00_kamer"
+      ]
+    }
+  ]
+}

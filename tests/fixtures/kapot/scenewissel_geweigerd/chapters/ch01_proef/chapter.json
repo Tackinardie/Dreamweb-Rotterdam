@@ -1,0 +1,165 @@
+{
+  "id": "ch01_proef",
+  "nummer": 1,
+  "titel": "hoofdstuk.ch01_proef.titel",
+  "start": {
+    "scene": "ch01_s1_nacht",
+    "kamer": "ch01_hal"
+  },
+  "doel": {
+    "knoop": "ch01_klaar"
+  },
+  "aanname_bij_start": {
+    "inventaris": [
+      {
+        "object": "bezorgtas"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "ch01_s1_nacht",
+      "tijd": {
+        "dag": 1,
+        "tijd": "00:07"
+      },
+      "kamers": [
+        "ch01_hal",
+        "ch01_kantoor",
+        "ch01_dak"
+      ],
+      "titelkaart": true,
+      "muziek": "muziek.proef.verkennen",
+      "gebeurtenissen": [
+        {
+          "id": "ch01_pauze_portier",
+          "omschrijving": "De portier loopt weg voor een pauze.",
+          "start": {
+            "als": {
+              "token": "pauze_tijd"
+            }
+          },
+          "duur_s": 20,
+          "herhaal_na_s": 60,
+          "cue_start": "wereld.proef.pauze_start",
+          "cue_einde": "wereld.proef.pauze_einde"
+        }
+      ]
+    },
+    {
+      "id": "ch01_s2_ochtend",
+      "tijd": {
+        "dag": 1,
+        "tijd": "07:30"
+      },
+      "kamers": [
+        "ch01_hal",
+        "ch01_kantoor",
+        "ch01_dak"
+      ]
+    },
+    {
+      "id": "ch01_s3_klein",
+      "tijd": {
+        "dag": 1,
+        "tijd": "08:00"
+      },
+      "kamers": [
+        "ch01_hal",
+        "ch01_dak"
+      ]
+    }
+  ],
+  "flags": [
+    {
+      "id": "ch01_rapport_gepakt",
+      "type": "bool",
+      "start": false,
+      "omschrijving": "Rapport uit het kluisje."
+    },
+    {
+      "id": "ch01_bezoeken",
+      "type": "int",
+      "start": 0,
+      "omschrijving": "Aantal keren kantoor betreden (alleen 0 of 1)."
+    },
+    {
+      "id": "ch01_laptop_open",
+      "type": "bool",
+      "start": false
+    },
+    {
+      "id": "ch01_dak_bekend",
+      "type": "bool",
+      "start": false
+    },
+    {
+      "id": "ch01_pauze_bekend",
+      "type": "bool",
+      "start": false
+    },
+    {
+      "id": "ch01_wissel_betreed",
+      "type": "bool",
+      "start": false
+    },
+    {
+      "id": "ch01_wissel_dialoog",
+      "type": "bool",
+      "start": false
+    },
+    {
+      "id": "ch01_wissel_gebruik",
+      "type": "bool",
+      "start": false
+    }
+  ],
+  "tokens": [
+    {
+      "id": "code_kluis",
+      "categorie": "code",
+      "waarde": "4127",
+      "notitie": "token.code_kluis"
+    },
+    {
+      "id": "pauze_tijd",
+      "categorie": "tijd",
+      "notitie": "token.pauze_tijd"
+    },
+    {
+      "id": "kluis_plek",
+      "categorie": "plek",
+      "notitie": "token.kluis_plek"
+    },
+    {
+      "id": "kantoorkennis",
+      "categorie": "plek",
+      "notitie": "token.kantoorkennis"
+    }
+  ],
+  "gebouwen": [
+    {
+      "id": "proef",
+      "naam": "gebouw.ch01_proef.proef.naam",
+      "niveaus": [
+        {
+          "id": "lobby",
+          "naam": "niveau.proef.lobby"
+        },
+        {
+          "id": "kantoor",
+          "naam": "niveau.proef.kantoor"
+        },
+        {
+          "id": "dak",
+          "naam": "niveau.proef.dak"
+        }
+      ]
+    }
+  ],
+  "condities": {
+    "ch01_portier_weg": {
+      "gebeurtenis": "ch01_pauze_portier"
+    }
+  }
+}

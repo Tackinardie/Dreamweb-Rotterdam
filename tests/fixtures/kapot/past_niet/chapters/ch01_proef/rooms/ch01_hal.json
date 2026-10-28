@@ -1,0 +1,149 @@
+{
+  "id": "ch01_hal",
+  "naam": "kamer.ch01_hal.naam",
+  "beschrijving": "kamer.ch01_hal.beschrijving",
+  "soort": "binnen",
+  "afmeting": {
+    "breedte": 10,
+    "hoogte": 8
+  },
+  "start_positie": {
+    "x": 5,
+    "y": 6
+  },
+  "gebouw": "proef",
+  "vloer": "tegel",
+  "galm": "middel",
+  "ambience": [
+    "ambience.proef.hal"
+  ],
+  "objecten": [
+    {
+      "object": "kast",
+      "positie": {
+        "x": 1,
+        "y": 1
+      },
+      "inhoud": [
+        {
+          "object": "jas",
+          "inhoud": [
+            {
+              "object": "portemonnee",
+              "inhoud": [
+                {
+                  "object": "pasje"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "object": "briefje"
+        }
+      ]
+    },
+    {
+      "object": "kopje_wit",
+      "positie": {
+        "x": 5,
+        "y": 3
+      }
+    },
+    {
+      "object": "doos",
+      "positie": {
+        "x": 8,
+        "y": 2
+      }
+    },
+    {
+      "object": "koffiekop",
+      "positie": {
+        "x": 4,
+        "y": 4
+      }
+    }
+  ],
+  "uitgangen": [
+    {
+      "id": "deur_kantoor",
+      "type": "deur",
+      "positie": {
+        "x": 9,
+        "y": 4
+      },
+      "naam": "uitgang.ch01_hal.deur_kantoor.naam",
+      "naar_kamer": "ch01_kantoor",
+      "naar_uitgang": "deur_hal",
+      "vereist": {
+        "een_van": [
+          {
+            "niveau": "proef.kantoor"
+          },
+          {
+            "conditie": "ch01_portier_weg"
+          }
+        ]
+      },
+      "geweigerd": "uitgang.ch01_hal.deur_kantoor.geweigerd"
+    },
+    {
+      "id": "lift_hal",
+      "type": "lift",
+      "positie": {
+        "x": 0,
+        "y": 4
+      },
+      "naam": "uitgang.ch01_hal.lift_hal.naam",
+      "bestemmingen": [
+        {
+          "naar_kamer": "ch01_kantoor",
+          "naar_uitgang": "lift_kantoor",
+          "label": "uitgang.ch01_hal.lift_hal.kantoor",
+          "vereist": {
+            "niveau": "proef.kantoor"
+          },
+          "geweigerd": "uitgang.ch01_hal.lift_hal.geweigerd"
+        },
+        {
+          "naar_kamer": "ch01_dak",
+          "naar_uitgang": "lift_dak",
+          "label": "uitgang.ch01_hal.lift_hal.dak",
+          "vereist": {
+            "token": "kantoorkennis"
+          },
+          "geweigerd": "uitgang.ch01_hal.lift_hal.geweigerd"
+        }
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "portier",
+      "personage": "portier",
+      "positie": {
+        "x": 3,
+        "y": 2
+      },
+      "aanwezig": {
+        "niet": {
+          "gebeurtenis": "ch01_pauze_portier"
+        }
+      },
+      "bekijk": "npc.ch01_hal.portier.bekijk",
+      "gesprekken": [
+        {
+          "als": {
+            "conditie": "als_bezorger"
+          },
+          "dialoog": "ch01_portier_bezorger"
+        },
+        {
+          "dialoog": "ch01_portier_praat"
+        }
+      ],
+      "geluid": "npc.proef.portier_radio"
+    }
+  ]
+}

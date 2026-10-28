@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/room.schema.json",
+  "title": "Onderstad: kamer (content/chapters/<chNN_naam>/rooms/<kamer_id>.json)",
+  "description": "Eén kamer: begin-plek van objecten (de objectboom), uitgangen met toegang, NPC's. Bestandsnaam = id. De Godot-scène volgt de conventie game/scenes/rooms/<hoofdstuk>/<id>.tscn. Zie docs/systemen/objecten-en-inventaris.md en toegang.md.",
+  "type": "object",
+  "required": ["id", "naam", "soort", "afmeting", "objecten", "uitgangen"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "$ref": "common.schema.json#/$defs/kamer_id" },
+    "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+    "beschrijving": {
+      "description": "Wat 'bekijk' op een lege plek toont.",
+      "$ref": "common.schema.json#/$defs/tekstvariant"
+    },
+    "soort": {
+      "description": "binnen/buiten bepaalt later o.a. regen en drogen; droom is voor het droomsysteem (later).",
+      "enum": ["binnen", "buiten", "droom"]
+    },
+    "afmeting": {
+      "description": "Loopgebied in tegels (richtwaarde 10x8).",
+      "type": "object",
+      "required": ["breedte", "hoogte"],
+      "properties": {
+        "breedte": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "hoogte": { "type": "integer", "minimum": 1, "maximum": 64 }
+      },
+      "additionalProperties": false
+    },
+    "start_positie": {
+      "description": "Waar de speler verschijnt zonder uitgang (hoofdstukstart, naar_kamer zonder uitgang).",
+      "$ref": "common.schema.json#/$defs/positie"
+    },
+    "gebouw": {
+      "description": "Gebouw-id uit chapter.json (gebouwen).",
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "niveau": {
+      "description": "Toegangsniveau van deze kamer, als <gebouw>.<niveau>. Informatief en voor het liftpaneel; toegang zelf staat in 'vereist' van de uitgangen.",
+      "$ref": "common.schema.json#/$defs/niveau_ref"
+    },
+    "neerleggen": {
+      "description": "Mag de speler hier objecten neerleggen? (false voor bijv. droomkamers en rijdende voertuigen.)",
+      "type": "boolean",
+      "default": true
+    },
+    "vloer": {
+      "description": "Vloermateriaal. Gereserveerd voor voetsporen en voetstap-cues (later).",
+      "enum": ["tegel", "linoleum", "tapijt", "beton", "hout", "laminaat", "klinkers", "asfalt", "grind", "metaal", "gras"]
+    },
+    "galm": {
+      "description": "Ruimteklank voor het geluidsvenster en later de mix.",
+      "enum": ["klein", "middel", "groot", "buiten"]
+    },
+    "ambience": {
+      "description": "Doorlopende cues die starten bij binnenkomst en stoppen bij vertrek.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/cue_id" }
+    },
+    "objecten": {
+      "description": "Begin-objectboom: objecten op de vloer van deze kamer, met hun inhoud.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/plaatsing" }
+    },
+    "uitgangen": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/uitgang" }
+    },
+    "npcs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/npc" }
+    },
+    "notitie": { "type": "string", "description": "Ontwerpnotitie, niet spelerszichtbaar." }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "plaatsing": {
+      "type": "object",
+      "required": ["object", "positie"],
+      "properties": {
+        "object": { "$ref": "common.schema.json#/$defs/item_id" },
+        "positie": { "$ref": "common.schema.json#/$defs/positie" },
+        "inhoud": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/inhoud" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "inhoud": {
+      "description": "Object in een container; geen positie.",
+      "type": "object",
+      "required": ["object"],
+      "properties": {
+        "object": { "$ref": "common.schema.json#/$defs/item_id" },
+        "inhoud": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/inhoud" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "doorgang": {
+      "type": "object",
+      "required": ["naar_kamer", "naar_uitgang"],
+      "properties": {
+        "naar_kamer": { "$ref": "common.schema.json#/$defs/kamer_id" },
+        "naar_uitgang": {
+          "description": "Id van de uitgang in de doelkamer waar de speler verschijnt.",
+          "$ref": "common.schema.json#/$defs/id"
+        },
+        "label": {
+          "description": "Knoptekst op het liftpaneel (alleen bij bestemmingen).",
+          "$ref": "common.schema.json#/$defs/tekstsleutel"
+        },
+        "vereist": { "$ref": "common.schema.json#/$defs/conditie" },
+        "geweigerd": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "naar_scene": {
+          "description": "Deze doorgang kost tijd: de klok springt naar deze scène.",
+          "$ref": "common.schema.json#/$defs/scene_id"
+        }
+      },
+      "additionalProperties": false
+    },
+    "uitgang": {
+      "description": "Een kant van een deur, trap, lift, poort, hek of slagboom. Heeft óf naar_kamer/naar_uitgang óf bestemmingen (lift).",
+      "type": "object",
+      "required": ["id", "type", "positie"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "type": { "enum": ["deur", "doorgang", "trap", "lift", "poort", "hek", "slagboom", "raam", "luik"] },
+        "positie": { "$ref": "common.schema.json#/$defs/positie" },
+        "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "beschrijving": { "$ref": "common.schema.json#/$defs/tekstvariant" },
+        "naar_kamer": { "$ref": "common.schema.json#/$defs/kamer_id" },
+        "naar_uitgang": { "$ref": "common.schema.json#/$defs/id" },
+        "vereist": {
+          "description": "Toegangsregel voor doorgaan vanaf deze kant. Afwezig = vrij.",
+          "$ref": "common.schema.json#/$defs/conditie"
+        },
+        "geweigerd": {
+          "description": "Mompel of beschrijving als vereist niet klopt.",
+          "$ref": "common.schema.json#/$defs/tekstvariant"
+        },
+        "naar_scene": {
+          "description": "Doorgaan kost tijd: de klok springt naar deze scène.",
+          "$ref": "common.schema.json#/$defs/scene_id"
+        },
+        "bestemmingen": {
+          "description": "Alleen voor lift: knoppen op het paneel.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/doorgang" }
+        },
+        "geluid": {
+          "type": "object",
+          "properties": {
+            "open": { "$ref": "common.schema.json#/$defs/cue_id" },
+            "geweigerd": { "$ref": "common.schema.json#/$defs/cue_id" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        { "required": ["naar_kamer", "naar_uitgang"], "not": { "required": ["bestemmingen"] } },
+        { "required": ["bestemmingen"], "properties": { "type": { "const": "lift" } }, "not": { "anyOf": [ { "required": ["naar_kamer"] }, { "required": ["naar_uitgang"] } ] } }
+      ]
+    },
+    "npc": {
+      "type": "object",
+      "required": ["id", "personage", "positie"],
+      "properties": {
+        "id": {
+          "description": "Uniek binnen de kamer.",
+          "$ref": "common.schema.json#/$defs/id"
+        },
+        "personage": { "$ref": "common.schema.json#/$defs/personage_id" },
+        "positie": { "$ref": "common.schema.json#/$defs/positie" },
+        "aanwezig": {
+          "description": "Wanneer de NPC hier is (bijv. niet tijdens een pauze-gebeurtenis). Afwezig = altijd.",
+          "$ref": "common.schema.json#/$defs/conditie"
+        },
+        "bekijk": { "$ref": "common.schema.json#/$defs/tekstvariant" },
+        "gesprekken": {
+          "description": "Eerste gesprek waarvan 'als' klopt start bij aanklikken.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["dialoog"],
+            "properties": {
+              "als": { "$ref": "common.schema.json#/$defs/conditie" },
+              "dialoog": { "$ref": "common.schema.json#/$defs/dialoog_id" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "geluid": {
+          "description": "Doorlopende cue van deze NPC zolang hij aanwezig is (bijv. radio, hoesten).",
+          "$ref": "common.schema.json#/$defs/cue_id"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

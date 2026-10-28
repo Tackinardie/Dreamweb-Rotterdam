@@ -3,3 +3,4 @@ export/
 __pycache__/
 *.blend1
 .DS_Store
+.pytest_cache/

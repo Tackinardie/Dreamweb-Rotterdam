@@ -1,3 +1,139 @@
 {
-  "cues": []
+  "cues": [
+    {
+      "id": "object.pak",
+      "beschrijving": "Een voorwerp wordt opgepakt, kort geritsel van hand en materiaal",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "object in de wereld dat Richard pakt",
+      "prioriteit": "hoog",
+      "status": "verwacht"
+    },
+    {
+      "id": "object.leg",
+      "beschrijving": "Een voorwerp wordt neergelegd op een oppervlak, zachte tik",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "object dat Richard neerlegt",
+      "prioriteit": "hoog",
+      "status": "verwacht"
+    },
+    {
+      "id": "object.in_container",
+      "beschrijving": "Een voorwerp verdwijnt met een gedempte klank in een tas, lade of doos",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "container waar het object in gaat",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "object.lees",
+      "beschrijving": "Papier wordt opgepakt en omgeslagen, zacht geritsel",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "papier of brief in Richards handen",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "container.open",
+      "beschrijving": "Een lade, kast of doos gaat open, korte schuif- of klepklank",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "kasten, laden en dozen in de kamer",
+      "prioriteit": "hoog",
+      "status": "verwacht"
+    },
+    {
+      "id": "deur.open",
+      "beschrijving": "Een deur gaat open en Richard stapt erdoor, klink en scharnier",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "deuren en doorgangen tussen kamers",
+      "prioriteit": "hoog",
+      "status": "verwacht"
+    },
+    {
+      "id": "deur.geweigerd",
+      "beschrijving": "Een dichte of vergrendelde deur geeft niet mee, rammelende klink",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "vergrendelde deuren en doorgangen",
+      "prioriteit": "hoog",
+      "status": "verwacht"
+    },
+    {
+      "id": "lift.rit",
+      "beschrijving": "Liftrit: motor zoemt, kabel loopt, bel en schuivende deuren bij aankomst",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "lift in woongebouwen en torens",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "lift.geweigerd",
+      "beschrijving": "Liftknop reageert niet, droog klikje zonder motor",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "liftknoppenpaneel",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.weiger",
+      "beschrijving": "Korte dofe klik: de sleepactie kan niet",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.highlight",
+      "beschrijving": "Zachte lichte tik als interactieve objecten oplichten",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "laag",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.notitie.nieuw",
+      "beschrijving": "Pen krast kort op papier: een nieuw token in het notitieboek",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.klok.vooruit",
+      "beschrijving": "Korte tikkende versnelling: de klok springt vooruit",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.klok.terug",
+      "beschrijving": "Korte tikkende vertraging, omgekeerd: de klok loopt terug",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.opslaan",
+      "beschrijving": "Zacht bevestigend tikje: er is opgeslagen",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "laag",
+      "status": "verwacht"
+    }
+  ]
 }

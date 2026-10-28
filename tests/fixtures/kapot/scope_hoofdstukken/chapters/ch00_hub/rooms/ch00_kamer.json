@@ -1,0 +1,11 @@
+{
+  "id": "ch00_kamer",
+  "naam": "kamer.ch00_kamer.naam",
+  "soort": "binnen",
+  "afmeting": {
+    "breedte": 4,
+    "hoogte": 4
+  },
+  "objecten": [],
+  "uitgangen": []
+}

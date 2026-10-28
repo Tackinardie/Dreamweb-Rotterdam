@@ -1,0 +1,23 @@
+{
+  "id": "ch01_portier_praat",
+  "deelnemers": ["portier"],
+  "start": [
+    { "als": { "token": "pauze_tijd" }, "regel": "r_terug" },
+    { "regel": "r_opening" }
+  ],
+  "regels": [
+    {
+      "id": "r_opening", "spreker": "portier", "tekst": "dlg.ch01_portier_praat.r_opening",
+      "keuzes": [
+        { "id": "k_vraag_pauze", "tekst": "dlg.ch01_portier_praat.r_opening.k_vraag_pauze", "eenmalig": true, "volgende": "r_pauze" },
+        { "id": "k_vraag_kantoor", "tekst": "dlg.ch01_portier_praat.r_opening.k_vraag_kantoor",
+          "als": { "token": "kantoorkennis" }, "volgende": "r_kantoor" },
+        { "id": "k_dag", "tekst": "dlg.ch01_portier_praat.r_opening.k_dag" }
+      ]
+    },
+    { "id": "r_pauze", "spreker": "portier", "tekst": "dlg.ch01_portier_praat.r_pauze", "volgende": "r_einde" },
+    { "id": "r_kantoor", "spreker": "portier", "tekst": "dlg.ch01_portier_praat.r_kantoor", "einde": true },
+    { "id": "r_terug", "spreker": "portier", "tekst": "dlg.ch01_portier_praat.r_terug", "einde": true },
+    { "id": "r_einde", "spreker": "portier", "tekst": "dlg.ch01_portier_praat.r_einde", "einde": true }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "ch02_extra",
+  "nummer": 2,
+  "titel": "hoofdstuk.ch02_extra.titel",
+  "start": {
+    "scene": "ch02_s1",
+    "kamer": "ch02_kamer"
+  },
+  "doel": {
+    "knoop": "ch02_klaar"
+  },
+  "scenes": [
+    {
+      "id": "ch02_s1",
+      "tijd": {
+        "dag": 2,
+        "tijd": "00:10"
+      },
+      "kamers": [
+        "ch02_kamer"
+      ]
+    }
+  ],
+  "flags": [
+    {
+      "id": "ch02_vlag",
+      "type": "bool",
+      "start": false
+    }
+  ]
+}

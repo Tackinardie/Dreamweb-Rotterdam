@@ -1,0 +1,87 @@
+{
+  "id": "ch01_kantoor",
+  "naam": "kamer.ch01_kantoor.naam",
+  "beschrijving": "kamer.ch01_kantoor.beschrijving",
+  "soort": "binnen",
+  "afmeting": {
+    "breedte": 8,
+    "hoogte": 6
+  },
+  "start_positie": {
+    "x": 1,
+    "y": 3
+  },
+  "gebouw": "proef",
+  "niveau": "proef.kantoor",
+  "vloer": "linoleum",
+  "galm": "klein",
+  "objecten": [
+    {
+      "object": "kluisje",
+      "positie": {
+        "x": 6,
+        "y": 1
+      },
+      "inhoud": [
+        {
+          "object": "pakket"
+        },
+        {
+          "object": "rapport"
+        }
+      ]
+    },
+    {
+      "object": "laptop",
+      "positie": {
+        "x": 4,
+        "y": 1
+      }
+    },
+    {
+      "object": "prullenbak",
+      "positie": {
+        "x": 6,
+        "y": 4
+      }
+    }
+  ],
+  "uitgangen": [
+    {
+      "id": "deur_hal",
+      "type": "deur",
+      "positie": {
+        "x": 0,
+        "y": 3
+      },
+      "naam": "uitgang.ch01_kantoor.deur_hal.naam",
+      "naar_kamer": "ch01_hal",
+      "naar_uitgang": "deur_kantoor"
+    },
+    {
+      "id": "lift_kantoor",
+      "type": "lift",
+      "positie": {
+        "x": 7,
+        "y": 3
+      },
+      "naam": "uitgang.ch01_kantoor.lift_kantoor.naam",
+      "bestemmingen": [
+        {
+          "naar_kamer": "ch01_hal",
+          "naar_uitgang": "lift_hal",
+          "label": "uitgang.ch01_kantoor.lift_kantoor.hal"
+        },
+        {
+          "naar_kamer": "ch01_dak",
+          "naar_uitgang": "lift_dak",
+          "label": "uitgang.ch01_kantoor.lift_kantoor.dak",
+          "vereist": {
+            "token": "kantoorkennis"
+          },
+          "geweigerd": "uitgang.ch01_hal.lift_hal.geweigerd"
+        }
+      ]
+    }
+  ]
+}

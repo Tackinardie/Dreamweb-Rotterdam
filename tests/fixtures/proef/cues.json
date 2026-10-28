@@ -1,0 +1,197 @@
+{
+  "cues": [
+    {
+      "id": "object.pak",
+      "beschrijving": "Object wordt opgepakt",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "object in de hand",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "object.leg",
+      "beschrijving": "Object wordt neergelegd",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "object op de vloer",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "object.in_container",
+      "beschrijving": "Object gaat in een container",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "object in container",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "object.lees",
+      "beschrijving": "Papier wordt geopend",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "papier",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "container.open",
+      "beschrijving": "Container gaat open",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "kast of kluisje",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "deur.open",
+      "beschrijving": "Deur gaat open",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "binnendeur",
+      "prioriteit": "midden",
+      "status": "placeholder",
+      "bestand": "proef/deur_open.ogg"
+    },
+    {
+      "id": "deur.geweigerd",
+      "beschrijving": "Deur blijft dicht en rammelt",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "binnendeur",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "lift.rit",
+      "beschrijving": "Liftrit met deuren",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "lift",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "lift.geweigerd",
+      "beschrijving": "Liftknop doet niets",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "liftpaneel",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.weiger",
+      "beschrijving": "Korte weigering",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.highlight",
+      "beschrijving": "Randlicht aan",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.notitie.nieuw",
+      "beschrijving": "Nieuw token in het notitieboek",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.klok.vooruit",
+      "beschrijving": "Klok springt vooruit",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.klok.terug",
+      "beschrijving": "Klok loopt terug",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "ui.opslaan",
+      "beschrijving": "Autosave geschreven",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "systeem/interface",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "voetstap.tegel",
+      "beschrijving": "Voetstap op tegel",
+      "laag": "voetstap",
+      "soort": "eenmalig",
+      "bron": "schoenen op tegel",
+      "prioriteit": "midden",
+      "status": "verwacht",
+      "context": [
+        "nat"
+      ]
+    },
+    {
+      "id": "ambience.proef.hal",
+      "beschrijving": "Lage brom van een hal",
+      "laag": "ambience",
+      "soort": "doorlopend",
+      "bron": "ventilatie",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "muziek.proef.verkennen",
+      "beschrijving": "Zachte drone",
+      "laag": "muziek",
+      "soort": "doorlopend",
+      "bron": "systeem/muziek",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "npc.proef.portier_radio",
+      "beschrijving": "Radio zacht aan",
+      "laag": "effect",
+      "soort": "doorlopend",
+      "bron": "radio portier",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "wereld.proef.pauze_start",
+      "beschrijving": "Stoel schuift, portier staat op",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "stoel portier",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    },
+    {
+      "id": "wereld.proef.pauze_einde",
+      "beschrijving": "Portier komt terug",
+      "laag": "effect",
+      "soort": "eenmalig",
+      "bron": "portier",
+      "prioriteit": "midden",
+      "status": "verwacht"
+    }
+  ]
+}
