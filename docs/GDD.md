@@ -12,7 +12,7 @@
 | --- | --- |
 | Werktitel | Onderstad |
 | Genre | Narratieve adventure, top-down, puzzels |
-| Perspectief | Top-down pixelart met moderne belichting |
+| Perspectief | Low-poly 3D met vlakke kleuren en sterk realtime licht; vaste schuine camera van bovenaf |
 | Setting | Rotterdam, nu; plus een droomwereld: het vooroorlogse Rotterdam |
 | Speelduur | 4 à 6 uur (7 hoofdstukken + hub) |
 | Engine | Godot 4 |
@@ -312,7 +312,7 @@ Apparaten werken echt. Je zet ze aan en uit, ze doen wat ze in het echt doen, en
 
 **Apparaatmodel** (data per apparaat)
 
-- *Toestanden*: uit, standby, aan, bezig, kapot. Elke toestand heeft een eigen sprite, licht, audio-cue en beschrijving.
+- *Toestanden*: uit, standby, aan, bezig, kapot. Elke toestand heeft een eigen materiaal of model, licht, audio-cue en beschrijving.
 - *Bediening*: schakelaar, draaiknop of dimmer, drukknop, afstandsbediening, of via een app op een telefoon (smart home).
 - *Stroom*: aangesloten op een stroomgroep per kamer of verdieping. Een meterkast of hoofdschakelaar kan een hele groep uitzetten.
 - *Proces*: wat het apparaat doet, hoe lang het duurt en wat het oplevert.
@@ -439,27 +439,49 @@ De interface is minimaal: het speelveld vult het scherm, alles anders schuift in
 
 ## Art direction en audio
 
-De look is pixelart in lage resolutie met moderne belichting; de sound is trage synth die bij geweld omslaat in vervormde gabber.
+De look is low-poly 3D met vlakke kleuren (geen texturen) en sterk realtime licht, gezien door een vaste schuine camera van bovenaf: aantrekkelijk zonder complex te ogen. De sound is trage synth die bij geweld omslaat in vervormde gabber. Maatstaf is de stijltest in `proto/stijltest/`; details staan in `docs/stijlgids.md`.
 
 **Visueel**
 
-- Resolutie: 640×360 intern, pixel-perfect opgeschaald naar 1080p (×3) en 1440p (×4).
-- Tiles 16×16; personages ongeveer 16×32, top-down met lichte schuinte (3/4) voor leesbaarheid.
+- Engine: Godot 4 in 3D, renderer Forward+.
+- Camera: vast per kamer, schuin van boven (circa 38° omlaag, 20–35° gedraaid om de verticale as), perspectief met smalle FOV (15–20°) zodat het bijna orthografisch oogt. Alleen buitenruimtes die groter zijn dan het eiland schuiven traag mee met Richard, met dezelfde hoek.
+- Resolutie: native 1080p en 1440p, geen lage interne resolutie. De lichte kwaliteitsstand mag de render scale verlagen.
+- Schaal: 1 unit = 1 m. Een tile is een vak van 1×1 m in de content (looproutes, collision, plaatsing). Personages zijn circa 1,80 m en altijd minstens 80 px hoog op 1080p.
+- Vormtaal: eenvoudige low-poly vormen in vlakke kleuren uit het palet; geen foto's, geen fotomaterialen. Detail komt uit vorm, licht en reflectie.
 - Palet bovenstad: koud blauw en natriumoranje, neon-accenten (magenta, cyaan). Palet onderstad: sepia/grijs met één rode kleur.
-- Licht: Godot 2D-lights en normal maps voor natte reflecties; regen als vaste particle-laag; de Erasmusbrug als lichtlijn in de verte waar het past.
+- Licht: realtime Godot 3D-lichten met schaduw; glow alleen op lichtbronnen; nat via lage roughness, reflectieprobes en SSR; lichtkegels via lokale mist; regen als particle-laag; de Erasmusbrug als lichtlijn in de verte waar het past.
 - Herkenbaarheid: elke locatie heeft 1 icoon-element (Markthal-boog, Katendrechtse pakhuizen, containerkranen, terminalgebouw).
+
+**Prestaties: twee kwaliteitsstanden**
+
+Het spel moet ook op een gewone laptop draaien. De stijltest haalde 170 fps alleen op een RTX 4080; dat is geen maat. Elk beeld moet in de lichte stand nog werken: de sfeer mag niet afhangen van SSR of volumetrische mist.
+
+| | Volle stand | Lichte stand |
+| --- | --- | --- |
+| Doel | 60 fps op 1080p, middenklasse-gpu (GTX 1660, RTX 3050 laptop) | Minstens 30 fps op 1080p, laptop met geïntegreerde gpu (Iris Xe, Radeon 680M) |
+| Render scale en anti-aliasing | 1,0 met MSAA 4× | 0,75 met FSR, FXAA |
+| Volumetrische mist | Aan, plus een lokaal mistvolume per lantaarn | Uit; lichtkegels als goedkope additieve mesh |
+| SSR | Aan | Uit; reflectieprobes en reflectiestrepen dragen het nat |
+| SSAO | Aan | Uit |
+| Glow | Aan | Aan |
+| Lichten met schaduw in beeld | Hooguit 6 | Hooguit 3 (de rest zonder schaduw) |
+| Regendeeltjes | Circa 6000 | Circa 2000 |
+
+- Budget per scène, beide standen: hooguit 300 losse meshes (kleine dingen samenvoegen), hooguit 16 lichten in beeld, hooguit 6 levende lichtbronnen per kamer.
+- Bij de eerste start meet de game kort en kiest een stand; wisselen kan in het menu.
+- QA meet per kamer de fps in beide standen op een vaste referentielaptop.
 
 **Kadrering en detail: beklemmend én rijk**
 
 Beklemming komt uit de kadrering, niet uit weinig detail. Een kleine kamer die vol staat voelt benauwder dan een lege.
 
-1. **Klein verlicht eiland in een donker kader.** Een kamer is klein (richtwaarde 10×8 tiles) en vult nooit het hele scherm. Daaromheen: duisternis en vignet. Het DreamWeb-venster, maar als bewuste regie.
-2. **Drie lagen detail.** Kamerbeeld (sfeer, licht, silhouetten, dicht gevuld); vergrootglas bij hover (object scherper en groter); close-up panelen in hoge resolutie op sleutelmomenten (handwerk, sluit aan op de Regiestijl). De speler kiest hoe diep hij kijkt.
-3. **Licht bepaalt waar detail zit.** Lichtplassen van natriumlampen, schermen en neon tonen alles; de rest zakt weg in schaduw.
-4. **Voorgrond knijpt het beeld af.** Dakranden, leidingen, gordijnen en stellingen hangen over de rand: je kijkt ergens doorheen.
-5. **Leesbaarheid gaat voor.** Decor is iets ontzadigd; interactieve objecten krijgen subtiel randlicht; de spatiebalk toont alles wat interactief is.
+1. **Klein verlicht eiland in een donker kader.** Een kamer is klein (richtwaarde 4×5 tot 10×8 m) en beslaat hooguit 60 % van de beeldbreedte en 70 % van de hoogte. Daaromheen: duisternis en vignet. Wat buiten het eiland ligt, wordt niet gemodelleerd of valt weg onder 5 % helderheid; voorwanden zijn weggesneden tot een lage donkere rand. Het DreamWeb-venster, maar als bewuste regie.
+2. **Drie lagen detail.** Kamerbeeld (sfeer, licht, silhouetten, dicht gevuld); vergrootglas bij hover (een tweede camera toont het object groter, in hetzelfde licht); close-up panelen op sleutelmomenten (handwerk, sluit aan op de Regiestijl). De speler kiest hoe diep hij kijkt.
+3. **Licht bepaalt waar detail zit.** Lichtplassen van natriumlampen, schermen en neon tonen alles; de rest zakt weg in schaduw. Kleine objecten en afgeschuinde randen staan alleen in het licht; in de schaduw grote, eenvoudige vormen.
+4. **Voorgrond knijpt het beeld af.** Dakranden, leidingen, gordijnen en stellingen staan als echte geometrie tussen camera en kamer, als donker silhouet: je kijkt ergens doorheen.
+5. **Leesbaarheid gaat voor.** Decor is iets ontzadigd; interactieve objecten krijgen een subtiele contour in het highlight-wit; de spatiebalk toont alles wat interactief is. Geen interactief object en geen looproute in een zone die donkerder is dan 15 % helderheid.
 6. **Ritme: benauwd tegenover leeg.** Elk hoofdstuk heeft waar mogelijk één open, lege ruimte als contrast (containerterrein, platform, uitzicht op de Erasmusbrug). Na de krappe kamers voelt die eenzaam, niet bevrijdend.
-7. **Detail uit kits.** Per locatie één set rommel in Blender (studentenkamer, bouwplaats, ziekenhuis, haven); de asset-pipeline verspreidt en rendert die per kamer.
+7. **Detail uit kits.** Per locatie één kit met low-poly rommel (studentenkamer, bouwplaats, ziekenhuis, haven); de asset-pipeline plaatst die per kamer.
 
 **Rotterdam zichtbaar maken, van bovenaf**
 
@@ -469,7 +491,7 @@ Van bovenaf zie je vooral vloeren, bedden, tafels en daken, en weinig gevels. Da
 
 - **Logisch voor eigenaar en plek**: elk Rotterdam-element past bij wie daar woont of werkt. Een student heeft andere dingen dan een projectontwikkelaar; een ziekenhuisgang heeft er bijna niets.
 - **Een tot drie per kamer**: genoeg om het te voelen, nooit een toeristenwinkel.
-- **Op horizontale vlakken**: vloerkleden, dekbedden, tafels, bureaus, aanrechten, daken en straten. Op muren alleen aan de bovenrand van de 3/4-weergave.
+- **Op horizontale vlakken**: vloerkleden, dekbedden, tafels, bureaus, aanrechten, daken en straten. Op muren alleen op de wanden die de camera ziet.
 - **Herkenbaar aan kleur en vorm**: rood-wit (de club), groen-wit-groen (de stadsvlag), de zwaan-vorm van de Erasmusbrug, de boog van de Markthal, havenkranen, de kubuswoningen.
 - **Echte merken en clubs**: herkenbaar via kleuren en vormen, zonder echte logo's, tenzij er een licentie is (zie Open vragen).
 
@@ -513,17 +535,17 @@ De game speelt in de eerste week van januari. Kerst is net voorbij, en dat zie j
 | Delfshaven | Lichtjes in de oude huizen langs het water |
 | Vliegveld | Een boom in de vertrekhal; op de zevende ochtend weg |
 
-**Texturen en vloeren: rijk en nooit eentonig**
+**Vloeren en oppervlakken: rijk en nooit eentonig**
 
-Vloeren vullen het grootste deel van elk beeld, dus herhaling valt daar het eerst op.
+Vloeren vullen het grootste deel van elk beeld, dus herhaling en eentonige vlakken vallen daar het eerst op. Zonder texturen komt variatie uit geometrie, tinten, roughness en decals.
 
-1. **Elke vloer is uniek.** De vloer van elke kamer wordt als één beeld uit Blender gerenderd, niet als herhaalde tegel. Het tile-grid dient alleen voor looproutes en collision. Alleen grote open ruimtes gebruiken tiles, met 6 à 8 varianten per materiaal die willekeurig en nooit twee keer naast elkaar liggen.
-2. **Echte materialen als bron.** CC0-materialen (Poly Haven, ambientCG) als basis, gekozen op wat de locatie-onderzoeker ter plekke vindt: klinkers in keperverband, stoeptegels 30×30, ziekenhuislinoleum, laminaat, de steen van de Markthal, havenbeton met roosters, tapijt op het vliegveld. Daarna kwantiseren naar het palet.
-3. **Slijtage die vertelt.** Looppaden zijn meer uitgesleten, randen en hoeken vuiler, onder verschoven meubels zit verkleuring.
-4. **Decal-laag.** Vlekken, scheuren, kauwgom, peuken, tape-markeringen, bladeren, vuurwerkresten; deels willekeurig, deels bewust als aanwijzing.
-5. **Nat en licht.** Buitenvloeren krijgen een natlaag met plassen die neon en straatlicht weerspiegelen; normal maps laten de vloer onder elke lichtplas anders ogen. Binnen tonen vloeren de voetsporen van het vochtsysteem (zie Systemen).
-6. **Palet-discipline.** Per materiaal een vaste ladder van 3 à 5 tinten, beperkte dithering, geen fotoruis. Vloeren onder sleutelmomenten worden met de hand bijgewerkt.
-7. **Herhalingstest.** De art-director zoomt per kamer uit en zoekt naar patronen; een script controleert tile-varianten in grote ruimtes.
+1. **Elke vloer is uniek.** De vloer van elke kamer is eigen geometrie (planken, tegels, klinkers als vlakken) met 2 à 4 tinten uit de materiaalladder, per vlak gekleurd. Grote open ruimtes krijgen hun variatie uit een gedeelde vloer-shader met ruis in wereldcoördinaten, afgerond naar de ladder; nooit een zichtbaar herhalend patroon.
+2. **Echte patronen als bron.** De locatie-onderzoeker levert patroon en maat (klinkers in keperverband, stoeptegels 30×30, ziekenhuislinoleum, laminaat, de steen van de Markthal, havenbeton met roosters, tapijt op het vliegveld). We modelleren het patroon, niet de foto.
+3. **Slijtage die vertelt.** Looppaden zijn een tint anders en glanzen iets meer, randen en hoeken zijn donkerder, onder verschoven meubels zit verkleuring.
+4. **Decal-laag.** Godot-decals met alleen een vormmasker (geen foto), kleur uit het palet: vlekken, scheuren, kauwgom, peuken, tape-markeringen, bladeren, naalden, vuurwerkresten; deels willekeurig, deels bewust als aanwijzing.
+5. **Nat en licht.** Buiten is alles nat: asfalt en klinkers met lage roughness, plassen als donkere vlakken die bijna spiegelen en alleen licht tonen als er licht in valt (reflectieprobes, SSR, reflectiestreep per lichtbron, regenringen). Elke lichtbron buiten heeft een zichtbare reflectie, ook in de lichte stand. Binnen tonen vloeren de natte voetsporen van het vochtsysteem als glanzende decals (zie Systemen).
+6. **Palet-discipline.** Albedo alleen uit het palet, per materiaal een vaste ladder van 3 à 5 tinten, geen fotoruis. Alle verdere kleur komt uit licht. Vloeren onder sleutelmomenten worden met de hand bijgewerkt.
+7. **Herhalingstest.** De art-director bekijkt per kamer een 1080p-screenshot, uitgezoomd, en zoekt naar patronen, strepen en eentonige vlakken.
 
 **Levende lichtbronnen: schermen die echt lijken**
 
@@ -597,16 +619,21 @@ In de eerste iteraties wordt nog geen geluid gemaakt. Wel roept de game overal w
 - **Logboek**: elke speelsessie schrijft alle aangeroepen cues weg. Daaruit volgt automatisch de geluidsbacklog: welke cues het vaakst klinken, gaan het eerst.
 - **Stap voor stap toevoegen**: per latere iteratie een blok cues (eerst voetstappen en regen, dan ambiences per locatie, dan muziek). Een cue gaat van *verwacht* naar *klaar* zodra het bestand bestaat en de audiocheck groen is.
 
-**Productie: Blender als bron voor pixelart**
+**Productie: low-poly 3D voor Godot**
 
-Kamers, objecten en personages worden low-poly gemodelleerd in Blender en top-down in lage resolutie gerenderd. Dat geeft consistente perspectief, echte belichting en snelle varianten. Handwerk volgt alleen waar het telt.
+Kamers, objecten en personages zijn low-poly 3D-modellen die in Godot realtime worden belicht. Er wordt niets vooraf gerenderd. Dat geeft consistent perspectief, echt licht en snelle varianten. Handwerk volgt alleen waar het telt.
 
-1. **Modelleren**: low-poly, vaste schaal (1 Blender-unit = 1 tile van 16 px), materialen met vlakke kleuren uit het palet.
-2. **Camera en licht**: één vaste orthografische camera (3/4 top-down) en een vaste lichtopstelling per locatie (natriumlicht, neon, maan).
-3. **Renderen**: per object of tile op doelresolutie, zonder anti-aliasing; plus een normal map voor Godot-belichting.
-4. **Kwantiseren**: een script dwingt het palet af en zet de transparantie strak.
-5. **Importeren**: renders gaan automatisch naar `game/assets/` met de object-id als bestandsnaam.
-6. **Handwerk**: hoofdpersoon, sleutelobjecten en de herkenbare Rotterdam-elementen worden met de hand bijgewerkt, door jou of een pixelartist.
+| Stap | Wat |
+| --- | --- |
+| 1. Modelleren | In Blender (bronnen in `art/blender/`) of, voor eenvoudige vormen, met Godot-primitieven in een scène. Low-poly volgens het budget in de stijlgids. Schaal 1 unit = 1 m, oorsprong op de grond in het midden (voetpunt), naam = object-id. |
+| 2. Materialen | Vlakke kleur uit het palet, geen texturen. Gedeelde materialen per paletkleur en oppervlak (droog, nat, metaal, glas, emissief) in `game/assets/materialen/`; modellen verwijzen ernaar in plaats van eigen materialen te maken. Uitzonderingen: decal-maskers en beeldvlakken (affiche, scherm, kaart, bord) als kleine vlakke afbeelding in het palet. |
+| 3. Exporteren | glTF 2.0 (`.glb`) naar `game/assets/<locatie>/`; bij import vervangt Godot de materialen door de paletmaterialen. Collision en navigatie worden in Godot gemaakt. |
+| 4. Belichten | Alleen in Godot, nooit in Blender. Per locatie een lichtpreset en per scènetijd een omgevingsinstelling (ambient, mist, glow); per kamer de lampen als nodes. |
+| 5. Kits | Per locatie een kit met losse objecten als Godot-scènes; de asset-pipeline plaatst ze per kamer volgens de levelbrief en voegt kleine statische dingen samen. |
+| 6. Raster en decals | Het tile-grid (vakken van 1×1 m) blijft voor looproutes, collision en plaatsing in de content; de navigatiemesh wordt eruit gebakken. Objecten mogen binnen een vak vrij staan. De decal-laag ligt los op de geometrie. |
+| 7. Personages | Eén basismodel met skelet; kleding per slot als losse mesh op hetzelfde skelet, gedeelde animaties, zodat elke combinatie werkt. |
+| 8. Controleren | Per kamer een screenshot op 1080p in beide kwaliteitsstanden (script zoals in de stijltest) voor de art-review. |
+| 9. Handwerk | Hoofdpersoon, sleutelobjecten, de herkenbare Rotterdam-elementen en de close-up panelen worden met de hand gemaakt of bijgewerkt, door jou of een 3D-artist of illustrator. |
 
 Placeholders blijven eerst toegestaan: een hoofdstuk mag speelbaar zijn met grijze blokken, zolang licht, regen en audio de sfeer al dragen.
 
@@ -621,7 +648,7 @@ onderstad/
   .claude/agents/        # agent-definities (zie Agent-specificaties)
   docs/                  # GDD, levelbriefs, stijlgids, lore-bijbel, personages/, locaties/, systemen/, art-briefs/, waarheid.md
   audio/                 # veldopnames, synthese-scripts, licenties.md
-  art/blender/           # .blend-bronbestanden, camera/licht-presets, renderscripts
+  art/blender/           # .blend-bronbestanden en exportscripts (glTF naar game/assets/)
   game/                  # Godot-project
     systems/             # objecten, toegang, state, dialoog, telefoon
     scenes/rooms/        # kamers per locatie (.tscn)
@@ -895,7 +922,7 @@ model: sonnet
 Je bent de engineer van Onderstad (Godot 4, GDScript, statische types).
 - Bouw alleen volgens de specificaties in docs/systemen/; ontbreekt er een, meld dat aan de producer voor de systems-designer.
 - Systemen zijn data-gedreven: content komt uit content/*.json, nooit hardcoded in scenes.
-- Kernsystemen: objecten met containers, toegang, state/flags, telefoon/apparaten, dialoog, droomovergang, hints, opslaan, voetsporen en vocht (afdruklaag per kamer met vervagende shader), levende lichtbronnen (Light2D gestuurd door lichtprofielen), ramen en buitenwereld (gebeurtenissen gestuurd door raamgegevens, tijd en weer), audio-cues met het geluidsvenster (F2), elektrische apparaten (toestanden, dimmers, stroomgroepen, processen), kleding en uitrusting (slots, rollen, gelaagde personage-sprites), metroreizen (kaart, perron, rit, dienstregeling).
+- Kernsystemen: objecten met containers, toegang, state/flags, telefoon/apparaten, dialoog, droomovergang, hints, opslaan, voetsporen en vocht (afdruklaag per kamer met vervagende shader), levende lichtbronnen (Light3D gestuurd door lichtprofielen), ramen en buitenwereld (gebeurtenissen gestuurd door raamgegevens, tijd en weer), audio-cues met het geluidsvenster (F2), elektrische apparaten (toestanden, dimmers, stroomgroepen, processen), kleding en uitrusting (slots, rollen, gelaagde personagemodellen), metroreizen (kaart, perron, rit, dienstregeling).
 - Schrijf voor elke wijziging GUT-tests in tests/ en draai ze headless: `godot --headless -s addons/gut/gut_cmdln.gd`.
 - Houd scripts klein (< 300 regels), signalen boven directe koppeling, geen globale state behalve de autoloads GameState en Content.
 - Lever: wat gewijzigd is, testresultaat, open punten.
@@ -904,18 +931,17 @@ Je bent de engineer van Onderstad (Godot 4, GDScript, statische types).
 ```markdown
 ---
 name: asset-pipeline
-description: Produceert de art van Onderstad via Blender-renders en placeholders, en zet assets in Godot. Gebruik wanneer een hoofdstuk nieuwe objecten, tiles of personages nodig heeft, of na feedback van de art-director.
+description: Produceert de 3D-art van Onderstad (low-poly modellen met vlakke kleuren) via Blender en Godot, met placeholders, en zet assets in Godot. Gebruik wanneer een hoofdstuk nieuwe objecten, tiles of personages nodig heeft, of na feedback van de art-director.
 tools: Read, Grep, Glob, Edit, Write, Bash
 model: sonnet
 ---
 Je produceert de assets van Onderstad volgens docs/stijlgids.md en de briefs in docs/art-briefs/.
-- Blender-pipeline: low-poly modellen in art/blender/, vaste orthografische 3/4-camera en lichtpresets per locatie, render op doelresolutie zonder anti-aliasing, plus normal map. Script alles in Python (`blender -b <bestand> -P art/blender/render.py`).
-- Bouw per locatie een kit met rommel (losse low-poly objecten) en verspreid die per kamer volgens de levelbrief; detail komt uit kits, niet uit los handwerk. Interne resolutie is 640x360.
-- Vloeren: render de vloer van elke kamer als één uniek beeld met slijtage langs looppaden en randen, op basis van CC0-materialen (Poly Haven, ambientCG) die passen bij het locatiedossier. Lever per vloermateriaal ook de voetafdruk-sprites (nat en vuil) en een set decals.
-- Kwantiseer elke render naar het palet en zet transparantie strak (tools/quantize.py).
-- Formaten: tiles 16x16, personages 16x32, PNG; bestandsnaam = object-id; output in game/assets/.
-- Kleding: render het personage in lagen per slot (hoofd, bovenkleding, over-laag, handen, voeten, gedragen) met dezelfde animaties, zodat elke combinatie werkt; plus een losse sprite per kledingstuk als object.
-- Apparaten: lever een sprite per toestand (uit, standby, aan, bezig, kapot), plus de lichtbron en kleine animaties (lampje, damp, scherm).
+- Stijl: low-poly 3D met vlakke kleuren uit het palet, geen texturen; de sfeer komt uit het licht in Godot. Volg de productiepijplijn in docs/GDD.md (Art direction) en de regels in docs/stijlgids.md (schaal 1 unit = 1 m, vormtaal, materialen, poly-budget).
+- Modelleer in Blender (bronnen in art/blender/, script in Python: `blender -b <bestand> -P <script>`) of met Godot-primitieven; exporteer naar glTF in game/assets/, bestandsnaam = object-id.
+- Bouw per locatie een kit met rommel (losse low-poly objecten) en verspreid die per kamer volgens de levelbrief; detail komt uit kits, niet uit los handwerk.
+- Licht, regen, nat en mist zet je in Godot op volgens de stijlgids, in een volledige en een lichte kwaliteitsstand. Bekijk elke kamer als screenshot op 1080p voordat je oplevert.
+- Kleding: modelleer het personage in lagen per slot (hoofd, bovenkleding, over-laag, handen, voeten, gedragen) op hetzelfde skelet, zodat elke combinatie werkt; plus een los model per kledingstuk als object.
+- Apparaten: een model met een materiaal of lichtbron per toestand (uit, standby, aan, bezig, kapot), plus kleine animaties (lampje, damp, scherm).
 - Geen brief, dan een placeholder: herkenbare vorm en kleur per objecttype, met de id erop.
 - Houd docs/asset-lijst.md bij: id, type, status (placeholder/render/handwerk/definitief), kamer.
 - Controleer dat elk object en elke tile in content/ een asset heeft en andersom.
@@ -952,7 +978,7 @@ Je bent QA voor Onderstad. Je wijzigt geen content of code; je rapporteert.
 4. GUT-tests.
 5. `python tools/check_windows.py chNN`: geen raamgebeurtenis in strijd met de raamgegevens (realisme).
 6. `python tools/check_audio.py`: elke aangeroepen cue staat in de catalogus; voor cues met status klaar: luidheid, clipping, loop-naden, stiltes en licenties.
-7. `python tools/check_devices.py chNN`: elk apparaat heeft per toestand een sprite, cue en beschrijving, hoort bij een stroomgroep, en dimt alleen als het een dimmer heeft.
+7. `python tools/check_devices.py chNN`: elk apparaat heeft per toestand een materiaal of model, cue en beschrijving, hoort bij een stroomgroep, en dimt alleen als het een dimmer heeft.
 Schrijf docs/qa/chNN.md: per check groen/rood, bij rood het bestand, de oorzaak en de agent die het moet oplossen. Eindig met één regel: KLAAR VOOR REVIEW of NIET KLAAR.
 ```
 
@@ -987,7 +1013,7 @@ Je reviewt de diff (`git diff main...HEAD`) van Onderstad.
 ```markdown
 ---
 name: art-director
-description: Bewaakt de visuele stijl van Onderstad: stijlgids, briefs per asset en beoordeling van elk asset. Gebruik vóór de asset-pipeline een nieuw asset maakt, en na elke render.
+description: "Bewaakt de visuele stijl van Onderstad: stijlgids, briefs per asset en beoordeling van elk asset. Gebruik vóór de asset-pipeline een nieuw asset maakt, en na elke render."
 tools: Read, Grep, Glob, Edit, Write
 model: opus
 ---
@@ -1000,7 +1026,7 @@ Je bent de art-director van Onderstad. Je maakt zelf geen assets.
 - Controleer per kamer of Rotterdam van bovenaf herkenbaar is (zonder echte logo's) en of het element logisch is voor de plek.
 - Controleer kleding: is elke rol in één oogopslag te herkennen aan het silhouet, en blijven alle combinaties van lagen netjes?
 - Doe per kamer de herhalingstest: zoom uit en zoek naar patronen, strepen of eentonige vlakken in vloeren en muren.
-- Beoordeel renders (bekijk de PNG's): palet, leesbaarheid op doelresolutie, consistentie met de rest van de kamer, of interactieve objecten opvallen. Uitkomst per asset: goedgekeurd, aanpassen (met concrete punten), of handwerk nodig.
+- Beoordeel elke kamer als screenshot uit Godot op 1080p, in de volledige en de lichte kwaliteitsstand: palet, licht, leesbaarheid, consistentie met de rest van de kamer, of interactieve objecten opvallen. Uitkomst per asset: goedgekeurd, aanpassen (met concrete punten), of handwerk nodig.
 - Schrijf docs/review/art-chNN.md. Sleutelobjecten en de hoofdpersoon markeer je altijd als kandidaat voor handwerk.
 ```
 
@@ -1032,7 +1058,7 @@ Vraag mij alleen bij keuzes die het verhaal, de pillars of de scope raken.
 - [ ] GUT-tests groen; playthroughs van eerdere hoofdstukken groen
 - [ ] Lore-keeper: geen open tegenstrijdigheden
 - [ ] Playtest-criticus: elke pillar minimaal 3 van 5
-- [ ] Elk object en elke tile heeft een asset (placeholder mag)
+- [ ] Elk object heeft een model (placeholder mag)
 - [ ] Elke aangeroepen audio-cue staat in de catalogus; voor toegevoegde geluiden is de audiocheck groen en zijn bron en licentie vastgelegd
 - [ ] Martijn heeft het hoofdstuk zelf gespeeld, het geluidsvenster gecontroleerd (en, zodra er geluid is, de luisterlijst afgewerkt) en goedgekeurd
 
@@ -1044,11 +1070,12 @@ Vraag mij alleen bij keuzes die het verhaal, de pillars of de scope raken.
 
 ## Risico's en open vragen
 
-Het grootste risico is art: agents leveren goede systemen en tekst, maar geen sfeervolle pixelart.
+Het grootste risico is art: agents leveren goede systemen en tekst, maar sfeervolle 3D vraagt compositie, licht en vorm die niet vanzelf goed gaan. Het tweede is prestaties: realtime licht, reflectie en mist moeten ook op een gewone laptop lopen.
 
 | Risico | Gevolg | Maatregel |
 | --- | --- | --- |
-| Art haalt het sfeerniveau niet | Pillar 1 faalt | Licht, regen en audio dragen de sfeer al met placeholders; Blender-pipeline voor een consistente basis; handwerk pas na de slice |
+| Art haalt het sfeerniveau niet | Pillar 1 faalt | Stijltest als maatstaf; licht, regen en audio dragen de sfeer al met placeholders; vlakke kleuren en gedeelde paletmaterialen houden het consistent; art-review op 1080p-screenshots; handwerk op hoofdpersoon en sleutelobjecten pas na de slice |
+| 3D te zwaar voor een gewone laptop | Spelers haken af, web-demo onhaalbaar | Lichte kwaliteitsstand zonder SSR, SSAO en volumetrische mist; budget per scène; fps-meting per kamer in QA op een referentielaptop |
 | Agent-content wordt generiek | Vlakke tekst, voorspelbare puzzels | Lore-bijbel, stijlregels per agent, playtest-criticus met frisse ogen, jij als eindredacteur |
 | Puzzels te makkelijk of te vaag | Verveling of frustratie | Oplosser + hints uit de graaf + 5 echte testers per hoofdstuk |
 | Scope groeit | Nooit af | Vaste hoofdstukstructuur, max 8 kamers, anti-pillars |
@@ -1061,7 +1088,7 @@ Het grootste risico is art: agents leveren goede systemen en tekst, maar geen sf
 - [ ] Wie stuurt de bezorgorders naar de doelwitten?
 - [ ] Achtergrond van Richard verder uitwerken (wat er thuis speelt, wat er in het slaaponderzoek gebeurde)
 - [ ] Definitieve titel (Onderstad is werktitel)
-- [ ] Hoeveel handwerk bovenop de Blender-renders: zelf, een pixelartist of een mix?
+- [ ] Hoeveel handwerk bovenop de 3D-modellen van de pipeline (hoofdpersoon, sleutelobjecten, Rotterdam-elementen, close-ups): zelf, een 3D-artist of illustrator, of een mix?
 - [ ] Echte clubs, merken en vervoerders (zoals Feyenoord en de RET): licentie aanvragen of alleen herkenbaar via kleuren en vormen?
 - [ ] Releasedoel: hobbyproject, itch.io of Steam?
 - [ ] Engels als tweede taal vanaf het begin of later?
