@@ -17,7 +17,7 @@ De tweede regel laat Godot de klassenamen registreren (`.godot/` blijft buiten g
 python tools/test_godot.py
 ```
 
-De wrapper importeert eerst (`godot --headless --path game --import`), doet een rooktest van de hoofdscene, draait GUT en **faalt bij 0 tests, bij mislukte tests of bij script-/parse-fouten** (exitcode 1). Dat is de aanbevolen manier: het kale GUT-commando eindigt op een schone checkout zonder importstap met exitcode 0 terwijl er 0 tests liepen. Duurt ongeveer 15 seconden. Opties: `--select test_objecten`, `--toon-alles`. `GODOT=pad` als `godot` niet op het PATH staat.
+De wrapper importeert eerst (`godot --headless --path game --import`), doet een rooktest van de hoofdscene, draait GUT en **faalt bij 0 tests, bij mislukte tests of bij script-/parse-fouten** (exitcode 1). Dat is de aanbevolen manier: het kale GUT-commando eindigt op een schone checkout zonder importstap met exitcode 0 terwijl er 0 tests liepen. Duurt ongeveer 5 seconden na de eerste import. Opties: `--select test_objecten`, `--toon-alles`. `GODOT=pad` als `godot` niet op het PATH staat.
 
 Het kale GUT-commando (alleen na een eerdere import; controleer zelf dat er tests liepen):
 
@@ -49,14 +49,13 @@ godot --headless --path game -s addons/gut/gut_cmdln.gd -gdir=../tests/gut -gexi
 python -m pytest tests/python -q
 ```
 
-Duurt ongeveer een minuut (gemeten 55 s): de oplosser doorzoekt een paar duizend tot ruim honderdduizend toestanden.
+Duurt ongeveer een minuut (gemeten ~57 s): de oplosser doorzoekt een paar duizend tot ruim honderdduizend toestanden.
 
 | Bestand | Dekt |
 | --- | --- |
 | `python/test_condities.py` | SF-01 (dezelfde `condities.json` als GUT), SF-06, SF-07 |
 | `python/test_validator.py` | fixture groen, lege content groen, 36 kapotte varianten, AC-01, AC-02, AC-03, TG-10, OI-13, KS-05, KS-06, KS-11, SF-17 |
 | `python/test_oplosser.py` | SF-18 |
-| `python/test_scenario.py` | SF-19 en OI-14 (oplosserkant), SF-20, SF-22, SF-23 |
 | `python/test_scenario.py` | SF-19 en OI-14 (oplosserkant), SF-20, SF-22, SF-23 |
 
 ## Validator en oplosser met de hand
@@ -65,7 +64,7 @@ Duurt ongeveer een minuut (gemeten 55 s): de oplosser doorzoekt een paar duizend
 python tools/validate.py --all
 python tools/validate.py --content tests/fixtures/proef --cues tests/fixtures/proef/cues.json
 python tools/validate.py --content tests/fixtures/proef --overlay tests/fixtures/kapot/geen_tegenstuk --cues tests/fixtures/proef/cues.json
-python tools/solve.py ch01_proef --content tests/fixtures/proef          # ongeveer 12 s; elke run drukt het beperkingenblok af
+python tools/solve.py ch01_proef --content tests/fixtures/proef          # ongeveer 17 s; elke run drukt het beperkingenblok af
 python tools/solve.py ch01_proef --content tests/fixtures/proef --json
 python tools/solve.py ch01_proef --content tests/fixtures/proef --overlay tests/fixtures/kapot/doodlopend_rapport_weg
 ```
@@ -78,4 +77,4 @@ python tools/solve.py ch01_proef --content tests/fixtures/proef --overlay tests/
 - `proef/`: een klein fictief hoofdstuk (`ch01_proef`, drie kamers, vijftien objecten met geneste containers, een pas, een deur met `vereist`, een lift, een code-token, een gebeurtenis met routine, een NPC met twee gesprekken, een laptop, een puzzelgraaf van elf knopen) met eigen tekst en cue-catalogus. Geen echte Onderstad-content.
 - `onmisbaar.json`: de verwachte afgeleide lijst onmisbare objecten (SF-22), gelezen door GUT en Python.
 - `condities.json`: de gedeelde testset van de conditietaal (SF-01), gelezen door GUT en Python.
-- `kapot/<naam>/`: opzettelijk kapotte varianten als overlay. Een deel zijn geldige scenario-overlays voor GUT en de oplosser (`scope_hoofdstukken`) of bewust V17-overtredingen (`scenewissel_geweigerd`, de fixture voor SF-19/OI-14). Een deel zijn geldige scenario-overlays voor GUT en de oplosser (`scope_hoofdstukken`) of bewust V17-overtredingen (`scenewissel_geweigerd`, de fixture voor SF-19/OI-14, niet de groene `proef`). Ze worden gegenereerd door `python tests/fixtures/maak_kapot.py`; `test_varianten_zijn_actueel` bewaakt dat ze overeenkomen met dat script. Pas varianten dus aan in het script, niet met de hand.
+- `kapot/<naam>/`: opzettelijk kapotte varianten als overlay. Een deel zijn geldige scenario-overlays voor GUT en de oplosser (`scope_hoofdstukken`) of bewust V17-overtredingen (`scenewissel_geweigerd`, de fixture voor SF-19/OI-14, niet de groene `proef`). Ze worden gegenereerd door `python tests/fixtures/maak_kapot.py`; `test_varianten_zijn_actueel` bewaakt dat ze overeenkomen met dat script. Pas varianten dus aan in het script, niet met de hand.

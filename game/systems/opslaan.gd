@@ -180,6 +180,7 @@ func pas_toe(d: Dictionary) -> Dictionary:
 	s.blokkades.clear()
 	s.gepauzeerd = false
 	s.puzzel.wis()
+	s.wis_tijdelijk()
 	var doel: Variant = s.content.hoofdstukken[h].get("doel")
 	s.voltooid = doel != null and Condities.evalueer(doel, s.ctx)
 	s.kamer_geluid()
@@ -189,12 +190,17 @@ func pas_toe(d: Dictionary) -> Dictionary:
 	return {"ok": true, "reden": "", "waarschuwingen": w}
 
 
-## "Studentenkamer · wo 1 jan · 00:07" voor het laadscherm (geen echte datum).
+## "Studentenkamer · wo 1 jan · 00:07" voor het laadscherm (geen echte datum). Crasht niet op een kapotte save:
+## ontbrekende of verkeerd getypeerde velden geven een lege titel.
 func slot_titel(slot: String) -> String:
 	var d: Variant = JsonLezer.lees(pad(slot))
 	if not (d is Dictionary):
 		return ""
-	var k: String = s.tekst(s.content.kamers.get(d["kamer"], {}).get("naam", d["kamer"]))
+	var kamer: Variant = d.get("kamer")
+	var scene: Variant = d.get("scene")
+	if not (kamer is String) or not (scene is String) or not s.content.kamers.has(kamer) or not s.content.scenes.has(scene):
+		return ""
+	var naam: Variant = s.content.kamers[kamer].get("naam", kamer)
 	var klok := Klok.new(s.content)
-	klok.uit_dict({"scene": d["scene"], "gebeurtenissen": {}})
-	return "%s · %s" % [k, klok.klok_tekst()]
+	klok.uit_dict({"scene": scene, "gebeurtenissen": {}})
+	return "%s · %s" % [s.tekst(naam if naam is String else kamer), klok.klok_tekst()]

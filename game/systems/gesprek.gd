@@ -84,4 +84,5 @@ func _einde() -> void:
 	actief = false
 	s.blokkades.erase("gesprek")
 	s.spreek_uit_wachtrij()
+	s.probeer_uitgestelde_autosave()
 	gesprek_afgelopen.emit()

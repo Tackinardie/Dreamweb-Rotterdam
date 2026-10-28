@@ -30,6 +30,12 @@ func bouw(c: ContentDb) -> void:
 	klok.scene_gewisseld.connect(func(van: String, naar: String, richting: String) -> void: scene_gewisseld.emit(van, naar, richting))
 
 
+## Tijdelijke toestand die niet bij een save hoort: mompels in de wachtrij en een uitgestelde autosave.
+func wis_tijdelijk() -> void:
+	_mompel_wachtrij.clear()
+	_autosave_wacht = false
+
+
 ## Nieuwe content geladen: er loopt geen spel meer tot nieuw_spel().
 func wis_staat() -> void:
 	hoofdstuk = ""
@@ -58,6 +64,7 @@ func _audio_context() -> Dictionary:
 func nieuw_spel(h: String = "") -> void:
 	flags.clear(); tokens.clear(); token_volgorde.clear(); knopen.clear(); knopen_volgorde.clear()
 	apparaten.clear(); dialoog_keuzes.clear(); hints.clear(); systemen.clear(); blokkades.clear()
+	wis_tijdelijk()
 	fout_log = PackedStringArray()
 	voltooid = false
 	speeltijd_s = 0.0
@@ -182,7 +189,12 @@ func begin_actie() -> void:
 
 func einde_actie() -> void:
 	_actie_diepte = maxi(0, _actie_diepte - 1)
-	if _actie_diepte == 0 and _autosave_wacht:
+	probeer_uitgestelde_autosave()
+
+
+## Een uitgestelde autosave blijft staan tot opslaan weer mag (bijv. na een gesprek) en wordt dan geschreven.
+func probeer_uitgestelde_autosave() -> void:
+	if _actie_diepte == 0 and _autosave_wacht and mag_opslaan():
 		_autosave_wacht = false
 		autosave()
 

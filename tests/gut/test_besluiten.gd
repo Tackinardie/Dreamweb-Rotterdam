@@ -229,3 +229,60 @@ func test_opslaan_is_atomair_geen_tijdelijk_bestand_blijft_staan() -> void:
 	assert_true(FileAccess.file_exists(s.opslag.pad("handmatig")))
 	assert_false(FileAccess.file_exists(s.opslag.pad("handmatig") + ".tmp"))
 	assert_true(JsonLezer.lees(s.opslag.pad("handmatig")) is Dictionary)
+
+
+# ---- ronde 2 (N1, N2, N3)
+
+func test_n1_mompel_uit_vorige_sessie_verschijnt_niet_na_laden() -> void:
+	var s: Spel = Hulp.nieuw_spel(self, "n1")
+	s.opslag.schrijf("handmatig")
+	s.blokkades["gesprek"] = true
+	s.mompel_zeg("systeem.inventaris.vol")      # blijft in de wachtrij
+	s.blokkades.erase("gesprek")
+	watch_signals(s)
+	assert_true(s.opslag.laad("handmatig")["ok"])
+	s.spreek_uit_wachtrij()
+	assert_signal_not_emitted(s, "mompel")
+	s.blokkades["gesprek"] = true
+	s.mompel_zeg("systeem.inventaris.vol")
+	s.nieuw_spel()
+	s.spreek_uit_wachtrij()
+	assert_signal_not_emitted(s, "mompel", "ook nieuw_spel leegt de wachtrij")
+
+
+func test_n2_uitgestelde_autosave_wacht_tot_het_gesprek_voorbij_is() -> void:
+	var s: Spel = Hulp.nieuw_spel(self, "n2")
+	Hulp.voeg_knoop_toe(s, {"id": "ch01_praat_weg", "type": "actie", "pad": "zij", "waarom": "Een gesprek dat je wegstuurt.",
+			"trigger": {"dialoog": "ch01_portier_praat", "regel": "r_opening"}, "effecten": [{"naar_kamer": Hulp.KANTOOR}, {"zet_flag": "ch01_dak_bekend"}]})
+	Hulp.wis_map(s.opslag.map)
+	watch_signals(s)
+	var g := Gesprek.new(s)
+	assert_true(g.start("ch01_portier_praat"))
+	assert_eq(s.kamer, Hulp.KANTOOR, "de knoop stuurde Richard weg")
+	assert_signal_emit_count(s, "autosave_geschreven", 0)
+	assert_false(FileAccess.file_exists(s.opslag.pad("auto")), "tijdens het gesprek mag niet opgeslagen worden")
+	g.kies("k_dag")
+	assert_false(g.actief)
+	assert_signal_emit_count(s, "autosave_geschreven", 1)
+	assert_true(FileAccess.file_exists(s.opslag.pad("auto")), "N2: de uitgestelde autosave is alsnog geschreven")
+	var d: Dictionary = JsonLezer.lees(s.opslag.pad("auto"))
+	assert_eq(d["kamer"], Hulp.KANTOOR)
+	assert_eq(d["flags"].get("ch01_dak_bekend"), true)
+
+
+func test_n3_slot_titel_crasht_niet_op_kapotte_saves() -> void:
+	var s: Spel = Hulp.nieuw_spel(self, "n3")
+	s.opslag.schrijf("handmatig")
+	assert_eq(s.opslag.slot_titel("handmatig"), "Hal · wo 1 jan · 00:07")
+	var kapot: Array = [{}, {"kamer": 5, "scene": []}, {"kamer": "ch01_hal"}, {"scene": "ch01_s1_nacht"},
+			{"kamer": "bestaat_niet", "scene": "ch01_s1_nacht"}, {"kamer": "ch01_hal", "scene": "bestaat_niet"}, {"kamer": null, "scene": null}]
+	for d: Dictionary in kapot:
+		var f := FileAccess.open(s.opslag.pad("handmatig"), FileAccess.WRITE)
+		f.store_string(JSON.stringify(d))
+		f.close()
+		assert_eq(s.opslag.slot_titel("handmatig"), "", "geen crash voor " + str(d))
+	var f2 := FileAccess.open(s.opslag.pad("handmatig"), FileAccess.WRITE)
+	f2.store_string("[1, 2]")
+	f2.close()
+	assert_eq(s.opslag.slot_titel("handmatig"), "")
+	assert_eq(s.opslag.slot_titel("auto") if not FileAccess.file_exists(s.opslag.pad("auto")) else "", "")
