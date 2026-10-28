@@ -1,0 +1,23 @@
+{
+  "hoofdstuk": "ch02_extra",
+  "knopen": [
+    {
+      "id": "ch02_klaar",
+      "type": "doel",
+      "pad": "hoofd",
+      "waarom": "Dit leest een flag van een ander hoofdstuk.",
+      "trigger": {
+        "automatisch": true
+      },
+      "vereist": {
+        "flag": "ch01_bezoeken",
+        "minstens": 1
+      },
+      "hints": {
+        "vaag": "hint.ch02_klaar.vaag",
+        "richting": "hint.ch02_klaar.richting",
+        "bijna": "hint.ch02_klaar.bijna"
+      }
+    }
+  ]
+}

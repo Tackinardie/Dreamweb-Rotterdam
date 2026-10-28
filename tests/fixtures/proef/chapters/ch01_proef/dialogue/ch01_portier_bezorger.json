@@ -1,0 +1,8 @@
+{
+  "id": "ch01_portier_bezorger",
+  "deelnemers": ["portier"],
+  "start": "r_hoi",
+  "regels": [
+    { "id": "r_hoi", "spreker": "portier", "tekst": "dlg.ch01_portier_bezorger.r_hoi", "einde": true }
+  ]
+}

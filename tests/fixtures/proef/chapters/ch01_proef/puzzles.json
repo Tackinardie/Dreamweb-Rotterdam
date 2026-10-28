@@ -1,0 +1,83 @@
+{
+  "hoofdstuk": "ch01_proef",
+  "knopen": [
+    {
+      "id": "ch01_lees_briefje", "type": "feit", "pad": "hoofd",
+      "waarom": "Wie een briefje met een code vindt, leest het voordat hij ergens gaat proberen.",
+      "trigger": { "lees": "briefje" },
+      "effecten": [{ "geef_token": "code_kluis" }],
+      "hints": { "vaag": "hint.ch01_lees_briefje.vaag", "richting": "hint.ch01_lees_briefje.richting", "bijna": "hint.ch01_lees_briefje.bijna" }
+    },
+    {
+      "id": "ch01_vraag_pauze", "type": "feit", "pad": "zij",
+      "waarom": "Een portier vraag je gewoon wanneer hij even weg is.",
+      "trigger": { "dialoog": "ch01_portier_praat", "regel": "r_pauze" },
+      "effecten": [{ "geef_token": "pauze_tijd" }]
+    },
+    {
+      "id": "ch01_betreed_kantoor", "type": "actie", "pad": "zij",
+      "waarom": "Iemand die een kantoor binnenkomt, is er daarna geweest.",
+      "trigger": { "betreed": "ch01_kantoor" },
+      "effecten": [{ "zet_flag": "ch01_bezoeken", "waarde": 1 }]
+    },
+    {
+      "id": "ch01_ontgrendel_laptop", "type": "actie", "pad": "zij",
+      "waarom": "Met de pincode van het briefje opent iemand de laptop op het bureau.",
+      "trigger": { "ontgrendel": "ch01_laptop" },
+      "effecten": [{ "zet_flag": "ch01_laptop_open" }]
+    },
+    {
+      "id": "ch01_lees_bericht", "type": "feit", "pad": "zij",
+      "waarom": "Een ontgrendelde laptop met een ongelezen bericht lees je eerst even.",
+      "trigger": { "apparaat": "ch01_laptop", "app": "berichten", "item": "bericht_plek" },
+      "vereist": { "apparaat": "ch01_laptop", "toestand": "ontgrendeld" },
+      "effecten": [{ "geef_token": "kluis_plek" }]
+    },
+    {
+      "id": "ch01_combineer", "type": "feit", "pad": "zij",
+      "waarom": "Wie de plek en de code allebei weet, legt het verband in zijn notities.",
+      "trigger": { "combineer": ["kluis_plek", "code_kluis"] },
+      "effecten": [{ "geef_token": "kantoorkennis" }]
+    },
+    {
+      "id": "ch01_auto_dak", "type": "actie", "pad": "zij",
+      "waarom": "Zodra je de indeling van het gebouw kent, weet je dat er een dak is.",
+      "trigger": { "automatisch": true },
+      "vereist": { "token": "kantoorkennis" },
+      "effecten": [{ "zet_flag": "ch01_dak_bekend" }]
+    },
+    {
+      "id": "ch01_pauze_gezien", "type": "actie", "pad": "zij",
+      "waarom": "Als de portier opstaat en weggaat, onthoud je dat hij weg is.",
+      "trigger": { "gebeurtenis": "ch01_pauze_portier" },
+      "effecten": [{ "zet_flag": "ch01_pauze_bekend" }]
+    },
+    {
+      "id": "ch01_pak_rapport", "type": "actie", "pad": "hoofd",
+      "waarom": "Het rapport ligt in het kluisje en je neemt het mee om het af te geven.",
+      "trigger": { "pak": "rapport" },
+      "effecten": [{ "zet_flag": "ch01_rapport_gepakt" }],
+      "hints": { "vaag": "hint.ch01_pak_rapport.vaag", "richting": "hint.ch01_pak_rapport.richting", "bijna": "hint.ch01_pak_rapport.bijna" }
+    },
+    {
+      "id": "ch01_koffie_weg", "type": "actie", "pad": "zij",
+      "waarom": "Een lege kop gooi je weg in de prullenbak.",
+      "trigger": { "gebruik": "koffiekop", "met": "prullenbak" },
+      "vereist": { "heeft": "koffiekop" },
+      "effecten": [{ "verwijder_object": "koffiekop" }, { "mompel": "systeem.proef.koffie_weg" }],
+      "bij_onvervuld": "knoop.ch01_koffie_weg.onvervuld"
+    },
+    {
+      "id": "ch01_klaar", "type": "doel", "pad": "hoofd",
+      "waarom": "Het rapport geef je aan de portier, die het aan de beheerder doorgeeft.",
+      "trigger": { "geef": "rapport", "aan": "portier" },
+      "vereist": { "flag": "ch01_rapport_gepakt" },
+      "effecten": [
+        { "verwijder_object": "rapport" },
+        { "naar_scene": "ch01_s2_ochtend", "kamer": "ch01_hal" }
+      ],
+      "bij_onvervuld": "knoop.ch01_klaar.onvervuld",
+      "hints": { "vaag": "hint.ch01_klaar.vaag", "richting": "hint.ch01_klaar.richting", "bijna": "hint.ch01_klaar.bijna" }
+    }
+  ]
+}

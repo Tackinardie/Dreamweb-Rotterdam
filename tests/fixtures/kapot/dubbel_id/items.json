@@ -1,0 +1,222 @@
+{
+  "items": [
+    {
+      "id": "kast",
+      "naam": "item.kast.naam",
+      "beschrijving": "item.kast.beschrijving",
+      "pakbaar": false,
+      "container": {
+        "capaciteit": 4,
+        "max_grootte": 2
+      },
+      "acties": [
+        "bekijk",
+        "open"
+      ]
+    },
+    {
+      "id": "jas",
+      "naam": "item.jas.naam",
+      "beschrijving": "item.jas.beschrijving",
+      "pakbaar": true,
+      "grootte": 2,
+      "container": {
+        "capaciteit": 2,
+        "max_grootte": 1
+      },
+      "acties": [
+        "bekijk",
+        "pak",
+        "open"
+      ]
+    },
+    {
+      "id": "portemonnee",
+      "naam": "item.portemonnee.naam",
+      "beschrijving": "item.portemonnee.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "container": {
+        "capaciteit": 1,
+        "max_grootte": 1
+      },
+      "acties": [
+        "bekijk",
+        "pak",
+        "open"
+      ]
+    },
+    {
+      "id": "pasje",
+      "naam": "item.pasje.naam",
+      "beschrijving": "item.pasje.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "geeft_niveaus": [
+        "proef.kantoor"
+      ],
+      "acties": [
+        "bekijk",
+        "pak"
+      ]
+    },
+    {
+      "id": "briefje",
+      "naam": "item.briefje.naam",
+      "beschrijving": "item.briefje.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "leestekst": "item.briefje.lees",
+      "acties": [
+        "bekijk",
+        "pak",
+        "lees"
+      ]
+    },
+    {
+      "id": "rapport",
+      "naam": "item.rapport.naam",
+      "beschrijving": "item.rapport.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "leestekst": "item.rapport.lees",
+      "acties": [
+        "bekijk",
+        "pak",
+        "lees"
+      ],
+      "geluid": {
+        "pak": "object.lees"
+      }
+    },
+    {
+      "id": "kluisje",
+      "naam": "item.kluisje.naam",
+      "beschrijving": "item.kluisje.beschrijving",
+      "pakbaar": false,
+      "container": {
+        "capaciteit": 2,
+        "max_grootte": 1,
+        "open_vereist": {
+          "token": "code_kluis"
+        },
+        "geweigerd": "item.kluisje.geweigerd"
+      },
+      "acties": [
+        "bekijk",
+        "open"
+      ]
+    },
+    {
+      "id": "laptop",
+      "naam": "item.laptop.naam",
+      "beschrijving": "item.laptop.beschrijving",
+      "pakbaar": false,
+      "gebruik_tekst": "item.laptop.gebruik",
+      "acties": [
+        "bekijk",
+        "gebruik"
+      ]
+    },
+    {
+      "id": "prullenbak",
+      "naam": "item.prullenbak.naam",
+      "beschrijving": "item.prullenbak.beschrijving",
+      "pakbaar": false,
+      "gebruik_tekst": "item.prullenbak.gebruik",
+      "acties": [
+        "bekijk",
+        "gebruik"
+      ]
+    },
+    {
+      "id": "koffiekop",
+      "naam": "item.koffiekop.naam",
+      "beschrijving": "item.koffiekop.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "gebruik_tekst": "item.koffiekop.gebruik",
+      "acties": [
+        "bekijk",
+        "pak",
+        "gebruik"
+      ]
+    },
+    {
+      "id": "bezorgtas",
+      "naam": "item.bezorgtas.naam",
+      "beschrijving": "item.bezorgtas.beschrijving",
+      "pakbaar": true,
+      "grootte": 2,
+      "container": {
+        "capaciteit": 3,
+        "max_grootte": 2
+      },
+      "acties": [
+        "bekijk",
+        "pak",
+        "open"
+      ]
+    },
+    {
+      "id": "doos",
+      "naam": "item.doos.naam",
+      "beschrijving": "item.doos.beschrijving",
+      "pakbaar": true,
+      "grootte": 2,
+      "container": {
+        "capaciteit": 3,
+        "max_grootte": 2
+      },
+      "acties": [
+        "bekijk",
+        "pak",
+        "open"
+      ]
+    },
+    {
+      "id": "pakket",
+      "naam": "item.pakket.naam",
+      "beschrijving": "item.pakket.beschrijving",
+      "pakbaar": true,
+      "grootte": 3,
+      "acties": [
+        "bekijk",
+        "pak"
+      ]
+    },
+    {
+      "id": "kopje_wit",
+      "naam": "item.kopje_wit.naam",
+      "beschrijving": "item.kopje_wit.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "acties": [
+        "bekijk",
+        "pak"
+      ]
+    },
+    {
+      "id": "kopje_blauw",
+      "naam": "item.kopje_blauw.naam",
+      "beschrijving": "item.kopje_blauw.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "acties": [
+        "bekijk",
+        "pak"
+      ]
+    },
+    {
+      "id": "kopje_blauw",
+      "naam": "item.kopje_blauw.naam",
+      "beschrijving": "item.kopje_blauw.beschrijving",
+      "pakbaar": true,
+      "grootte": 1,
+      "acties": [
+        "bekijk",
+        "pak"
+      ]
+    }
+  ]
+}
