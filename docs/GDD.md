@@ -53,6 +53,8 @@ Het thema is **de stad zonder hart**: Rotterdam verloor op 14 mei 1940 zijn oude
 
 **Toon**: melancholisch, sober, volwassen. Geweld is kort, hard en zonder spektakel. Tijdens het verkennen is er weinig dialoog; op sleutelmomenten volgen lange, gespannen gesprekken (zie Regiestijl).
 
+**Tijd**: de game begint op zaterdag 1 januari 2022, net na middernacht, en loopt tot de ochtend van vrijdag 7 januari 2022. Nederland zit in de lockdown van december 2021: horeca, winkels en musea zijn dicht, er geldt een vuurwerkverbod (er wordt toch geknald), mensen mogen weinig bezoek ontvangen. De stad is 's nachts leeg, op bezorgers na; flitsbezorgers zijn drukker dan ooit. Het jaartal wordt niet nadrukkelijk getoond, maar alles in de wereld (data in berichten, de krant, de maatregelen) moet ermee kloppen.
+
 **Realiteit en fictie**: Rotterdam is herkenbaar, maar alle personages en organisaties zijn fictief. Echte instellingen krijgen een gefictionaliseerde naam (zie Hoofdstukstructuur).
 
 ## Regiestijl: Tarantino als aanpak
@@ -426,7 +428,7 @@ De interface is minimaal: het speelveld vult het scherm, alles anders schuift in
 
 **Besturing**: muis als primair (links: lopen/gebruiken, rechts: bekijken). Controller- en Steam Deck-ondersteuning later, met een cursor die naar objecten snapt.
 
-**Klok en datum**: rechtsboven in beeld staat altijd een klok met datum, bijvoorbeeld *wo 1 jan · 00:07*. De klok staat stil op de tijd van de scène; hij tikt niet mee terwijl je speelt.
+**Klok en datum**: rechtsboven in beeld staat altijd een klok met datum, bijvoorbeeld *za 1 jan · 00:07*. De klok staat stil op de tijd van de scène; hij tikt niet mee terwijl je speelt.
 
 - **Tijd springt per scène**: elke scène heeft een vast tijdstip, vastgelegd door de level-designer. Na een reis, een droom of een kamerwissel die tijd kost, toont de klok de nieuwe tijd.
 - **Binnen een scène**: wat er gebeurt (drogende schoenen, koffie zetten, NPC-routines zoals de pauze van een beveiliger) loopt als gebeurtenis in de scène, niet als klok. Timing-puzzels draaien om wat je ziet gebeuren, niet om minuten.

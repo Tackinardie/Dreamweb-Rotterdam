@@ -176,7 +176,7 @@ QA-rapporten nemen dit blok letterlijk over bij de uitslag van de oplosser.
 - **Automatisch** bij elke kamerwissel, nadat de speler in de nieuwe kamer staat (één rollend slot: `user://saves/auto.json`). Komt de kamerwissel uit een effect (`naar_kamer`, `naar_scene`), dan wordt de autosave pas geschreven nadat de hele trigger is afgehandeld (vuurregel 4a: alle effecten, knoop `opgelost`, toegang herzien, `automatisch`-rondes klaar). Nooit midden in een effectenlijst. Meerdere kamerwissels binnen één trigger geven één autosave, aan het eind. Bij een kamerwissel door een uitgang is de trigger afgehandeld na aankomst plus de `betreed`-knoop die daardoor vuurt (inclusief al zijn effecten) en de `automatisch`-rondes; daarna volgt de autosave.
 - **Handmatig:** één slot (`user://saves/handmatig.json`) via het pauzemenu; overschrijven vraagt bevestiging.
 - Niet opslaan tijdens: gesprek, close-up, titelkaart, droomovergang, scènewissel. Het menu-item is dan grijs.
-- **Laden** toont per slot: kamernaam en klok (bijv. "Studentenkamer · wo 1 jan · 00:07"), geen echte datum.
+- **Laden** toont per slot: kamernaam en klok (bijv. "Studentenkamer · za 1 jan · 00:07"), geen echte datum.
 
 **Wat er in een save zit** (JSON):
 

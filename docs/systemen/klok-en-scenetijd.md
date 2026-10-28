@@ -30,7 +30,7 @@ Schema's: `tools/schemas/chapter.schema.json` (`scenes`, `gebeurtenissen`), `too
 
 ## Klokweergave
 
-- Formaat: `{weekdag} {dag} {maand} · {HH}:{MM}`, bijv. **wo 1 jan · 00:07**. Dag zonder voorloopnul, tijd met voorloopnullen, scheiding " · " (spatie, middenpunt U+00B7, spatie).
+- Formaat: `{weekdag} {dag} {maand} · {HH}:{MM}`, bijv. **za 1 jan · 00:07**. Dag zonder voorloopnul, tijd met voorloopnullen, scheiding " · " (spatie, middenpunt U+00B7, spatie).
 - Weekdag wordt berekend uit `startdatum` + (dag − 1). Afkortingen en maanden komen uit tekstsleutels: `klok.weekdag.ma` … `klok.weekdag.zo`, `klok.maand.jan` … `klok.maand.dec`, en het formaat zelf uit `klok.formaat` (zodat een andere taal de volgorde kan wisselen).
 - Plaats: altijd in beeld, rechtsboven, klein, gedempte kleur, niet klikbaar. Ook tijdens gesprekken en in de inventaris.
 - Droomkamers (`soort: droom`): de klok toont de scènetijd van de scène waarin de droom valt. De droomspec mag dit later anders bepalen (zie open vraag in het eindrapport).
@@ -46,7 +46,7 @@ Schema's: `tools/schemas/chapter.schema.json` (`scenes`, `gebeurtenissen`), `too
 
 ## UX-flow
 
-1. De speler opent het spel: titelkaart, daarna de kamer; rechtsboven staat **wo 1 jan · 00:07** (met de startdatum uit `spel.json`).
+1. De speler opent het spel: titelkaart, daarna de kamer; rechtsboven staat **za 1 jan · 00:07** (met de startdatum uit `spel.json`).
 2. Hij verkent; de klok beweegt niet. Buiten (later) knalt het vuurwerk, maar de minuten blijven staan.
 3. Hij gaat door een uitgang met `naar_scene` (bijv. "naar buiten, de fiets op"): de overgang speelt, de klok rolt naar de nieuwe tijd, de nieuwe kamer verschijnt.
 4. In een scène met een gebeurtenis ziet hij die gebeuren (de beveiliger staat op en loopt weg; de `cue_start` van de gebeurtenis klinkt, bijv. een stoel die over de vloer schuift). Hij weet dat hij nu een venster heeft, zonder minuten.
