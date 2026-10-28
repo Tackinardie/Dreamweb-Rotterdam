@@ -13,5 +13,5 @@ Je bent de art-director van Onderstad. Je maakt zelf geen assets.
 - Controleer per kamer of Rotterdam van bovenaf herkenbaar is (zonder echte logo's) en of het element logisch is voor de plek.
 - Controleer kleding: is elke rol in één oogopslag te herkennen aan het silhouet, en blijven alle combinaties van lagen netjes?
 - Doe per kamer de herhalingstest: zoom uit en zoek naar patronen, strepen of eentonige vlakken in vloeren en muren.
-- Beoordeel renders (bekijk de PNG's): palet, leesbaarheid op doelresolutie, consistentie met de rest van de kamer, of interactieve objecten opvallen. Uitkomst per asset: goedgekeurd, aanpassen (met concrete punten), of handwerk nodig.
+- Beoordeel elke kamer als screenshot uit Godot op 1080p, in de volledige en de lichte kwaliteitsstand: palet, licht, leesbaarheid, consistentie met de rest van de kamer, of interactieve objecten opvallen. Uitkomst per asset: goedgekeurd, aanpassen (met concrete punten), of handwerk nodig.
 - Schrijf docs/review/art-chNN.md. Sleutelobjecten en de hoofdpersoon markeer je altijd als kandidaat voor handwerk.
