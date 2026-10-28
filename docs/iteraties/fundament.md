@@ -34,11 +34,19 @@ Niet in deze iteratie (geen content, geen nieuwe verhaalkeuzes): verhaalarchitec
 
 ## Definition of done
 
-- [ ] Elke spec in `docs/systemen/` heeft doel, pillar, regels, toestanden, edge cases, UX-flow, schema-verwijzing en acceptatiecriteria
-- [ ] Schema's voor alle zes contenttypes; de fixture valideert, kapotte voorbeelden falen
-- [ ] `python tools/validate.py --all` groen
-- [ ] `python tools/solve.py` bewijst oplosbaarheid van de fixture en vindt een opzettelijke doodlopende staat
-- [ ] Godot-project opent en draait headless zonder fouten; GUT-tests groen
-- [ ] Geen hardcoded content in scenes of scripts
-- [ ] QA-rapport eindigt op `KLAAR VOOR REVIEW`; code-review zonder blokkerende punten
+- [x] Elke spec in `docs/systemen/` heeft doel, pillar, regels, toestanden, edge cases, UX-flow, schema-verwijzing en acceptatiecriteria
+- [x] Schema's voor alle zes contenttypes; de fixture valideert, kapotte voorbeelden falen
+- [x] `python tools/validate.py --all` groen
+- [x] `python tools/solve.py` bewijst oplosbaarheid van de fixture en vindt een opzettelijke doodlopende staat
+- [x] Godot-project opent en draait headless zonder fouten; GUT-tests groen
+- [x] Geen hardcoded content in scenes of scripts
+- [x] QA-rapport eindigt op `KLAAR VOOR REVIEW`; code-review zonder blokkerende punten
 - [ ] Martijn heeft het project geopend en de tests zien draaien
+
+## Verloop
+
+- Specs (#2) en schema's (#1) door de systems-designer; standaardcues (#16) door de geluidsontwerper; project, GUT, validator en oplosser (#3, #4) door de godot-engineer.
+- QA ronde 1 `KLAAR VOOR REVIEW`, code-review ronde 1 met drie blokkerende punten (#18–#20) en moet-punten (#21–#23).
+- Reviewronde 1 en 2 (#24) opgelost; QA ronde 2 `KLAAR VOOR REVIEW`, hercontrole zonder blokkerende punten.
+- Eindstand: `python tools/test_godot.py` 81/81, pytest 93 groen, validator groen, oplosser op de fixture groen (8 stappen).
+- Doorgeschoven naar Fase 1: technische schuld #25. Open keuze voor Martijn: #17 (startjaar).
