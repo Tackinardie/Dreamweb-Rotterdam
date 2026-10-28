@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/puzzle.schema.json",
+  "title": "Onderstad: puzzelgraaf (content/chapters/<chNN_naam>/puzzles.json)",
+  "description": "De afhankelijkheidsgraaf van een hoofdstuk: bron van waarheid voor ontwerp, hints en de oplosser. Alle toestandswijzigende effecten van een hoofdstuk staan hier. Zie docs/systemen/state-en-flags.md.",
+  "type": "object",
+  "required": ["hoofdstuk", "knopen"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "hoofdstuk": { "$ref": "common.schema.json#/$defs/hoofdstuk_id" },
+    "knopen": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/knoop" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "knoop": {
+      "type": "object",
+      "required": ["id", "type", "trigger", "waarom"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/knoop_id" },
+        "type": {
+          "description": "actie = de speler doet iets; feit = de speler leert iets (geeft meestal een token); doel = einde van het hoofdstuk.",
+          "enum": ["actie", "feit", "doel"]
+        },
+        "pad": {
+          "description": "hoofd = nodig voor het doel (hints kiezen hieruit); zij = optioneel.",
+          "enum": ["hoofd", "zij"],
+          "default": "hoofd"
+        },
+        "waarom": {
+          "description": "Eén zin: waarom een echt mens het zo zou oplossen. Ontwerptekst, niet vertaald.",
+          "type": "string",
+          "minLength": 10
+        },
+        "trigger": { "$ref": "#/$defs/trigger" },
+        "vereist": {
+          "description": "Afwezig = altijd.",
+          "$ref": "common.schema.json#/$defs/conditie"
+        },
+        "effecten": { "$ref": "common.schema.json#/$defs/effecten" },
+        "bij_onvervuld": {
+          "description": "Mompel als de trigger plaatsvindt maar vereist niet klopt (feedback, geen straf).",
+          "$ref": "common.schema.json#/$defs/tekstsleutel"
+        },
+        "herhaalbaar": {
+          "description": "Mag de knoop opnieuw vuren nadat hij is opgelost?",
+          "type": "boolean",
+          "default": false
+        },
+        "hints": {
+          "description": "Drie niveaus. Verplicht voor pad=hoofd (controle door de validator).",
+          "type": "object",
+          "required": ["vaag", "richting", "bijna"],
+          "properties": {
+            "vaag": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+            "richting": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+            "bijna": { "$ref": "common.schema.json#/$defs/tekstsleutel" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "trigger": {
+      "description": "Welke speleractie of gebeurtenis deze knoop laat vuren.",
+      "oneOf": [
+        {
+          "description": "Gebruik een object, of gebruik een object uit de inventaris met een ander object.",
+          "type": "object",
+          "required": ["gebruik"],
+          "properties": {
+            "gebruik": { "$ref": "common.schema.json#/$defs/item_id" },
+            "met": { "$ref": "common.schema.json#/$defs/item_id" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["pak"],
+          "properties": { "pak": { "$ref": "common.schema.json#/$defs/item_id" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["open"],
+          "properties": { "open": { "$ref": "common.schema.json#/$defs/item_id" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["lees"],
+          "properties": { "lees": { "$ref": "common.schema.json#/$defs/item_id" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["bekijk"],
+          "properties": { "bekijk": { "$ref": "common.schema.json#/$defs/item_id" } },
+          "additionalProperties": false
+        },
+        {
+          "description": "Sleep een object uit de inventaris naar een NPC.",
+          "type": "object",
+          "required": ["geef", "aan"],
+          "properties": {
+            "geef": { "$ref": "common.schema.json#/$defs/item_id" },
+            "aan": { "$ref": "common.schema.json#/$defs/personage_id" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "description": "Het gesprek bereikt deze regel.",
+          "type": "object",
+          "required": ["dialoog", "regel"],
+          "properties": {
+            "dialoog": { "$ref": "common.schema.json#/$defs/dialoog_id" },
+            "regel": { "$ref": "common.schema.json#/$defs/id" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "description": "De speler opent een item in een app op een apparaat (bericht, foto, mail).",
+          "type": "object",
+          "required": ["apparaat", "app", "item"],
+          "properties": {
+            "apparaat": { "$ref": "common.schema.json#/$defs/apparaat_id" },
+            "app": { "$ref": "common.schema.json#/$defs/id" },
+            "item": { "$ref": "common.schema.json#/$defs/id" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "description": "Het apparaat wordt ontgrendeld.",
+          "type": "object",
+          "required": ["ontgrendel"],
+          "properties": { "ontgrendel": { "$ref": "common.schema.json#/$defs/apparaat_id" } },
+          "additionalProperties": false
+        },
+        {
+          "description": "Twee feiten in het notitieboek combineren (UI volgt met de telefoon).",
+          "type": "object",
+          "required": ["combineer"],
+          "properties": {
+            "combineer": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "uniqueItems": true,
+              "items": { "$ref": "common.schema.json#/$defs/token_id" }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["betreed"],
+          "properties": { "betreed": { "$ref": "common.schema.json#/$defs/kamer_id" } },
+          "additionalProperties": false
+        },
+        {
+          "description": "Een scènegebeurtenis wordt actief.",
+          "type": "object",
+          "required": ["gebeurtenis"],
+          "properties": { "gebeurtenis": { "$ref": "common.schema.json#/$defs/gebeurtenis_id" } },
+          "additionalProperties": false
+        },
+        {
+          "description": "Vuurt zodra 'vereist' waar wordt.",
+          "type": "object",
+          "required": ["automatisch"],
+          "properties": { "automatisch": { "const": true } },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/common.schema.json",
+  "title": "Onderstad: gedeelde definities",
+  "description": "Id-patronen, tekstsleutels, tijd, posities en de gedeelde conditie- en effecttaal. Zie docs/systemen/state-en-flags.md. Dit bestand valideert zelf geen content; andere schema's verwijzen ernaar.",
+  "$defs": {
+    "id": {
+      "description": "snake_case, begint met een letter.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "maxLength": 64
+    },
+    "globaal_id": {
+      "description": "snake_case zonder hoofdstukprefix: items, tokens, personages, globale flags en globale benoemde condities.",
+      "type": "string",
+      "pattern": "^(?!ch[0-9]{2}_)[a-z][a-z0-9_]*$",
+      "maxLength": 64
+    },
+    "hoofdstuk_id": {
+      "description": "Mapnaam van een hoofdstuk, bijv. ch00_hub, ch01_katendrecht.",
+      "type": "string",
+      "pattern": "^ch[0-9]{2}_[a-z][a-z0-9_]*$"
+    },
+    "lokaal_id": {
+      "description": "Id dat bij één hoofdstuk hoort: kamers, scènes, gebeurtenissen, puzzelknopen, dialogen, apparaten, lokale flags en lokale condities. Prefix = chNN_ van het eigen hoofdstuk.",
+      "type": "string",
+      "pattern": "^ch[0-9]{2}_[a-z0-9_]+$",
+      "maxLength": 64
+    },
+    "item_id": { "$ref": "#/$defs/globaal_id" },
+    "token_id": { "$ref": "#/$defs/globaal_id" },
+    "personage_id": { "$ref": "#/$defs/globaal_id" },
+    "kamer_id": { "$ref": "#/$defs/lokaal_id" },
+    "scene_id": { "$ref": "#/$defs/lokaal_id" },
+    "gebeurtenis_id": { "$ref": "#/$defs/lokaal_id" },
+    "knoop_id": { "$ref": "#/$defs/lokaal_id" },
+    "dialoog_id": { "$ref": "#/$defs/lokaal_id" },
+    "apparaat_id": { "$ref": "#/$defs/lokaal_id" },
+    "flag_id": {
+      "description": "Globaal (zonder prefix, gedeclareerd in content/spel.json) of lokaal (met chNN_-prefix, gedeclareerd in chapter.json van dat hoofdstuk).",
+      "$ref": "#/$defs/id"
+    },
+    "conditie_naam": {
+      "description": "Benoemde conditie. Globaal (spel.json) zonder prefix, lokaal (chapter.json) met chNN_-prefix.",
+      "$ref": "#/$defs/id"
+    },
+    "niveau_ref": {
+      "description": "Toegangsniveau als <gebouw_id>.<niveau_id>.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "tekstsleutel": {
+      "description": "Lokalisatiesleutel: punt-gescheiden snake_case-segmenten. De tekst staat in content/tekst/<taal>/*.json.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "maxLength": 160
+    },
+    "tekstvariant": {
+      "description": "Eén tekstsleutel, of een lijst varianten waarvan de eerste waarvan 'als' klopt wordt getoond. De laatste variant heeft geen 'als' (standaard).",
+      "oneOf": [
+        { "$ref": "#/$defs/tekstsleutel" },
+        {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["tekst"],
+            "properties": {
+              "als": { "$ref": "#/$defs/conditie" },
+              "tekst": { "$ref": "#/$defs/tekstsleutel" }
+            },
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "cue_id": {
+      "description": "Audio-cue uit audio/cues.json: punt-gescheiden, bijv. deur.lift.open.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "maxLength": 96
+    },
+    "asset_id": {
+      "description": "Bestandsnaam zonder extensie in game/assets/ (afbeelding bij een bericht, close-up).",
+      "$ref": "#/$defs/id"
+    },
+    "kloktijd": {
+      "type": "string",
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+    },
+    "tijdstip": {
+      "description": "Tijd in de spelwereld. dag 1 = startdatum uit content/spel.json, dag 0 = de dag ervoor, enz. (dag mag negatief zijn voor berichten van vóór het spel).",
+      "type": "object",
+      "required": ["dag", "tijd"],
+      "properties": {
+        "dag": { "type": "integer", "minimum": -400, "maximum": 30 },
+        "tijd": { "$ref": "#/$defs/kloktijd" }
+      },
+      "additionalProperties": false
+    },
+    "scenetijd": {
+      "description": "Tijdstip van een scène: altijd binnen de speelweek.",
+      "allOf": [
+        { "$ref": "#/$defs/tijdstip" },
+        { "properties": { "dag": { "minimum": 1, "maximum": 14 } } }
+      ]
+    },
+    "positie": {
+      "description": "Tegelpositie in de kamer (16x16 px), oorsprong linksboven.",
+      "type": "object",
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "integer", "minimum": 0, "maximum": 63 },
+        "y": { "type": "integer", "minimum": 0, "maximum": 63 }
+      },
+      "additionalProperties": false
+    },
+    "plek": {
+      "description": "Waar een object kan liggen: 'inventaris', een kamer-id (chNN_...) of een item-id (container).",
+      "type": "string",
+      "pattern": "^(inventaris|[a-z][a-z0-9_]*)$"
+    },
+
+    "conditie": {
+      "description": "Gedeelde conditietaal voor toegang, puzzelgraaf, dialoog en tekstvarianten. Zuiver: lezen zonder bijwerkingen. Zie docs/systemen/state-en-flags.md.",
+      "oneOf": [
+        { "$ref": "#/$defs/c_alle" },
+        { "$ref": "#/$defs/c_een_van" },
+        { "$ref": "#/$defs/c_niet" },
+        { "$ref": "#/$defs/c_heeft" },
+        { "$ref": "#/$defs/c_ligt" },
+        { "$ref": "#/$defs/c_token" },
+        { "$ref": "#/$defs/c_flag" },
+        { "$ref": "#/$defs/c_knoop" },
+        { "$ref": "#/$defs/c_kamer" },
+        { "$ref": "#/$defs/c_scene" },
+        { "$ref": "#/$defs/c_gebeurtenis" },
+        { "$ref": "#/$defs/c_kloktijd" },
+        { "$ref": "#/$defs/c_scenetijd" },
+        { "$ref": "#/$defs/c_niveau" },
+        { "$ref": "#/$defs/c_apparaat" },
+        { "$ref": "#/$defs/c_conditie" }
+      ]
+    },
+    "c_alle": {
+      "type": "object",
+      "required": ["alle"],
+      "properties": { "alle": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/conditie" } } },
+      "additionalProperties": false
+    },
+    "c_een_van": {
+      "type": "object",
+      "required": ["een_van"],
+      "properties": { "een_van": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/conditie" } } },
+      "additionalProperties": false
+    },
+    "c_niet": {
+      "type": "object",
+      "required": ["niet"],
+      "properties": { "niet": { "$ref": "#/$defs/conditie" } },
+      "additionalProperties": false
+    },
+    "c_heeft": {
+      "description": "Het object zit in de inventaris, op elke diepte (ook in een gedragen container).",
+      "type": "object",
+      "required": ["heeft"],
+      "properties": { "heeft": { "$ref": "#/$defs/item_id" } },
+      "additionalProperties": false
+    },
+    "c_ligt": {
+      "description": "Het object ligt (op elke diepte) in de genoemde plek.",
+      "type": "object",
+      "required": ["ligt"],
+      "properties": {
+        "ligt": {
+          "type": "object",
+          "required": ["object", "in"],
+          "properties": {
+            "object": { "$ref": "#/$defs/item_id" },
+            "in": { "$ref": "#/$defs/plek" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "c_token": {
+      "description": "Het feit-token staat in het notitieboek.",
+      "type": "object",
+      "required": ["token"],
+      "properties": { "token": { "$ref": "#/$defs/token_id" } },
+      "additionalProperties": false
+    },
+    "c_flag": {
+      "description": "Zonder vergelijking: waar als de flag waar of ongelijk aan 0 is. Met precies één vergelijking: gelijk, minstens of hoogstens.",
+      "type": "object",
+      "required": ["flag"],
+      "properties": {
+        "flag": { "$ref": "#/$defs/flag_id" },
+        "gelijk": { "type": ["boolean", "integer"] },
+        "minstens": { "type": "integer" },
+        "hoogstens": { "type": "integer" }
+      },
+      "maxProperties": 2,
+      "additionalProperties": false
+    },
+    "c_knoop": {
+      "description": "De puzzelknoop is opgelost.",
+      "type": "object",
+      "required": ["knoop"],
+      "properties": { "knoop": { "$ref": "#/$defs/knoop_id" } },
+      "additionalProperties": false
+    },
+    "c_kamer": {
+      "description": "De speler is in deze kamer.",
+      "type": "object",
+      "required": ["kamer"],
+      "properties": { "kamer": { "$ref": "#/$defs/kamer_id" } },
+      "additionalProperties": false
+    },
+    "c_scene": {
+      "description": "Dit is de huidige scène.",
+      "type": "object",
+      "required": ["scene"],
+      "properties": { "scene": { "$ref": "#/$defs/scene_id" } },
+      "additionalProperties": false
+    },
+    "c_gebeurtenis": {
+      "description": "De scènegebeurtenis heeft deze status (standaard: actief).",
+      "type": "object",
+      "required": ["gebeurtenis"],
+      "properties": {
+        "gebeurtenis": { "$ref": "#/$defs/gebeurtenis_id" },
+        "status": { "enum": ["wacht", "actief", "voorbij"] }
+      },
+      "additionalProperties": false
+    },
+    "c_kloktijd": {
+      "description": "De kloktijd van de scène ligt in [van, tot). Mag over middernacht lopen (van > tot).",
+      "type": "object",
+      "required": ["kloktijd"],
+      "properties": {
+        "kloktijd": {
+          "type": "object",
+          "required": ["van", "tot"],
+          "properties": {
+            "van": { "$ref": "#/$defs/kloktijd" },
+            "tot": { "$ref": "#/$defs/kloktijd" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "c_scenetijd": {
+      "description": "De scènetijd ligt in [vanaf, voor). Minstens één grens.",
+      "type": "object",
+      "required": ["scenetijd"],
+      "properties": {
+        "scenetijd": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "vanaf": { "$ref": "#/$defs/tijdstip" },
+            "voor": { "$ref": "#/$defs/tijdstip" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "c_niveau": {
+      "description": "De speler heeft (in de inventaris) een object dat dit toegangsniveau geeft.",
+      "type": "object",
+      "required": ["niveau"],
+      "properties": { "niveau": { "$ref": "#/$defs/niveau_ref" } },
+      "additionalProperties": false
+    },
+    "c_apparaat": {
+      "description": "Het apparaat is in deze toestand. Fundament kent alleen vergrendeld/ontgrendeld; het apparatensysteem (Fase 1+) breidt de lijst uit.",
+      "type": "object",
+      "required": ["apparaat", "toestand"],
+      "properties": {
+        "apparaat": { "$ref": "#/$defs/apparaat_id" },
+        "toestand": { "enum": ["vergrendeld", "ontgrendeld"] }
+      },
+      "additionalProperties": false
+    },
+    "c_conditie": {
+      "description": "Verwijzing naar een benoemde conditie (spel.json of chapter.json), bijv. als_bezorger.",
+      "type": "object",
+      "required": ["conditie"],
+      "properties": { "conditie": { "$ref": "#/$defs/conditie_naam" } },
+      "additionalProperties": false
+    },
+
+    "effect": {
+      "description": "Gedeelde effecttaal. Toestandswijzigende effecten mogen alleen in puzzles.json staan; 'cue' en 'mompel' mogen overal waar effecten zijn toegestaan.",
+      "oneOf": [
+        { "$ref": "#/$defs/e_zet_flag" },
+        { "$ref": "#/$defs/e_wis_flag" },
+        { "$ref": "#/$defs/e_geef_token" },
+        { "$ref": "#/$defs/e_geef_object" },
+        { "$ref": "#/$defs/e_verplaats_object" },
+        { "$ref": "#/$defs/e_verwijder_object" },
+        { "$ref": "#/$defs/e_start_gebeurtenis" },
+        { "$ref": "#/$defs/e_stop_gebeurtenis" },
+        { "$ref": "#/$defs/e_naar_scene" },
+        { "$ref": "#/$defs/e_naar_kamer" },
+        { "$ref": "#/$defs/e_cue" },
+        { "$ref": "#/$defs/e_mompel" }
+      ]
+    },
+    "effecten": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/effect" }
+    },
+    "e_zet_flag": {
+      "type": "object",
+      "required": ["zet_flag"],
+      "properties": {
+        "zet_flag": { "$ref": "#/$defs/flag_id" },
+        "waarde": { "type": ["boolean", "integer"], "default": true }
+      },
+      "additionalProperties": false
+    },
+    "e_wis_flag": {
+      "type": "object",
+      "required": ["wis_flag"],
+      "properties": { "wis_flag": { "$ref": "#/$defs/flag_id" } },
+      "additionalProperties": false
+    },
+    "e_geef_token": {
+      "type": "object",
+      "required": ["geef_token"],
+      "properties": { "geef_token": { "$ref": "#/$defs/token_id" } },
+      "additionalProperties": false
+    },
+    "e_geef_object": {
+      "description": "Object (nog 'nergens') komt in de inventaris; past het niet, dan landt het op de grond waar de speler staat.",
+      "type": "object",
+      "required": ["geef_object"],
+      "properties": { "geef_object": { "$ref": "#/$defs/item_id" } },
+      "additionalProperties": false
+    },
+    "e_verplaats_object": {
+      "type": "object",
+      "required": ["verplaats_object"],
+      "properties": {
+        "verplaats_object": {
+          "type": "object",
+          "required": ["object", "naar"],
+          "properties": {
+            "object": { "$ref": "#/$defs/item_id" },
+            "naar": { "$ref": "#/$defs/plek" },
+            "positie": { "$ref": "#/$defs/positie" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "e_verwijder_object": {
+      "description": "Object gaat naar 'nergens' (opgedronken, afgegeven). De oplosser controleert dat dit geen doodlopende staat maakt.",
+      "type": "object",
+      "required": ["verwijder_object"],
+      "properties": { "verwijder_object": { "$ref": "#/$defs/item_id" } },
+      "additionalProperties": false
+    },
+    "e_start_gebeurtenis": {
+      "type": "object",
+      "required": ["start_gebeurtenis"],
+      "properties": { "start_gebeurtenis": { "$ref": "#/$defs/gebeurtenis_id" } },
+      "additionalProperties": false
+    },
+    "e_stop_gebeurtenis": {
+      "type": "object",
+      "required": ["stop_gebeurtenis"],
+      "properties": { "stop_gebeurtenis": { "$ref": "#/$defs/gebeurtenis_id" } },
+      "additionalProperties": false
+    },
+    "e_naar_scene": {
+      "description": "Tijdsprong naar een andere scène. Zonder 'kamer' blijft de speler in de huidige kamer (die dan in de nieuwe scène moet bestaan).",
+      "type": "object",
+      "required": ["naar_scene"],
+      "properties": {
+        "naar_scene": { "$ref": "#/$defs/scene_id" },
+        "kamer": { "$ref": "#/$defs/kamer_id" },
+        "uitgang": { "$ref": "#/$defs/id" }
+      },
+      "additionalProperties": false
+    },
+    "e_naar_kamer": {
+      "description": "Verplaatst de speler (bijv. weggestuurd door een NPC). 'uitgang' = waar hij verschijnt; zonder uitgang op de startpositie van de kamer.",
+      "type": "object",
+      "required": ["naar_kamer"],
+      "properties": {
+        "naar_kamer": { "$ref": "#/$defs/kamer_id" },
+        "uitgang": { "$ref": "#/$defs/id" }
+      },
+      "additionalProperties": false
+    },
+    "e_cue": {
+      "type": "object",
+      "required": ["cue"],
+      "properties": { "cue": { "$ref": "#/$defs/cue_id" } },
+      "additionalProperties": false
+    },
+    "e_mompel": {
+      "description": "Richard zegt of denkt een korte zin (tekst boven zijn hoofd).",
+      "type": "object",
+      "required": ["mompel"],
+      "properties": { "mompel": { "$ref": "#/$defs/tekstsleutel" } },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/item.schema.json",
+  "title": "Onderstad: objectcatalogus (content/items.json)",
+  "description": "Alle objecten van de game, pakbaar of niet. Elk object bestaat precies één keer in de wereld. De begin-plek staat in de kamerbestanden, niet hier. Zie docs/systemen/objecten-en-inventaris.md.",
+  "type": "object",
+  "required": ["items"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "actie": { "enum": ["bekijk", "gebruik", "open", "lees", "pak"] },
+    "item": {
+      "type": "object",
+      "required": ["id", "naam", "beschrijving", "pakbaar", "acties"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/item_id" },
+        "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" },
+        "beschrijving": {
+          "description": "Wat 'bekijk' toont.",
+          "$ref": "common.schema.json#/$defs/tekstvariant"
+        },
+        "pakbaar": { "type": "boolean" },
+        "grootte": {
+          "description": "Aantal inventarisslots (1-3). Verplicht als pakbaar.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "container": {
+          "description": "Aanwezig = dit object kan andere objecten bevatten.",
+          "type": "object",
+          "required": ["capaciteit", "max_grootte"],
+          "properties": {
+            "capaciteit": {
+              "description": "Totaal aantal slots dat erin past (som van de groottes van de directe inhoud).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 24
+            },
+            "max_grootte": {
+              "description": "Grootste object dat erin past.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3
+            },
+            "open_vereist": {
+              "description": "Conditie om de container te openen (bijv. een kluisje met een sleutel). Eenmaal geopend blijft hij open.",
+              "$ref": "common.schema.json#/$defs/conditie"
+            },
+            "geweigerd": {
+              "description": "Mompel als open_vereist niet klopt.",
+              "$ref": "common.schema.json#/$defs/tekstsleutel"
+            }
+          },
+          "additionalProperties": false
+        },
+        "acties": {
+          "description": "Beschikbare acties. 'bekijk' altijd; 'pak' alleen als pakbaar; 'open' alleen bij een container; 'lees' alleen met leestekst.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "contains": { "const": "bekijk" },
+          "items": { "$ref": "#/$defs/actie" }
+        },
+        "standaard_actie": {
+          "description": "Actie bij linksklikken in de wereld. Zonder dit veld: pak > open > lees > gebruik > bekijk (eerste die in acties staat).",
+          "$ref": "#/$defs/actie"
+        },
+        "leestekst": {
+          "description": "Wat 'lees' toont (briefje, kaart, label).",
+          "$ref": "common.schema.json#/$defs/tekstvariant"
+        },
+        "gebruik_tekst": {
+          "description": "Reactie op 'gebruik' als geen puzzelknoop vuurt.",
+          "$ref": "common.schema.json#/$defs/tekstvariant"
+        },
+        "geeft_niveaus": {
+          "description": "Toegangsniveaus die dit object (een pas) geeft zolang de speler het heeft.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/niveau_ref" }
+        },
+        "geluid": {
+          "description": "Cues die de standaardcues van het objectsysteem vervangen.",
+          "type": "object",
+          "properties": {
+            "pak": { "$ref": "common.schema.json#/$defs/cue_id" },
+            "leg": { "$ref": "common.schema.json#/$defs/cue_id" },
+            "open": { "$ref": "common.schema.json#/$defs/cue_id" },
+            "lees": { "$ref": "common.schema.json#/$defs/cue_id" },
+            "gebruik": { "$ref": "common.schema.json#/$defs/cue_id" }
+          },
+          "additionalProperties": false
+        },
+        "notitie": {
+          "description": "Ontwerpnotitie (niet spelerszichtbaar, niet vertaald): reden van het object (puzzel, verhaal, sfeer, red herring).",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "pakbaar": { "const": true } } },
+          "then": { "required": ["grootte"] }
+        }
+      ]
+    }
+  }
+}

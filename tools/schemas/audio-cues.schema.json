@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/audio-cues.schema.json",
+  "title": "Onderstad: cue-catalogus (audio/cues.json)",
+  "description": "Elk geluid van de game als cue-id. Code en content roepen alleen deze id's aan, nooit bestanden. Zie docs/systemen/audio-cues-en-geluidsvenster.md.",
+  "type": "object",
+  "required": ["cues"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "cues": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/cue" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "cue": {
+      "type": "object",
+      "required": ["id", "beschrijving", "laag", "soort", "bron", "prioriteit", "status"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/cue_id" },
+        "beschrijving": {
+          "description": "Wat je hoort, in één zin. Ontwerptekst, niet vertaald.",
+          "type": "string",
+          "minLength": 3
+        },
+        "laag": { "enum": ["effect", "voetstap", "ambience", "muziek", "stem"] },
+        "soort": {
+          "description": "eenmalig = los geluid (Gebeurtenissen); doorlopend = laag die blijft klinken tot hij gestopt wordt (Nu actief).",
+          "enum": ["eenmalig", "doorlopend"]
+        },
+        "bron": {
+          "description": "Waar het geluid in de wereld vandaan komt (bijv. 'plafondlamp studentenkamer', 'regen op het raam', 'systeem/interface').",
+          "type": "string",
+          "minLength": 3
+        },
+        "prioriteit": {
+          "description": "Volgorde van productie. Het cue-logboek kan hem bijstellen.",
+          "enum": ["hoog", "midden", "laag"]
+        },
+        "status": { "enum": ["verwacht", "placeholder", "klaar"] },
+        "bestand": {
+          "description": "Pad relatief aan game/assets/audio/, verplicht zodra status niet 'verwacht' is.",
+          "type": "string",
+          "pattern": "^[a-z0-9_/.-]+\\.(ogg|wav)$"
+        },
+        "context": {
+          "description": "Namen van contextwaarden die de aanroeper meegeeft en die het venster toont (bijv. 'nat').",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/id" }
+        },
+        "notitie": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "if": { "properties": { "status": { "const": "verwacht" } } },
+      "then": { "not": { "required": ["bestand"] } },
+      "else": { "required": ["bestand"] }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onderstad.local/schemas/spel.schema.json",
+  "title": "Onderstad: spelinstellingen (content/spel.json)",
+  "description": "Globale gegevens die bij geen enkel hoofdstuk horen: startdatum van de klok, hoofdstukvolgorde, inventarisgrootte, talen, personages, globale flags en globale benoemde condities (zoals als_bezorger).",
+  "type": "object",
+  "required": ["startdatum", "hoofdstukken", "inventaris_slots", "basistaal", "talen", "personages", "flags", "condities"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "startdatum": {
+      "description": "Kalenderdatum van dag 1 (de nieuwjaarsdag waarop het spel om net na middernacht begint). Weekdag wordt hieruit berekend.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-01-01$"
+    },
+    "hoofdstukken": {
+      "description": "Speelvolgorde. Eerste = nieuw spel.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/hoofdstuk_id" }
+    },
+    "inventaris_slots": { "const": 8 },
+    "basistaal": { "const": "nl" },
+    "talen": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "contains": { "const": "nl" },
+      "items": { "type": "string", "pattern": "^[a-z]{2}$" }
+    },
+    "personages": {
+      "description": "Register van sprekers en NPC's. 'richard' is verplicht.",
+      "type": "array",
+      "contains": { "type": "object", "properties": { "id": { "const": "richard" } } },
+      "items": {
+        "type": "object",
+        "required": ["id", "naam"],
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/personage_id" },
+          "naam": { "$ref": "common.schema.json#/$defs/tekstsleutel" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "flags": {
+      "description": "Globale flags (zonder hoofdstukprefix).",
+      "type": "array",
+      "items": {
+        "allOf": [
+          { "$ref": "chapter.schema.json#/$defs/flag" },
+          { "properties": { "id": { "$ref": "common.schema.json#/$defs/globaal_id" } } }
+        ]
+      }
+    },
+    "condities": {
+      "description": "Globale benoemde condities, bijv. als_bezorger.",
+      "type": "object",
+      "propertyNames": { "$ref": "common.schema.json#/$defs/globaal_id" },
+      "additionalProperties": { "$ref": "common.schema.json#/$defs/conditie" }
+    }
+  },
+  "additionalProperties": false
+}
