@@ -87,7 +87,7 @@ Het verhaal volgt zeven nachten en zeven doelwitten voordat Het Hart live gaat, 
 
 **Verhaalskelet**
 
-1. **Opzet**: de jaarwisseling. Hij zit alleen op zijn studentenkamer; buiten knalt het vuurwerk bij de Erasmusbrug. Student met een bijbaan als flitsbezorger, slaapt slecht. In een droom ziet hij Rotterdam waarin Het Hart klopt: stille straten, iedereen gestuurd, niemand die nog nee zegt. Een gestalte zonder hart geeft hem een naam.
+1. **Opzet**: de jaarwisseling. Hij zit alleen op zijn studentenkamer; buiten knalt illegaal vuurwerk boven de daken. Student met een bijbaan als flitsbezorger, slaapt slecht. In een droom ziet hij Rotterdam waarin Het Hart klopt: stille straten, iedereen gestuurd, niemand die nog nee zegt. Een gestalte zonder hart geeft hem een naam.
 2. **Eerste nacht**: een bezorgorder naar precies die naam: de projectontwikkelaar. In zijn loft ziet hij voor het eerst de plannen van Het Hart.
 3. **Escalatie**: elke nacht een nieuwe order, een nieuw doelwit, een nieuw stuk van het netwerk (wie, hoe, wanneer het live gaat). Het Hart groeit intussen: camera's, de app en de mensen om hem heen lijken hem steeds beter te zien.
 4. **Kantelpunt (Erasmus MC-level)**: de slaaponderzoeker levert de technologie die mensen aan Het Hart koppelt. Hij vindt zijn eigen dossier: hij wist dat hij proefpersoon was, maar niet waarvoor.
@@ -96,7 +96,7 @@ Het verhaal volgt zeven nachten en zeven doelwitten voordat Het Hart live gaat, 
 
 **Openingsscène: de jaarwisseling**
 
-Het spel begint net na middernacht in de nieuwjaarsnacht. De hoofdpersoon is alleen op zijn studentenkamer. Door het raam zie je het vuurwerk boven de Erasmusbrug; je hoort de stad juichen, de buren feesten, zijn telefoon blijft stil.
+Het spel begint net na middernacht in de nieuwjaarsnacht. De hoofdpersoon is alleen op zijn studentenkamer. Door het raam zie je losse illegale vuurpijlen boven de daken, met de Erasmusbrug als verlichte lijn in de verte; je hoort knallen in lege straten, de buren feesten, zijn telefoon blijft stil.
 
 - **Contrast**: de hele stad viert samen, hij is alleen. Dat is de toon van de game in één beeld.
 - **Echo van 1940**: de flitsen en knallen van het vuurwerk gaan langzaam over in het bombardement. Zo begint de eerste droom: het vuurwerk wordt de brand van de oude stad, en daarna toont de onderstad wat Het Hart gaat doen.
@@ -477,7 +477,7 @@ Van bovenaf zie je vooral vloeren, bedden, tafels en daken, en weinig gevels. Da
 
 | Locatie | Wat logisch en mogelijk is |
 | --- | --- |
-| Studentenkamer (hub) | Rood-wit vloerkleed, clubsjaal over de stoel, een leeg kapsalon-bakje op het bureau, een fietskaart van de stad, het uitzicht op het vuurwerk boven de Erasmusbrug |
+| Studentenkamer (hub) | Rood-wit vloerkleed, clubsjaal over de stoel, een leeg kapsalon-bakje op het bureau, een fietskaart van de stad, het uitzicht op illegaal vuurwerk boven de daken |
 | Bar Witte de Withstraat | Bierviltjes met de skyline, een stadsvlag achter de bar, een voetbalwedstrijd op tv |
 | Katendrecht | Klinkers in keperverband, oude kaaimuren en bolders, maquette van de nieuwe wijk in de loft van de ontwikkelaar, ingelijste luchtfoto van de haven |
 | Woontoren aan de Maas | Uitzicht op de rivier en de brug vanaf het penthouse, design-vloerkleed met een abstracte plattegrond van de stad |
@@ -656,7 +656,7 @@ De vertical slice is 20 à 30 minuten speeltijd van hub tot eerste droom, met de
 
 **Verloop**
 
-1. **Kamer (hub)**: nieuwjaarsnacht, alleen op zijn studentenkamer, vuurwerk boven de Erasmusbrug. Verken de kamer; het vuurwerk gaat over in de eerste droom. Daarna wakker: leer pakken en gebruiken. Pak bezorgtas en jas.
+1. **Kamer (hub)**: nieuwjaarsnacht, alleen op zijn studentenkamer, illegaal vuurwerk boven de daken. Verken de kamer; het vuurwerk gaat over in de eerste droom. Daarna wakker: leer pakken en gebruiken. Pak bezorgtas en jas.
 2. **Order**: de app toont een order naar een adres in Katendrecht, op een naam uit de droom.
 3. **Katendrecht, buiten**: verbouwd pakhuis met bouwhekken. Bij een bankje ligt een verloren telefoon.
 4. **Telefoon kraken**: de pincode staat niet op het toestel maar volgt uit een foto in de bar (verjaardagstaart op een social-post).
