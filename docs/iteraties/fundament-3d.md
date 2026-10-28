@@ -33,7 +33,7 @@ Niet in deze iteratie: verhaal, locaties, puzzels, art-assets (behalve placehold
 - [ ] `content/spel.json` en `algemeen.json` valideren (verschoven naar `/iteratie ch01`, zie #30); `python tools/validate.py --all` groen
 - [x] `python tools/test_godot.py` groen
 - [x] QA eindigt op KLAAR VOOR REVIEW; code-review zonder blokkerende punten
-- [ ] Martijn heeft de testkamer gestart en gezien
+- [x] Martijn heeft de testkamer gestart en gezien
 
 ## Starten
 
