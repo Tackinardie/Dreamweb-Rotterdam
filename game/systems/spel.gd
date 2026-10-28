@@ -1,5 +1,5 @@
 class_name Spel
-extends SpelStaat
+extends SpelTekst
 ## Alle spelstaat op één plek. `GameState` (autoload) is gewoon een instantie hiervan; tests maken er zelf een
 ## met een eigen ContentDb. Subsystemen praten via signalen.
 
@@ -75,7 +75,7 @@ func nieuw_spel(h: String = "") -> void:
 	for t: String in aanname.get("tokens", []):
 		geef_token(t, "aanname", false)
 	_zet_speler(ch["start"]["kamer"], ch["start"].get("uitgang", ""))
-	_kamer_geluid()
+	kamer_geluid()
 	puzzel.herzie()
 	nieuw_spel_gestart.emit()
 
@@ -142,42 +142,9 @@ func notitie_tekst(id: String) -> String:
 	return t.replace("{token:%s}" % id, str(content.tokens[id].get("waarde", "")))
 
 
-# ---------------------------------------------------------------- teksten
-
-func tekst(sleutel: String, vars: Dictionary = {}) -> String:
-	var t: String = content.tekst(sleutel)
-	for k: String in vars:
-		t = t.replace("{%s}" % k, str(vars[k]))
-	for token_id: String in content.tokens:
-		if t.contains("{token:%s}" % token_id):
-			t = t.replace("{token:%s}" % token_id, str(content.tokens[token_id].get("waarde", "")))
-	return t
-
-
-## Eerste variant waarvan `als` klopt (of de enige sleutel). Geeft een tekstsleutel.
-func kies_variant(v: Variant) -> String:
-	if v is String:
-		return v
-	if v is Array:
-		for x: Dictionary in v:
-			if Condities.evalueer(x.get("als"), ctx):
-				return x["tekst"]
-	return ""
-
-
-func mompel_zeg(sleutel: String, vars: Dictionary = {}) -> void:
-	if sleutel != "":
-		mompel.emit(tekst(sleutel, vars), sleutel)
-
-
-func log_fout(tekst_: String) -> void:
-	fout_log.append(tekst_)
-	printerr("spel: " + tekst_)
-
-
 # ---------------------------------------------------------------- kamers en scènes
 
-func _positie_van_uitgang(k: String, uitgang: String) -> Vector2i:
+func positie_van_uitgang(k: String, uitgang: String) -> Vector2i:
 	var kd: Dictionary = content.kamers.get(k, {})
 	for u: Dictionary in kd.get("uitgangen", []):
 		if u["id"] == uitgang:
@@ -188,7 +155,7 @@ func _positie_van_uitgang(k: String, uitgang: String) -> Vector2i:
 
 func _zet_speler(k: String, uitgang: String = "") -> void:
 	kamer = k
-	positie = _positie_van_uitgang(k, uitgang)
+	positie = positie_van_uitgang(k, uitgang)
 
 
 ## Speler naar een andere kamer; trigger `betreed` en autosave (SF-14, TG-11).
@@ -198,10 +165,25 @@ func verplaats_speler(naar: String, uitgang: String = "", autosave_nu: bool = tr
 		return
 	var van: String = kamer
 	_zet_speler(naar, uitgang)
-	_kamer_geluid()
+	kamer_geluid()
 	kamer_gewisseld.emit(van, naar)
-	puzzel.trigger({"betreed": naar}, false)
+	puzzel.trigger({"betreed": naar})
 	if autosave_nu:
+		if _actie_diepte > 0:
+			_autosave_wacht = true      # B1: pas opslaan als de buitenste actie klaar is
+		else:
+			autosave()
+
+
+## Een actie (trigger, herziening) begint of eindigt. Autosave wacht tot de buitenste actie klaar is.
+func begin_actie() -> void:
+	_actie_diepte += 1
+
+
+func einde_actie() -> void:
+	_actie_diepte = maxi(0, _actie_diepte - 1)
+	if _actie_diepte == 0 and _autosave_wacht:
+		_autosave_wacht = false
 		autosave()
 
 
@@ -224,7 +206,7 @@ func naar_scene(scene_id: String, doel_kamer: String = "", uitgang: String = "",
 		verplaats_speler(doel_kamer, uitgang, false)
 	elif doel_kamer != "" and uitgang != "":
 		_zet_speler(kamer, uitgang)
-	elif not nieuwe.has(kamer):
+	elif doel_kamer == "" and not nieuwe.has(kamer):
 		log_fout("naar_scene '%s': huidige kamer '%s' bestaat daarin niet" % [scene_id, kamer])
 	puzzel.herzie()
 	return {"ok": true, "richting": richting}
@@ -239,7 +221,7 @@ func npcs_in_kamer(k: String) -> Array:
 
 
 ## Ambience en NPC-lagen van de kamer starten, die van de vorige stoppen (A4, AC-06).
-func _kamer_geluid() -> void:
+func kamer_geluid() -> void:
 	audio.stop_lagen_met("ambience.")
 	audio.stop_lagen_met("npc.")
 	var kd: Dictionary = content.kamers.get(kamer, {})

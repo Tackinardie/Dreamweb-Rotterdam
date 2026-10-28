@@ -47,3 +47,40 @@ def test_afwezige_en_lege_condities():
     t = DictToestand({}, {})
     assert evalueer(None, t) is True
     assert evalueer({"alle": []}, t) is False and t.fouten
+
+
+# ---- M8: dezelfde testset tegen de productiecontext van de oplosser (Sim)
+
+def sim_uit_toestand(t, benoemd):
+    from types import SimpleNamespace
+
+    from onderstad.condities import Toestand
+    from onderstad.oplosser_sim import Sim
+
+    niveaus = {}
+    for i, it in t["items"].items():
+        for n in it.get("geeft_niveaus", []):
+            niveaus.setdefault(n, []).append(i)
+    w = SimpleNamespace(
+        items=t["items"], flags={f: {"start": v} for f, v in t["flag_start"].items()},
+        gebeurtenissen={e: {} for e in t["gebeurtenissen"]}, condities=benoemd, apparaten={a: {} for a in t["apparaten"]})
+    m = SimpleNamespace(w=w, scenes={t["scene"]: {"tijd": {"dag": t["dag"], "tijd": t["tijd"]}}}, niveau_bronnen=niveaus)
+    sim = Sim.__new__(Sim)
+    Toestand.__init__(sim)
+    sim.m, sim.kamer, sim.scene = m, t["kamer"], t["scene"]
+    sim.plek, sim.open, sim.tokens = dict(t["plekken"]), set(), set(t["tokens"])
+    sim.flags, sim.knopen, sim.ev = dict(t["flags"]), set(t["knopen"]), dict(t["gebeurtenissen"])
+    sim.ontgrendeld = {a for a, st in t["apparaten"].items() if st == "ontgrendeld"}
+    sim.net_actief, sim.opgelost_nu = [], []
+    return sim
+
+
+def test_m8_gedeelde_testset_geeft_dezelfde_uitkomsten_in_de_oplosser():
+    verkeerd = []
+    for g in TESTSET["gevallen"]:
+        sim = sim_uit_toestand(g["toestand"], TESTSET["benoemd"])
+        if evalueer(g["conditie"], sim) != g["verwacht"]:
+            verkeerd.append(g["naam"])
+        if g.get("geeft_foutregel"):
+            assert sim.fouten, g["naam"]
+    assert verkeerd == []

@@ -199,7 +199,7 @@ def _terug_ok(bron: list[dict], doel: dict) -> bool:
     """Is er geen enkele bron waarvoor een sprong naar doel een fout terug in de tijd is?"""
     if doel.get("niet_lineair"):
         return True
-    return any(b.get("niet_lineair") or _tijd(doel) >= _tijd(b) for b in bron)
+    return all(b.get("niet_lineair") or _tijd(doel) >= _tijd(b) for b in bron)
 
 
 def _bronscenes(ctx: Ctx, knoop: dict, hoofdstuk: str) -> tuple[list[dict], bool]:
@@ -207,7 +207,10 @@ def _bronscenes(ctx: Ctx, knoop: dict, hoofdstuk: str) -> tuple[list[dict], bool
     expliciet = [a[1]["scene"] for a in alle_atomen_diep(knoop.get("vereist"), ctx.w) if a[0] == "scene"]
     if expliciet:
         return [ctx.w.scenes[s] for s in expliciet if s in ctx.w.scenes], True
-    return [sc for sc in ctx.w.scenes.values() if ctx.w.scene_hoofdstuk[sc["id"]] == hoofdstuk], False
+    alle = [sc for sc in ctx.w.scenes.values() if ctx.w.scene_hoofdstuk[sc["id"]] == hoofdstuk]
+    if "betreed" in knoop["trigger"]:
+        alle = [sc for sc in alle if knoop["trigger"]["betreed"] in sc["kamers"]]
+    return alle, False
 
 
 def v15_scenewissel(ctx: Ctx) -> None:
@@ -255,26 +258,30 @@ def v16_niet_lineair(ctx: Ctx) -> None:
 
 
 def v17_automatisch(ctx: Ctx) -> None:
+    """V17: een naar_scene in een knoop mag, bij elke triggersoort, geen kamers laten wegvallen (fout).
+    Waarschuwing als een geef_object of verplaats_object vóór de naar_scene staat (valt buiten de O9-voorcontrole)."""
     w = ctx.w
     for doc in ctx.docs:
         if doc.soort != "puzzle":
             continue
         for i, k in enumerate(doc.data["knopen"]):
-            t = k["trigger"]
-            if not ("automatisch" in t or "gebeurtenis" in t):
-                continue
+            gezien_verplaatsing = False
             for j, e in enumerate(k.get("effecten", [])):
+                if "geef_object" in e or "verplaats_object" in e:
+                    gezien_verplaatsing = True
                 if "naar_scene" not in e or e["naar_scene"] not in w.scenes:
                     continue
+                p = f"$.knopen[{i}].effecten[{j}]"
+                if gezien_verplaatsing:
+                    ctx.waarschuw("V17", doc, p, "een geef_object of verplaats_object staat vóór de naar_scene en valt buiten de O9-voorcontrole")
                 doel = w.scenes[e["naar_scene"]]
-                bron, expliciet = _bronscenes(ctx, k, doc.hoofdstuk or "")
+                bron, _ = _bronscenes(ctx, k, doc.hoofdstuk or "")
                 for b in bron:
                     if b["id"] == doel["id"]:
                         continue
                     weg = sorted(set(b["kamers"]) - set(doel["kamers"]))
                     if weg:
-                        melding = f"automatische scènewissel naar '{doel['id']}' laat kamers uit '{b['id']}' wegvallen: {', '.join(weg)}"
-                        (ctx.fout if expliciet else ctx.waarschuw)("V17", doc, f"$.knopen[{i}].effecten[{j}]", melding)
+                        ctx.fout("V17", doc, p, f"scènewissel naar '{doel['id']}' laat kamers uit '{b['id']}' wegvallen: {', '.join(weg)}")
 
 
 def v18_merkbaar(ctx: Ctx) -> None:

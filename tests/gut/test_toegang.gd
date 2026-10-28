@@ -102,7 +102,8 @@ func test_tg08_npc_kiest_eerste_gesprek_met_kloppende_als() -> void:
 
 
 func test_tg09_uitgang_naar_kamer_buiten_de_scene() -> void:
-	s.naar_scene(Hulp.S2, "", "", true)
+	Hulp.voeg_scene_toe(s, "ch01_sklein", [Hulp.HAL, Hulp.DAK], {"dag": 1, "tijd": "09:00"})
+	s.naar_scene("ch01_sklein", "", "", true)
 	var r: Dictionary = s.toegang.doorgang(Hulp.HAL, "deur_kantoor")
 	assert_false(r["ok"])
 	assert_eq(r["tekst"], "systeem.uitgang.niet_nu", "TG-09")

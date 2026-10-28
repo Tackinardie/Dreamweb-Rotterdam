@@ -1,0 +1,48 @@
+{
+  "startdatum": "2025-01-01",
+  "hoofdstukken": [
+    "ch00_hub",
+    "ch01_proef",
+    "ch02_extra"
+  ],
+  "inventaris_slots": 8,
+  "basistaal": "nl",
+  "talen": [
+    "nl"
+  ],
+  "personages": [
+    {
+      "id": "richard",
+      "naam": "personage.richard.naam"
+    },
+    {
+      "id": "portier",
+      "naam": "personage.portier.naam"
+    }
+  ],
+  "flags": [
+    {
+      "id": "proef_globaal",
+      "type": "bool",
+      "start": false,
+      "omschrijving": "Globale testflag."
+    },
+    {
+      "id": "hub_vlag",
+      "type": "bool",
+      "start": false
+    }
+  ],
+  "condities": {
+    "als_bezorger": {
+      "alle": [
+        {
+          "heeft": "bezorgtas"
+        },
+        {
+          "heeft": "jas"
+        }
+      ]
+    }
+  }
+}

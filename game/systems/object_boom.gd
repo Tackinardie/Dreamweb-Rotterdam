@@ -148,7 +148,7 @@ func verwijder(item: String) -> void:
 
 
 func is_onmisbaar(item: String) -> bool:
-	return content.onmisbaar.has(item)
+	return content.is_onmisbaar(item, hoofdstuk)
 
 
 ## O9: eerste pakbare onmisbare object dat in een kamer ligt die in de nieuwe scène niet meer bestaat.

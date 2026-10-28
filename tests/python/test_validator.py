@@ -32,10 +32,10 @@ def test_echte_content_en_cues_zijn_groen():
 
 @pytest.mark.parametrize("naam", sorted(maak_kapot.VARIANTEN))
 def test_kapotte_variant_faalt_op_de_verwachte_regel(naam, valideer_variant):
-    regel, fragment = maak_kapot.VARIANTEN[naam]
-    gevonden = fouten(valideer_variant(naam))
+    regel, fragment, niveau = maak_kapot.VARIANTEN[naam]
+    gevonden = [m for m in valideer_variant(naam).meldingen if m.niveau == niveau]
     treffers = [m for m in gevonden if m.regel == regel and fragment in m.tekst]
-    assert treffers, f"{naam}: geen {regel}-fout met '{fragment}'; wel: {[str(m) for m in gevonden]}"
+    assert treffers, f"{naam}: geen {niveau} {regel} met '{fragment}'; wel: {[str(m) for m in gevonden]}"
     for m in treffers:
         assert m.bestand and m.pad, "een melding noemt bestand en pad"
 

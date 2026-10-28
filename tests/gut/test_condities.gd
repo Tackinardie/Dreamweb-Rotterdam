@@ -18,6 +18,19 @@ func test_sf01_gedeelde_testset_geeft_dezelfde_uitkomsten() -> void:
 	assert_eq(fout_gevallen, [], "SF-01: gevallen met een afwijkende uitkomst")
 
 
+func test_m8_gedeelde_testset_tegen_spelcontext() -> void:
+	var testset: Dictionary = JsonLezer.lees(Hulp.repo().path_join("tests/fixtures/condities.json"))
+	var verkeerd: Array = []
+	for g: Dictionary in testset["gevallen"]:
+		var s: Spel = Hulp.spel_uit_toestand(self, g["toestand"], testset["benoemd"])
+		var voor: int = s.fout_log.size()
+		if Condities.evalueer(g["conditie"], s.ctx) != g["verwacht"]:
+			verkeerd.append(g["naam"])
+		if g.get("geeft_foutregel", false):
+			assert_gt(s.fout_log.size(), voor, "foutregel bij '%s'" % g["naam"])
+	assert_eq(verkeerd, [], "SpelContext geeft dezelfde uitkomsten als de gedeelde testset")
+
+
 func test_sf01_elke_conditievorm_heeft_waar_en_onwaar_geval() -> void:
 	var testset: Dictionary = JsonLezer.lees(Hulp.repo().path_join("tests/fixtures/condities.json"))
 	var vormen: Array = ["alle", "een_van", "niet", "heeft", "ligt", "token", "flag", "knoop", "kamer", "scene",

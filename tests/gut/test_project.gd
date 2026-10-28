@@ -16,7 +16,7 @@ func _gd_bestanden(map: String) -> Array:
 
 
 func test_geen_hardcoded_content_in_scripts() -> void:
-	var verboden: RegEx = RegEx.create_from_string("\"ch[0-9][0-9]_")
+	var verboden: RegEx = RegEx.create_from_string("\"ch0[1-9]_|\"ch[1-9][0-9]_")   # de hub (ch00_) staat in de spec
 	var gevonden: Array = []
 	for pad in _gd_bestanden("res://"):
 		var regels: PackedStringArray = FileAccess.get_file_as_string(pad).split("\n")
@@ -58,8 +58,8 @@ func test_fixture_is_een_kleine_generieke_wereld() -> void:
 	assert_eq(c.kamers.size(), 3)
 	assert_eq(c.hoofdstuk_volgorde, ["ch01_proef"])
 	assert_true(c.knopen.has("ch01_klaar"))
-	assert_true(c.onmisbaar.has("rapport") and c.onmisbaar.has("pasje"), "pas geeft een gebruikt niveau: onmisbaar")
-	assert_false(c.onmisbaar.has("kopje_wit"))
+	assert_true(c.is_onmisbaar("rapport", "ch01_proef") and c.is_onmisbaar("pasje", "ch01_proef"), "pas geeft een gebruikt niveau: onmisbaar")
+	assert_false(c.is_onmisbaar("kopje_wit", "ch01_proef"))
 	assert_ne(c.content_hash, "")
 
 

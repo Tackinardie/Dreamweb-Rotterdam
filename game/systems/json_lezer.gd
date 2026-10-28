@@ -36,6 +36,8 @@ static func normaliseer(x: Variant) -> Variant:
 ## Alle .json-bestanden onder een map (recursief), gesorteerd.
 static func lijst_json(map: String) -> PackedStringArray:
 	var uit := PackedStringArray()
+	if not DirAccess.dir_exists_absolute(map):
+		return uit
 	for f in DirAccess.get_files_at(map):
 		if f.ends_with(".json"):
 			uit.append(map.path_join(f))

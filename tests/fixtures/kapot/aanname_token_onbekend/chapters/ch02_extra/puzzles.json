@@ -1,0 +1,19 @@
+{
+  "hoofdstuk": "ch02_extra",
+  "knopen": [
+    {
+      "id": "ch02_klaar",
+      "type": "doel",
+      "pad": "hoofd",
+      "waarom": "Het doel van dit proefhoofdstuk.",
+      "trigger": {
+        "gebruik": "kopje_wit"
+      },
+      "hints": {
+        "vaag": "hint.ch02_klaar.vaag",
+        "richting": "hint.ch02_klaar.richting",
+        "bijna": "hint.ch02_klaar.bijna"
+      }
+    }
+  ]
+}

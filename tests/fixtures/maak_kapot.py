@@ -38,13 +38,15 @@ def knoop(puzzels: dict, ident: str) -> dict:
 
 
 # naam -> (regel die moet falen, gewenste tekstfragment in de melding of "")
-VARIANTEN: dict[str, tuple[str, str]] = {}
+VARIANTEN: dict[str, tuple[str, str, str]] = {}
 BOUWERS: dict[str, object] = {}
+# Geldige overlays voor GUT- en oplossertests (geen validatorfout verwacht)
+SCENARIOS: list[str] = []
 
 
-def variant(naam: str, regel: str, fragment: str = ""):
+def variant(naam: str, regel: str, fragment: str = "", niveau: str = "fout"):
     def deco(f):
-        VARIANTEN[naam] = (regel, fragment)
+        VARIANTEN[naam] = (regel, fragment, niveau)
         BOUWERS[naam] = f
         return f
     return deco
@@ -247,6 +249,196 @@ def _(n):
     d = lees(CH + "dialogue/ch01_portier_bezorger.json")
     d["regels"][0]["spreker"] = "bewaker"
     schrijf(n, CH + "dialogue/ch01_portier_bezorger.json", d)
+
+
+
+# ---------------------------------------------------------------- hulp voor extra hoofdstukken
+
+def hoofdstuk_bouw(n, nummer, naam, knopen, flags=None, tokens=None, aanname=None, extra_kamer_objecten=None):
+    """Voegt een klein hoofdstuk (een kamer, een scene, een puzzelgraaf) toe aan overlay n en spel.json."""
+    h = f"ch{nummer:02d}_{naam}"
+    pad_spel = KAPOT / n / "spel.json"
+    spel = json.loads(pad_spel.read_text(encoding="utf-8")) if pad_spel.exists() else lees("spel.json")
+    spel["hoofdstukken"].append(h)
+    schrijf(n, "spel.json", spel)
+    ch = {
+        "id": h, "nummer": nummer, "titel": f"hoofdstuk.{h}.titel",
+        "start": {"scene": f"ch{nummer:02d}_s1", "kamer": f"ch{nummer:02d}_kamer"}, "doel": {"knoop": f"ch{nummer:02d}_klaar"},
+        "scenes": [{"id": f"ch{nummer:02d}_s1", "tijd": {"dag": 2, "tijd": "00:10"}, "kamers": [f"ch{nummer:02d}_kamer"]}],
+    }
+    if flags:
+        ch["flags"] = flags
+    if tokens:
+        ch["tokens"] = tokens
+    if aanname:
+        ch["aanname_bij_start"] = aanname
+    schrijf(n, f"chapters/{h}/chapter.json", ch)
+    schrijf(n, f"chapters/{h}/rooms/ch{nummer:02d}_kamer.json", {
+        "id": f"ch{nummer:02d}_kamer", "naam": f"kamer.ch{nummer:02d}_kamer.naam", "soort": "binnen",
+        "afmeting": {"breedte": 4, "hoogte": 4}, "objecten": [], "uitgangen": [],
+    })
+    doel = {
+        "id": f"ch{nummer:02d}_klaar", "type": "doel", "pad": "hoofd", "waarom": "Het doel van dit proefhoofdstuk.",
+        "trigger": {"gebruik": "kopje_wit"},
+        "hints": {k: f"hint.ch{nummer:02d}_klaar.{k}" for k in ("vaag", "richting", "bijna")},
+    }
+    schrijf(n, f"chapters/{h}/puzzles.json", {"hoofdstuk": h, "knopen": knopen + [doel]})
+    teksten = {f"hoofdstuk.{h}.titel": "Titel", f"kamer.ch{nummer:02d}_kamer.naam": "Kamer"}
+    teksten.update({f"hint.ch{nummer:02d}_klaar.{k}": k for k in ("vaag", "richting", "bijna")})
+    for t in (tokens or []):
+        teksten[t["notitie"]] = "Notitie"
+    schrijf(n, f"tekst/nl/{h}.json", {"taal": "nl", "domein": h, "teksten": teksten})
+    return h
+
+
+def knoop_zet_flag(ident, flag, waarde=True, trigger=None, vereist=None):
+    k = {"id": ident, "type": "actie", "pad": "zij", "waarom": "Een knoop voor de scope-test.",
+         "trigger": trigger or {"automatisch": True}, "effecten": [{"zet_flag": flag, "waarde": waarde}]}
+    if vereist:
+        k["vereist"] = vereist
+    return k
+
+
+@variant("id_wijkt_af", "V03", "bestandsnaam")
+def _(n):
+    d = lees(CH + "rooms/ch01_dak.json")
+    d["id"] = "ch01_dakx"
+    schrijf(n, CH + "rooms/ch01_dak.json", d)
+
+
+@variant("scope_ander_hoofdstuk", "V04", "hoort bij hoofdstuk 02")
+def _(n):
+    hoofdstuk_bouw(n, 2, "extra", [])
+    p = lees(CH + "puzzles.json")
+    p["knopen"].insert(0, {"id": "ch01_naar_ch02", "type": "actie", "pad": "zij", "waarom": "Verwijst naar een kamer van een ander hoofdstuk.",
+                           "trigger": {"betreed": "ch02_kamer"}, "effecten": [{"zet_flag": "ch01_bezoeken", "waarde": 1}]})
+    schrijf(n, CH + "puzzles.json", p)
+
+
+@variant("lokaal_zonder_prefix", "V05", "prefix")
+def _(n):
+    d = lees(CH + "chapter.json")
+    d["flags"].append({"id": "zonder_prefix", "type": "bool", "start": False})
+    schrijf(n, CH + "chapter.json", d)
+
+
+@variant("te_veel_onmisbaar", "V12", "slots", "waarschuwing")
+def _(n):
+    p = lees(CH + "puzzles.json")
+    alle = ["kopje_wit", "kopje_blauw", "koffiekop", "briefje", "pakket", "doos", "jas", "bezorgtas", "rapport"]
+    p["knopen"].insert(0, {"id": "ch01_veel", "type": "actie", "pad": "zij", "waarom": "Vraagt om veel dragende objecten tegelijk.",
+                           "trigger": {"bekijk": "kast"}, "vereist": {"alle": [{"heeft": x} for x in alle]},
+                           "effecten": [{"zet_flag": "ch01_dak_bekend"}]})
+    schrijf(n, CH + "puzzles.json", p)
+
+
+def _scenewissel_knopen(p):
+    """Drie knopen met een scenewissel die het kantoor laat wegvallen: trigger betreed, dialoog en gebruik."""
+    d = lees(CH + "chapter.json")
+    d["scenes"].append({"id": "ch01_s3_klein", "tijd": {"dag": 1, "tijd": "08:00"}, "kamers": ["ch01_hal", "ch01_dak"]})
+    for f in ("betreed", "dialoog", "gebruik"):
+        d["flags"].append({"id": f"ch01_wissel_{f}", "type": "bool", "start": False})
+    triggers = {"betreed": {"betreed": "ch01_dak"}, "dialoog": {"dialoog": "ch01_portier_bezorger", "regel": "r_hoi"},
+                "gebruik": {"gebruik": "kopje_wit"}}
+    for f, t in triggers.items():
+        p["knopen"].insert(0, {"id": f"ch01_wissel_{f}", "type": "actie", "pad": "zij", "waarom": "Een scenewissel die het kantoor laat wegvallen.",
+                               "trigger": t, "effecten": [{"zet_flag": f"ch01_wissel_{f}"}, {"naar_scene": "ch01_s3_klein"}]})
+    return d
+
+
+@variant("scenewissel_geweigerd", "V17", "wegvallen")
+def _(n):
+    p = lees(CH + "puzzles.json")
+    d = _scenewissel_knopen(p)
+    schrijf(n, CH + "chapter.json", d)
+    schrijf(n, CH + "puzzles.json", p)
+
+
+@variant("geef_voor_scene", "V17", "vóór de naar_scene", "waarschuwing")
+def _(n):
+    p = lees(CH + "puzzles.json")
+    k = knoop(p, "ch01_klaar")
+    k["effecten"].insert(0, {"geef_object": "kopje_blauw"})
+    schrijf(n, CH + "puzzles.json", p)
+
+
+@variant("niveau_zonder_regel", "V19", "niveau", "waarschuwing")
+def _(n):
+    d = lees(CH + "rooms/ch01_hal.json")
+    del d["uitgangen"][0]["vereist"]
+    schrijf(n, CH + "rooms/ch01_hal.json", d)
+
+
+@variant("effecten_buiten_puzzels", "V20", "puzzles.json")
+def _(n):
+    d = lees(CH + "dialogue/ch01_portier_bezorger.json")
+    d["effecten"] = [{"zet_flag": "ch01_dak_bekend"}]
+    schrijf(n, CH + "dialogue/ch01_portier_bezorger.json", d)
+
+
+@variant("token_ongebruikt", "V24", "nergens gebruikt", "waarschuwing")
+def _(n):
+    d = lees(CH + "chapter.json")
+    d["tokens"].append({"id": "spoor", "categorie": "plek", "notitie": "token.spoor"})
+    schrijf(n, CH + "chapter.json", d)
+    t = lees("tekst/nl/ch01_proef.json")
+    t["teksten"]["token.spoor"] = "Een spoor."
+    schrijf(n, "tekst/nl/ch01_proef.json", t)
+    p = lees(CH + "puzzles.json")
+    knoop(p, "ch01_lees_briefje")["effecten"].append({"geef_token": "spoor"})
+    schrijf(n, CH + "puzzles.json", p)
+
+
+@variant("dubbele_trigger", "V27", "dezelfde trigger", "waarschuwing")
+def _(n):
+    p = lees(CH + "puzzles.json")
+    p["knopen"].insert(1, {"id": "ch01_lees_nog_eens", "type": "feit", "pad": "zij", "waarom": "Dezelfde trigger zonder uitsluiting.",
+                           "trigger": {"lees": "briefje"}, "effecten": [{"geef_token": "kluis_plek"}]})
+    schrijf(n, CH + "puzzles.json", p)
+
+
+@variant("aanname_object_weg", "V28", "niet bereikbaar")
+def _(n):
+    hoofdstuk_bouw(n, 2, "extra", [], aanname={"inventaris": [{"object": "rapport"}]})
+
+
+@variant("aanname_token_onbekend", "V28", "niet gegeven")
+def _(n):
+    hoofdstuk_bouw(n, 2, "extra", [], tokens=[{"id": "ander_token", "categorie": "plek", "notitie": "token.ander_token"}],
+                   aanname={"tokens": ["ander_token"]})
+
+
+@variant("twee_apparaten_zelfde_object", "V31", "hoort al bij")
+def _(n):
+    d = lees(CH + "devices/ch01_laptop.json")
+    d["id"] = "ch01_laptop2"
+    schrijf(n, CH + "devices/ch01_laptop2.json", d)
+
+
+def scenario(naam: str):
+    def deco(f):
+        SCENARIOS.append(naam)
+        BOUWERS[naam] = f
+        return f
+    return deco
+
+
+@scenario("scope_hoofdstukken")
+def _(n):
+    """Hub (ch00_hub) en een tweede hoofdstuk, elk met een automatische knoop; ch02 gebruikt kopje_blauw in een trigger."""
+    spel = lees("spel.json")
+    spel["flags"].append({"id": "hub_vlag", "type": "bool", "start": False})
+    spel["hoofdstukken"] = ["ch00_hub"] + spel["hoofdstukken"]
+    schrijf(n, "spel.json", spel)
+    hoofdstuk_bouw(n, 0, "hub", [knoop_zet_flag("ch00_auto", "hub_vlag")])
+    hoofdstuk_bouw(n, 2, "extra", [knoop_zet_flag("ch02_auto", "ch02_vlag"),
+                                   {"id": "ch02_blauw", "type": "actie", "pad": "zij", "waarom": "Gebruikt een object alleen in dit hoofdstuk.",
+                                    "trigger": {"gebruik": "kopje_blauw"}, "effecten": [{"zet_flag": "ch02_vlag"}]}],
+                   flags=[{"id": "ch02_vlag", "type": "bool", "start": False}])
+    # de hub-spel.json wordt door hoofdstuk_bouw aangevuld; zet de volgorde terug op hub, ch01, ch02
+    sp = json.loads((KAPOT / n / "spel.json").read_text(encoding="utf-8"))
+    sp["hoofdstukken"] = ["ch00_hub", "ch01_proef", "ch02_extra"]
+    schrijf(n, "spel.json", sp)
 
 
 # Varianten voor de oplosser (valideren wel, maar zijn onoplosbaar of hebben een doodlopende staat)

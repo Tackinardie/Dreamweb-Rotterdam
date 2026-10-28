@@ -19,26 +19,40 @@ func gebeurtenis_gewijzigd(id: String, status: String) -> void:
 		_net_actief.append(id)
 
 
+## Wis lopende tussenstand (na laden).
+func wis() -> void:
+	_net_actief.clear()
+	_bezig = false
+
+
 func in_aanmerking(k: Dictionary) -> bool:
 	return not s.knopen.has(k["id"]) or k.get("herhaalbaar", false)
 
 
 ## Vuurt de eerste knoop met deze trigger waarvan `vereist` klopt (regel 2). Geen: bij_onvervuld (regel 3).
+## Een knoop met een scènewissel die O9 weigert vuurt niet (producerbesluit; geldt voor elke trigger).
+## Autosave wacht tot de buitenste actie klaar is (geen halve staat in de save).
 ## Resultaat: {"gevuurd": id|"", "mompel": sleutel|"", "geweigerd_door": object|"", "standaard": bool}
-func trigger(t: Dictionary, speler: bool = true) -> Dictionary:
+func trigger(t: Dictionary, _speler: bool = true) -> Dictionary:
+	s.begin_actie()
+	var r: Dictionary = _trigger(t)
+	s.einde_actie()
+	return r
+
+
+func _trigger(t: Dictionary) -> Dictionary:
 	var kandidaten: Array = []
-	for k: Dictionary in s.content.alle_knopen:
+	for k: Dictionary in s.content.actieve_knopen(s.hoofdstuk):
 		if k["trigger"] == t and in_aanmerking(k):
 			kandidaten.append(k)
 	for k: Dictionary in kandidaten:
 		if not Condities.evalueer(k.get("vereist"), s.ctx):
 			continue
-		if speler:
-			var blok: String = _scene_blokkade(k)
-			if blok != "":
-				s.mompel_zeg("systeem.niet_zonder", {"object": s.tekst(s.content.items[blok]["naam"])})
-				s.audio.cue("ui.weiger")
-				return {"gevuurd": "", "mompel": "systeem.niet_zonder", "geweigerd_door": blok, "standaard": false}
+		var blok: String = _scene_blokkade(k)
+		if blok != "":
+			s.mompel_zeg("systeem.niet_zonder", {"object": s.tekst(s.content.items[blok]["naam"])})
+			s.audio.cue("ui.weiger")
+			return {"gevuurd": "", "mompel": "systeem.niet_zonder", "geweigerd_door": blok, "standaard": false}
 		vuur(k)
 		herzie()
 		return {"gevuurd": k["id"], "mompel": "", "geweigerd_door": "", "standaard": false}
@@ -58,9 +72,7 @@ func _scene_blokkade(k: Dictionary) -> String:
 
 
 func vuur(k: Dictionary) -> void:
-	# Automatische en gebeurtenisknopen kunnen niet geweigerd worden (V17 bewaakt dat ze niets achterlaten).
-	var geforceerd: bool = k["trigger"].has("gebeurtenis") or k["trigger"].has("automatisch")
-	s.effecten.voer_uit(k.get("effecten", []), k["id"], geforceerd)
+	s.effecten.voer_uit(k.get("effecten", []), k["id"])
 	if not s.knopen.has(k["id"]):
 		s.knopen[k["id"]] = true
 		s.knopen_volgorde.append(k["id"])
@@ -72,23 +84,28 @@ func herzie() -> void:
 	if _bezig:
 		return
 	_bezig = true
+	s.begin_actie()
+	var stabiel: bool = false
 	for _ronde in range(MAX_RONDES):
 		var veranderd: bool = false
 		s.klok.herzie(s.ctx)
 		while not _net_actief.is_empty():
 			var e: String = _net_actief.pop_front()
-			if trigger({"gebeurtenis": e}, false)["gevuurd"] != "":
+			if _trigger({"gebeurtenis": e})["gevuurd"] != "":
 				veranderd = true
-		for k: Dictionary in s.content.alle_knopen:
-			if k["trigger"].has("automatisch") and in_aanmerking(k) and Condities.evalueer(k.get("vereist"), s.ctx):
+		for k: Dictionary in s.content.actieve_knopen(s.hoofdstuk):
+			if k["trigger"].has("automatisch") and in_aanmerking(k) and Condities.evalueer(k.get("vereist"), s.ctx) 					and _scene_blokkade(k) == "":
 				vuur(k)
 				veranderd = true
 		if not veranderd:
-			_bezig = false
-			_controleer_doel()
-			return
+			stabiel = true
+			break
 	_bezig = false
-	s.log_fout("puzzelgraaf: meer dan %d rondes automatische knopen (kring?)" % MAX_RONDES)
+	if stabiel:
+		_controleer_doel()
+	else:
+		s.log_fout("puzzelgraaf: meer dan %d rondes automatische knopen (kring?)" % MAX_RONDES)
+	s.einde_actie()
 
 
 func _controleer_doel() -> void:

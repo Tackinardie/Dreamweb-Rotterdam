@@ -10,7 +10,7 @@ func _init(spel: Spel) -> void:
 	s = spel
 
 
-func voer_uit(lijst: Array, bron: String = "", forceer_scene: bool = false) -> void:
+func voer_uit(lijst: Array, bron: String = "") -> void:
 	for e: Dictionary in lijst:
 		if e.has("zet_flag"):
 			s.zet_flag(e["zet_flag"], e.get("waarde", true))
@@ -30,7 +30,7 @@ func voer_uit(lijst: Array, bron: String = "", forceer_scene: bool = false) -> v
 		elif e.has("stop_gebeurtenis"):
 			s.klok.stop(e["stop_gebeurtenis"])
 		elif e.has("naar_scene"):
-			s.naar_scene(e["naar_scene"], e.get("kamer", ""), e.get("uitgang", ""), forceer_scene)
+			s.naar_scene(e["naar_scene"], e.get("kamer", ""), e.get("uitgang", ""))
 		elif e.has("naar_kamer"):
 			s.verplaats_speler(e["naar_kamer"], e.get("uitgang", ""))
 		elif e.has("cue"):

@@ -11,6 +11,8 @@ signal hoofdstuk_voltooid(id: String)
 signal mompel(tekst: String, sleutel: String)
 signal autosave_geschreven
 signal nieuw_spel_gestart
+## Na het laden van een save: UI (klok, kamer) ververst zich hierop.
+signal spel_geladen
 
 var content: ContentDb
 var objecten: ObjectBoom
@@ -40,4 +42,7 @@ var gepauzeerd: bool = false
 var auto_tik: bool = false
 var voltooid: bool = false
 var speeltijd_s: float = 0.0
+var _mompel_wachtrij: Array = []
+var _actie_diepte: int = 0
+var _autosave_wacht: bool = false
 var fout_log: PackedStringArray = PackedStringArray()

@@ -21,6 +21,7 @@ func _ready() -> void:
 		add_child(venster)
 	if geladen and Content.is_geladen:
 		GameState.klok.scene_gewisseld.connect(func(_v: String, _n: String, _r: String) -> void: _ververs())
+		GameState.spel_geladen.connect(_ververs)
 		GameState.nieuw_spel()
 		_ververs()
 		print("Onderstad: content geladen (%d hoofdstuk(ken))" % Content.hoofdstuk_volgorde.size())

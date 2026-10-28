@@ -83,4 +83,5 @@ func _ga_naar(regel_id: String) -> void:
 func _einde() -> void:
 	actief = false
 	s.blokkades.erase("gesprek")
+	s.spreek_uit_wachtrij()
 	gesprek_afgelopen.emit()

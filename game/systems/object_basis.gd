@@ -15,6 +15,7 @@ const BUREN: Array[Vector2i] = [Vector2i(0, 0), Vector2i(0, -1), Vector2i(1, 0),
 
 var content: ContentDb
 var slots: int = 8
+var hoofdstuk: String = ""   # bepaalt welke objecten onmisbaar zijn
 var plek: Dictionary = {}        # item -> plek
 var positie: Dictionary = {}     # item -> Vector2i (alleen voor objecten op een kamervloer)
 var kinderen: Dictionary = {}    # plek -> Array[String] in volgorde
@@ -29,7 +30,8 @@ func _init(c: ContentDb) -> void:
 
 
 ## Zet alle objecten op hun beginplek: kamerbestanden plus de aanname van het opgegeven hoofdstuk.
-func reset(hoofdstuk: String) -> void:
+func reset(h: String) -> void:
+	hoofdstuk = h
 	slots = int(content.spel.get("inventaris_slots", 8))
 	plek.clear()
 	positie.clear()
@@ -223,28 +225,34 @@ func uit_dict(d: Dictionary) -> PackedStringArray:
 		if not content.items.has(item):
 			waarschuwingen.append("save: onbekend object '%s' overgeslagen" % item)
 			continue
-		var e: Dictionary = objecten[item]
+		var e: Variant = objecten[item]
+		if not (e is Dictionary) or not ((e as Dictionary).get("plek") is String):
+			waarschuwingen.append("save: ongeldige plek voor '%s'; beginplek gebruikt" % item)
+			continue
 		var naar: String = e["plek"]
 		if naar != NERGENS and naar != INVENTARIS and not is_kamer(naar) and not is_item(naar):
 			waarschuwingen.append("save: onbekende plek '%s' voor '%s'; beginplek gebruikt" % [naar, item])
 			continue
 		var pos: Variant = null
-		if e.has("positie"):
-			pos = Vector2i(int(e["positie"]["x"]), int(e["positie"]["y"]))
+		var p: Variant = e.get("positie")
+		if p is Dictionary and (p.get("x") is int or p.get("x") is float) and (p.get("y") is int or p.get("y") is float):
+			pos = Vector2i(int(p["x"]), int(p["y"]))
 		_zet(item, naar, pos)
 	var volgorde: Dictionary = d.get("volgorde", {})
 	for pl: String in volgorde:
+		if not (volgorde[pl] is Array):
+			continue
 		var gevuld: Array = []
-		for item: String in volgorde[pl]:
-			if plek.get(item) == pl:
+		for item: Variant in volgorde[pl]:
+			if item is String and plek.get(item) == pl:
 				gevuld.append(item)
 		for item: String in kinderen.get(pl, []):
 			if not gevuld.has(item):
 				gevuld.append(item)
 		kinderen[pl] = gevuld
-	for c: String in d.get("open", []):
-		if content.items.has(c):
+	for c: Variant in d.get("open", []):
+		if c is String and content.items.has(c):
 			open[c] = true
 		else:
-			waarschuwingen.append("save: onbekende container '%s' overgeslagen" % c)
+			waarschuwingen.append("save: onbekende container '%s' overgeslagen" % str(c))
 	return waarschuwingen

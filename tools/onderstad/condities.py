@@ -192,6 +192,8 @@ class DictToestand(Toestand):
 
     def _voorouders(self, item: str) -> list[str]:
         keten, huidig, stappen = [], item, 0
+        if item not in self.plekken:
+            return ["nergens"]          # een object zonder plek bestaat (nog) nergens
         while huidig in self.plekken and stappen < 64:
             huidig = self.plekken[huidig]
             keten.append(huidig)

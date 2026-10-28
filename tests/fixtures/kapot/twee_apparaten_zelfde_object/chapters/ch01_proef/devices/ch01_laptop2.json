@@ -1,0 +1,33 @@
+{
+  "id": "ch01_laptop2",
+  "type": "laptop",
+  "naam": "app.ch01_laptop.naam",
+  "object": "laptop",
+  "vergrendeling": {
+    "type": "pincode",
+    "sleutel_token": "code_kluis",
+    "hint": "app.ch01_laptop.hint"
+  },
+  "apps": [
+    {
+      "id": "berichten",
+      "type": "berichten",
+      "naam": "app.ch01_laptop.berichten.naam",
+      "items": [
+        {
+          "id": "bericht_plek",
+          "afzender": "app.ch01_laptop.berichten.bericht_plek.afzender",
+          "tekst": "app.ch01_laptop.berichten.bericht_plek.tekst",
+          "tijdstip": {
+            "dag": 0,
+            "tijd": "22:15"
+          },
+          "als": {
+            "flag": "ch01_bezoeken",
+            "minstens": 1
+          }
+        }
+      ]
+    }
+  ]
+}

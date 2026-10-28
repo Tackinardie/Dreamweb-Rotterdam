@@ -1,0 +1,12 @@
+{
+  "taal": "nl",
+  "domein": "ch02_extra",
+  "teksten": {
+    "hoofdstuk.ch02_extra.titel": "Titel",
+    "kamer.ch02_kamer.naam": "Kamer",
+    "hint.ch02_klaar.vaag": "vaag",
+    "hint.ch02_klaar.richting": "richting",
+    "hint.ch02_klaar.bijna": "bijna",
+    "token.ander_token": "Notitie"
+  }
+}

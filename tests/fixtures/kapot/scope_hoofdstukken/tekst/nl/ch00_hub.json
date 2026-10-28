@@ -1,0 +1,11 @@
+{
+  "taal": "nl",
+  "domein": "ch00_hub",
+  "teksten": {
+    "hoofdstuk.ch00_hub.titel": "Titel",
+    "kamer.ch00_kamer.naam": "Kamer",
+    "hint.ch00_klaar.vaag": "vaag",
+    "hint.ch00_klaar.richting": "richting",
+    "hint.ch00_klaar.bijna": "bijna"
+  }
+}

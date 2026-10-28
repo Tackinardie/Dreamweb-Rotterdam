@@ -23,7 +23,7 @@ def _zoek_sleutels(x: Any, sleutels: set[str], pad: str = "$"):
 
 
 def v20_effecten(ctx: Ctx) -> None:
-    for doc in ctx.docs:
+    for doc in ctx.inh.docs:      # ook bestanden die het schema al afkeurde
         if doc.soort in ("puzzle", "spel", "items", "tekst", "cues"):
             continue
         for pad in _zoek_sleutels(doc.data, NIET_IN_PUZZELS | {"effecten"}):
@@ -192,11 +192,23 @@ def v28_aanname(ctx: Ctx) -> None:
         items = {r.id for r in ctx.refs if r.soort == "item" and r.extra in ("plaats", "geef") and tot(r)}
         tokens = {r.id for r in ctx.refs if r.soort == "token" and r.extra == "geef" and tot(r)}
         flags = {r.id for r in ctx.refs if r.soort == "flag" and isinstance(r.extra, tuple) and r.extra[0] == "zet" and tot(r)}
+        # een hoofd- of doel-knoop in N (of eerder) die het object verwijdert: het is aan het eind van N weg
+        weg: dict[str, str] = {}
+        for hh, knopen in ctx.w.puzzels.items():
+            if int(hoofdstuk_nummer(hh) or 0) > grens:
+                continue
+            for kn in knopen:
+                if kn["type"] == "doel" or kn.get("pad", "hoofd") == "hoofd":
+                    for e in kn.get("effecten", []):
+                        if "verwijder_object" in e:
+                            weg.setdefault(e["verwijder_object"], f"knoop '{kn['id']}'")
         for r in ctx.refs:
             if r.doc is not doc:
                 continue
             if r.soort == "item" and r.extra == "plaats" and r.id not in items:
                 ctx.fout("V28", doc, r.pad, f"aangenomen object '{r.id}' komt niet voor in '{vorige}' of eerder")
+            elif r.soort == "item" and r.extra == "plaats" and r.id in weg:
+                ctx.fout("V28", doc, r.pad, f"aangenomen object '{r.id}' is aan het eind van '{vorige}' niet bereikbaar: {weg[r.id]} verwijdert het")
             elif r.soort == "token" and r.extra == "geef" and r.id not in tokens:
                 ctx.fout("V28", doc, r.pad, f"aangenomen token '{r.id}' wordt in '{vorige}' of eerder niet gegeven")
             elif r.soort == "flag" and isinstance(r.extra, tuple) and r.extra[0] == "zet" and r.id not in flags:

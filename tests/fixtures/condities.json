@@ -1222,6 +1222,259 @@
    "verwacht": false
   },
   {
+   "naam": "ligt: object nergens ligt in nergens",
+   "toestand": {
+    "items": {
+     "jas": {},
+     "portemonnee": {},
+     "tas": {},
+     "balie_x": {},
+     "kop_koffie": {},
+     "pasje": {
+      "geeft_niveaus": [
+       "g.n"
+      ]
+     },
+     "pas_m": {
+      "geeft_niveaus": [
+       "g.m"
+      ]
+     }
+    },
+    "plekken": {
+     "tas": "nergens"
+    },
+    "tokens": [
+     "pin_x"
+    ],
+    "flag_start": {
+     "vlag_b": false,
+     "teller": 0,
+     "nooit_gezet": false,
+     "alt_waar": true
+    },
+    "flags": {
+     "vlag_b": true,
+     "teller": 3
+    },
+    "knopen": [
+     "knoop_a"
+    ],
+    "kamer": "kamer_a",
+    "scene": "scene_1",
+    "gebeurtenissen": {
+     "ev_actief": "actief",
+     "ev_wacht": "wacht",
+     "ev_voorbij": "voorbij"
+    },
+    "dag": 1,
+    "tijd": "00:07",
+    "apparaten": {
+     "app_a": "ontgrendeld",
+     "app_b": "vergrendeld"
+    }
+   },
+   "conditie": {
+    "ligt": {
+     "object": "tas",
+     "in": "nergens"
+    }
+   },
+   "verwacht": true
+  },
+  {
+   "naam": "ligt: object zonder plek ligt in nergens",
+   "toestand": {
+    "items": {
+     "jas": {},
+     "portemonnee": {},
+     "tas": {},
+     "balie_x": {},
+     "kop_koffie": {},
+     "pasje": {
+      "geeft_niveaus": [
+       "g.n"
+      ]
+     },
+     "pas_m": {
+      "geeft_niveaus": [
+       "g.m"
+      ]
+     }
+    },
+    "plekken": {
+     "pasje": "portemonnee",
+     "portemonnee": "jas",
+     "jas": "inventaris",
+     "kop_koffie": "balie_x",
+     "balie_x": "kamer_a",
+     "pas_m": "inventaris"
+    },
+    "tokens": [
+     "pin_x"
+    ],
+    "flag_start": {
+     "vlag_b": false,
+     "teller": 0,
+     "nooit_gezet": false,
+     "alt_waar": true
+    },
+    "flags": {
+     "vlag_b": true,
+     "teller": 3
+    },
+    "knopen": [
+     "knoop_a"
+    ],
+    "kamer": "kamer_a",
+    "scene": "scene_1",
+    "gebeurtenissen": {
+     "ev_actief": "actief",
+     "ev_wacht": "wacht",
+     "ev_voorbij": "voorbij"
+    },
+    "dag": 1,
+    "tijd": "00:07",
+    "apparaten": {
+     "app_a": "ontgrendeld",
+     "app_b": "vergrendeld"
+    }
+   },
+   "conditie": {
+    "ligt": {
+     "object": "tas",
+     "in": "nergens"
+    }
+   },
+   "verwacht": true
+  },
+  {
+   "naam": "ligt: object in inventaris ligt niet in nergens",
+   "toestand": {
+    "items": {
+     "jas": {},
+     "portemonnee": {},
+     "tas": {},
+     "balie_x": {},
+     "kop_koffie": {},
+     "pasje": {
+      "geeft_niveaus": [
+       "g.n"
+      ]
+     },
+     "pas_m": {
+      "geeft_niveaus": [
+       "g.m"
+      ]
+     }
+    },
+    "plekken": {
+     "pasje": "portemonnee",
+     "portemonnee": "jas",
+     "jas": "inventaris",
+     "tas": "inventaris",
+     "kop_koffie": "balie_x",
+     "balie_x": "kamer_a",
+     "pas_m": "inventaris"
+    },
+    "tokens": [
+     "pin_x"
+    ],
+    "flag_start": {
+     "vlag_b": false,
+     "teller": 0,
+     "nooit_gezet": false,
+     "alt_waar": true
+    },
+    "flags": {
+     "vlag_b": true,
+     "teller": 3
+    },
+    "knopen": [
+     "knoop_a"
+    ],
+    "kamer": "kamer_a",
+    "scene": "scene_1",
+    "gebeurtenissen": {
+     "ev_actief": "actief",
+     "ev_wacht": "wacht",
+     "ev_voorbij": "voorbij"
+    },
+    "dag": 1,
+    "tijd": "00:07",
+    "apparaten": {
+     "app_a": "ontgrendeld",
+     "app_b": "vergrendeld"
+    }
+   },
+   "conditie": {
+    "ligt": {
+     "object": "tas",
+     "in": "nergens"
+    }
+   },
+   "verwacht": false
+  },
+  {
+   "naam": "heeft: genest object met bovenste container nergens",
+   "toestand": {
+    "items": {
+     "jas": {},
+     "portemonnee": {},
+     "tas": {},
+     "balie_x": {},
+     "kop_koffie": {},
+     "pasje": {
+      "geeft_niveaus": [
+       "g.n"
+      ]
+     },
+     "pas_m": {
+      "geeft_niveaus": [
+       "g.m"
+      ]
+     }
+    },
+    "plekken": {
+     "pasje": "portemonnee",
+     "portemonnee": "nergens"
+    },
+    "tokens": [
+     "pin_x"
+    ],
+    "flag_start": {
+     "vlag_b": false,
+     "teller": 0,
+     "nooit_gezet": false,
+     "alt_waar": true
+    },
+    "flags": {
+     "vlag_b": true,
+     "teller": 3
+    },
+    "knopen": [
+     "knoop_a"
+    ],
+    "kamer": "kamer_a",
+    "scene": "scene_1",
+    "gebeurtenissen": {
+     "ev_actief": "actief",
+     "ev_wacht": "wacht",
+     "ev_voorbij": "voorbij"
+    },
+    "dag": 1,
+    "tijd": "00:07",
+    "apparaten": {
+     "app_a": "ontgrendeld",
+     "app_b": "vergrendeld"
+    }
+   },
+   "conditie": {
+    "heeft": "pasje"
+   },
+   "verwacht": false
+  },
+  {
    "naam": "token: aanwezig",
    "toestand": {
     "items": {

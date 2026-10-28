@@ -29,7 +29,7 @@
     {
       "id": "ch01_s2_ochtend",
       "tijd": { "dag": 1, "tijd": "07:30" },
-      "kamers": ["ch01_hal", "ch01_dak"]
+      "kamers": ["ch01_hal", "ch01_kantoor", "ch01_dak"]
     }
   ],
   "flags": [

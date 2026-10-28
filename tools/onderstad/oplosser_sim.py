@@ -16,6 +16,33 @@ from .wereld import Wereld, hoofdstuk_nummer, refs_van
 MAX_RONDES = 32
 
 
+def onmisbare_items(w: Wereld, docs) -> tuple[set[str], set[str], set[str]]:
+    """Onmisbaar (state-en-flags.md): (objecten, gebruikte niveaus, gegeven objecten) uit de docs in scope.
+
+    De scope (globale docs, het hoofdstuk, de hub) bepaalt de aanroeper. Moet gelijk blijven aan
+    ContentDb._bereken_onmisbaar in GDScript; tests/fixtures/onmisbaar.json bewaakt dat."""
+    nodig: set[str] = set()
+    niveaus: set[str] = set()
+    gegeven: set[str] = set()
+    for d in docs:
+        for r in refs_van(d):
+            if r.soort == "item" and r.extra == "onmisbaar":
+                nodig.add(r.id)
+            elif r.soort == "niveau" and r.extra == "cond":
+                niveaus.add(r.id)
+            elif r.soort == "item" and r.extra == "geef":
+                gegeven.add(r.id)
+    for n in niveaus:
+        nodig.update(i for i, it in w.items.items() if n in it.get("geeft_niveaus", []))
+    return nodig, niveaus, gegeven
+
+
+def scope_hoofdstukken(w: Wereld, hoofdstuk: str) -> list[str]:
+    """Het hoofdstuk zelf, dan de hub (ch00_...): de actieve knopen (state-en-flags.md)."""
+    hub = [h for h in w.spel.get("hoofdstukken", list(w.hoofdstukken)) if h != hoofdstuk and hoofdstuk_nummer(h) == "00" and h in w.hoofdstukken]
+    return [hoofdstuk] + hub
+
+
 @dataclass
 class Model:
     w: Wereld
@@ -53,25 +80,8 @@ class Model:
         for k in kamers.values():
             plaats(k.get("objecten", []), k["id"], True)
         plaats(ch.get("aanname_bij_start", {}).get("inventaris", []), "inventaris", False)
-        # onmisbare objecten
-        nodig: set[str] = set()
-        niveaus: set[str] = set()
-        for d in eigen_docs:
-            for r in refs_van(d):
-                if r.soort == "item" and r.extra == "onmisbaar":
-                    nodig.add(r.id)
-                elif r.soort == "niveau" and r.extra == "cond":
-                    niveaus.add(r.id)
-                elif r.soort == "item" and r.extra == "geef":
-                    pass
+        nodig, niveaus, gegeven = onmisbare_items(w, eigen_docs)
         bronnen: dict[str, list[str]] = {n: [i for i, it in w.items.items() if n in it.get("geeft_niveaus", [])] for n in niveaus}
-        for lijst in bronnen.values():
-            nodig.update(lijst)
-        gegeven = set()
-        for d in eigen_docs:
-            for r in refs_van(d):
-                if r.soort == "item" and r.extra in ("geef",):
-                    gegeven.add(r.id)
         modelleer = {i for i in nodig if i in plek or i in gegeven}
         for i in list(modelleer):                 # voorouders meenemen
             p = plek.get(i)
@@ -82,7 +92,8 @@ class Model:
         begin = {i: plek.get(i, "nergens") for i in gem}
         events = {g["id"]: g for sc in scenes.values() for g in sc.get("gebeurtenissen", [])}
         npcs = {k: kamers[k].get("npcs", []) for k in kamers}
-        return Model(w, hoofdstuk, ch, scenes, kamers, w.puzzels.get(hoofdstuk, []), events, gem, begin, set(), npcs, bronnen)
+        knopen = [k for h in scope_hoofdstukken(w, hoofdstuk) for k in w.puzzels.get(h, [])]
+        return Model(w, hoofdstuk, ch, scenes, kamers, knopen, events, gem, begin, set(), npcs, bronnen)
 
     def event_scene(self, ev_id: str) -> str:
         return next(s for s, sc in self.scenes.items() if any(g["id"] == ev_id for g in sc.get("gebeurtenissen", [])))
@@ -132,6 +143,8 @@ class Sim(Toestand):
     def item_bekend(self, item: str) -> bool: return item in self.m.w.items
     def _keten(self, item: str) -> list[str]:
         keten, huidig, n = [], item, 0
+        if item not in self.plek:
+            return ["nergens"]
         while huidig in self.plek and n < 64:
             huidig = self.plek[huidig]
             keten.append(huidig)
@@ -253,15 +266,18 @@ class Sim(Toestand):
     def in_aanmerking(self, k: dict) -> bool:
         return k["id"] not in self.knopen or bool(k.get("herhaalbaar"))
 
-    def vuur_trigger(self, trigger: dict, speler: bool = True) -> Optional[str]:
-        """Vuurt de eerste knoop met deze trigger waarvan vereist klopt. Geeft knoop-id of None."""
+    def blokkeert(self, k: dict) -> bool:
+        """Vuurregel 2a: een naar_scene-effect dat O9 zou weigeren laat de knoop niet vuren."""
+        return any("naar_scene" in e and self.scene_blokkade(e["naar_scene"]) for e in k.get("effecten", []))
+
+    def vuur_trigger(self, trigger: dict) -> Optional[str]:
+        """Vuurt de eerste knoop met deze trigger waarvan vereist klopt. Geeft knoop-id of None.
+        Is die knoop geblokkeerd door 2a, dan vuurt er niets (zoals de engine)."""
         for k in self.m.knopen:
             if k["trigger"] != trigger or not self.in_aanmerking(k) or not self.waar(k.get("vereist")):
                 continue
-            if speler:
-                for e in k.get("effecten", []):
-                    if "naar_scene" in e and self.scene_blokkade(e["naar_scene"]):
-                        return None
+            if self.blokkeert(k):
+                return None
             self._vuur(k)
             return k["id"]
         return None
@@ -283,10 +299,11 @@ class Sim(Toestand):
                     veranderd = True
             while self.net_actief:
                 e = self.net_actief.pop(0)
-                if self.vuur_trigger({"gebeurtenis": e}, speler=False):
+                if self.vuur_trigger({"gebeurtenis": e}):
                     veranderd = True
             for k in self.m.knopen:
-                if k["trigger"] == {"automatisch": True} and self.in_aanmerking(k) and self.waar(k.get("vereist")):
+                if k["trigger"] == {"automatisch": True} and self.in_aanmerking(k) and self.waar(k.get("vereist")) \
+                        and not self.blokkeert(k):
                     self._vuur(k)
                     veranderd = True
             if not veranderd:

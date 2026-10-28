@@ -54,6 +54,7 @@
       },
       "kamers": [
         "ch01_hal",
+        "ch01_kantoor",
         "ch01_dak"
       ]
     },

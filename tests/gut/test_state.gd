@@ -17,8 +17,7 @@ func _dubbele_lees_knoop() -> void:
 		"id": "ch01_extra_lees", "type": "feit", "pad": "zij", "waarom": "Een tweede knoop met dezelfde trigger.",
 		"trigger": {"lees": "briefje"}, "effecten": [{"geef_token": "kluis_plek"}],
 	}
-	s.content.alle_knopen.append(extra)
-	s.content.knopen["ch01_extra_lees"] = extra
+	Hulp.voeg_knoop_toe(s, extra)
 
 
 func test_sf08_alleen_de_eerste_knoop_met_dezelfde_trigger_vuurt() -> void:
@@ -61,7 +60,7 @@ func test_sf11_automatische_knoop_vuurt_direct_en_kring_stopt_na_32_rondes() -> 
 		"id": "ch01_kring", "type": "actie", "pad": "zij", "waarom": "Test van de kringgrens.",
 		"trigger": {"automatisch": true}, "herhaalbaar": true, "effecten": [{"zet_flag": "ch01_pauze_bekend"}],
 	}
-	s.content.alle_knopen.append(kring)
+	Hulp.voeg_knoop_toe(s, kring)
 	s.fout_log = PackedStringArray()
 	s.puzzel.herzie()
 	assert_eq(s.fout_log.size(), 1, "SF-11: een foutregel")
@@ -139,7 +138,7 @@ func test_sf15_save_met_onbekende_ids_laadt_en_waarschuwt() -> void:
 	d["apparaten"]["ch01_bestaat_niet"] = "ontgrendeld"
 	d["containers_open"].append("bestaat_niet_container")
 	var s2: Spel = Hulp.nieuw_spel(self, "state")
-	var r: Dictionary = s2.opslag.pas_toe(JSON.parse_string(JSON.stringify(d)))
+	var r: Dictionary = s2.opslag.pas_toe(JsonLezer.normaliseer(JSON.parse_string(JSON.stringify(d))))
 	assert_true(r["ok"], "SF-15: laadt")
 	assert_eq((r["waarschuwingen"] as PackedStringArray).size(), 6, "een waarschuwing per onbekende id")
 	assert_true(s2.tokens.has("code_kluis"), "de rest laadt")

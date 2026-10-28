@@ -154,15 +154,16 @@ func test_oi09_neergelegd_object_blijft_liggen_na_kamerwissel_en_laden() -> void
 
 func test_oi10_scenewissel_geweigerd_zolang_onmisbaar_object_in_vervallende_kamer() -> void:
 	# rapport zit in het kluisje in het kantoor; s2 heeft het kantoor niet
-	var r: Dictionary = s.naar_scene(Hulp.S2)
+	Hulp.voeg_scene_toe(s, "ch01_sklein", [Hulp.HAL, Hulp.DAK], {"dag": 1, "tijd": "09:00"})
+	var r: Dictionary = s.naar_scene("ch01_sklein")
 	assert_false(r["ok"], "OI-10: geweigerd (rapport genest in kluisje)")
 	assert_eq(r["object"], "rapport")
 	assert_eq(s.klok.scene, Hulp.S1)
 	assert_signal_emitted_with_parameters(s, "mompel", [s.tekst("systeem.niet_zonder", {"object": "rapport"}), "systeem.niet_zonder"])
 	assert_eq(s.tekst("systeem.niet_zonder", {"object": "rapport"}), "Mijn rapport ligt er nog.")
 	s.objecten.zet_plek("rapport", "inventaris")
-	assert_true(s.naar_scene(Hulp.S2)["ok"], "na ophalen gaat het door")
-	assert_eq(s.klok.scene, Hulp.S2)
+	assert_true(s.naar_scene("ch01_sklein")["ok"], "na ophalen gaat het door")
+	assert_eq(s.klok.scene, "ch01_sklein")
 
 
 func test_oi11_container_met_open_vereist() -> void:

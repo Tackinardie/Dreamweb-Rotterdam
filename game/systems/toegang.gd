@@ -71,12 +71,17 @@ func _ga(u: Dictionary, doel: Dictionary, van_kamer: String) -> Dictionary:
 		s.mompel_zeg(c["tekst"])
 		return c
 	var naar_scene: String = doel.get("naar_scene", u.get("naar_scene", ""))
+	var cue: String = u.get("geluid", {}).get("open", "lift.rit" if u.has("bestemmingen") else "deur.open")
 	if naar_scene != "" and naar_scene != s.klok.scene:
-		var w: Dictionary = s.naar_scene(naar_scene)
+		# M4: eerst de scène en de speler verplaatsen, dan pas herzien; daarna opslaan
+		var w: Dictionary = s.naar_scene(naar_scene, doel["naar_kamer"], doel["naar_uitgang"])
 		if not w["ok"]:
 			return {"ok": false, "reden": w["reden"], "tekst": "systeem.niet_zonder"}
-	s.audio.cue(u.get("geluid", {}).get("open", "lift.rit" if u.has("bestemmingen") else "deur.open"))
-	s.verplaats_speler(doel["naar_kamer"], doel["naar_uitgang"])
+		s.audio.cue(cue)
+		s.autosave()
+	else:
+		s.audio.cue(cue)
+		s.verplaats_speler(doel["naar_kamer"], doel["naar_uitgang"])
 	return {"ok": true, "reden": "", "van": van_kamer, "naar": doel["naar_kamer"]}
 
 

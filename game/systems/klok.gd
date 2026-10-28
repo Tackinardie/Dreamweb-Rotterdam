@@ -100,7 +100,7 @@ func klok_tekst() -> String:
 
 ## [jaar, maand, dag] van spel-dag n (dag 1 = startdatum).
 func _datum(dag: int) -> Array[int]:
-	var delen: PackedStringArray = str(content.spel.get("startdatum", "2025-01-01")).split("-")
+	var delen: PackedStringArray = str(content.spel["startdatum"]).split("-")
 	var jaar: int = delen[0].to_int()
 	var maand: int = delen[1].to_int()
 	var d: int = delen[2].to_int() + dag - 1
@@ -255,13 +255,16 @@ func _verloop(id: String, stap: float) -> void:
 
 func naar_dict() -> Dictionary:
 	var ev: Dictionary = {}
-	for id: String in gebeurtenissen:
-		if content.gebeurtenissen[id]["scene"] == scene:
-			ev[id] = (gebeurtenissen[id] as Dictionary).duplicate()
+	for id: String in gebeurtenissen:       # alle scenes, zodat 'voorbij' na een niet-lineaire sprong blijft
+		ev[id] = (gebeurtenissen[id] as Dictionary).duplicate()
 	return {"scene": scene, "tijd": tijd.duplicate(), "gebeurtenissen": ev}
 
 
-## Zonder cues of signalen; niet-bewaarde gebeurtenissen van andere scènes blijven op hun beginstatus.
+static func _getal(v: Variant, standaard: float) -> float:
+	return float(v) if v is int or v is float else standaard
+
+
+## Zonder cues of signalen. Wat niet in de save staat, begint op 'wacht'.
 func uit_dict(d: Dictionary) -> void:
 	reset()
 	var sc: String = d.get("scene", "")
@@ -269,21 +272,15 @@ func uit_dict(d: Dictionary) -> void:
 		return
 	scene = sc
 	tijd = (content.scenes[sc]["tijd"] as Dictionary).duplicate()
-	var volgorde: Array = content.hoofdstukken.get(content.scenes[sc]["hoofdstuk"], {}).get("scenes", [])
-	var nu_index: int = volgorde.find(content.scenes[sc])
-	for id: String in content.gebeurtenissen:
-		var andere: Dictionary = content.scenes[content.gebeurtenissen[id]["scene"]]
-		if andere["id"] != sc and andere["hoofdstuk"] == content.scenes[sc]["hoofdstuk"] and volgorde.find(andere) < nu_index:
-			gebeurtenissen[id]["status"] = "voorbij"   # eerder doorlopen scène
 	var ev: Dictionary = d.get("gebeurtenissen", {})
 	for id: String in ev:
-		if not gebeurtenissen.has(id):
+		if not gebeurtenissen.has(id) or not (ev[id] is Dictionary):
 			continue
 		var bron: Dictionary = ev[id]
 		var g: Dictionary = gebeurtenissen[id]
-		g["status"] = bron.get("status", "wacht")
-		g["rest"] = float(bron.get("rest", -1.0))
-		g["herhaal_rest"] = float(bron.get("herhaal_rest", 0.0))
-		g["vertraging"] = float(bron.get("vertraging", 0.0))
-		g["gereed"] = bool(bron.get("gereed", false))
-		g["wacht_vertraging"] = bool(bron.get("wacht_vertraging", false))
+		g["status"] = bron["status"] if ["wacht", "actief", "voorbij"].has(bron.get("status")) else "wacht"
+		g["rest"] = _getal(bron.get("rest"), -1.0)
+		g["herhaal_rest"] = _getal(bron.get("herhaal_rest"), 0.0)
+		g["vertraging"] = _getal(bron.get("vertraging"), 0.0)
+		g["gereed"] = bron.get("gereed", false) == true
+		g["wacht_vertraging"] = bron.get("wacht_vertraging", false) == true
