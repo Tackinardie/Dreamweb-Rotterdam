@@ -41,7 +41,7 @@ Schema's: `tools/schemas/room.schema.json` (`afmeting`, `plafond`, `model`, `cam
 
   Alleen objecten die direct in de kamer liggen krijgen een node; inhoud van containers niet. Elke object-node heet naar het item-id, elke uitgang naar het uitgang-id (testbaar).
 - W7. **Model en handwerk.** Met `model` vervangt het `.glb` vloer, muren en de geblokkeerd-blokken; objecten met een eigen `model` vervangen hun placeholder. Een ontbrekend bestand geeft een regel in het log en de placeholder, nooit een crash. Een optionele `game/scenes/rooms/<hoofdstuk>/<id>.tscn` wordt als kind toegevoegd voor decor en voorgrond; die bevat geen interactieve objecten en geen lichten (anders zijn logica en budget niet uit data te controleren).
-- W8. **Licht.** Elke kamer krijgt ambient `#4A6590` (energie 1,6 binnen, 1,9 buiten) en een zwak maanlicht (richtingslicht, energie 0,2, geen schaduw). Daarnaast de `lichten` uit het kamerbestand: `punt` = OmniLight3D, `spot` = SpotLight3D recht omlaag; `hoogte` standaard 0,2 m onder het plafond. Budget: hoogstens 16 lichten, hoogstens 6 met `schaduw` (schema en W22). Volgorde in de lijst = belang.
+- W8. **Licht.** Elke kamer krijgt ambient `#4A6590` (energie 1,6 binnen, 1,9 buiten) en een zwak maanlicht (richtingslicht, energie 0,2, geen schaduw). Daarnaast de `lichten` uit het kamerbestand: `punt` = OmniLight3D, `spot` = SpotLight3D recht omlaag; `hoogte` standaard 0,2 m onder het plafond. Budget: hoogstens 16 kamerlichten (de `lichten` uit het kamerbestand), hoogstens 6 met `schaduw` (schema, validator V33 en W22). Het maanlicht en Richards randlicht tellen niet mee in die 16 (beslissing producer). Volgorde in de lijst = belang; meer dan 6 met `schaduw` geeft een logregel.
 
 **Camera**
 
@@ -146,7 +146,7 @@ Schema's: `tools/schemas/room.schema.json` (`afmeting`, `plafond`, `model`, `cam
 | KW-12 | Door `deur_hal` naar `ch01_hal`: geen laadscherm-node in de boom, de overgang duurt in de testkamer ≤ 0,6 s, Richard staat op `deur_kantoor`, en de nodes van `ch01_kantoor` zijn vrijgegeven. |
 | KW-13 | Overgang naar een kamer met `soort: droom` (testkamer in de GUT-test): de filterparameter loopt 0 → 1 → 0 in 1,5 s (±0,1), `droom.overgang` is gelogd, speeltijd staat stil tijdens de overgang. |
 | KW-14 | Stand `licht`: scale 0,75 met FSR, MSAA uit, FXAA aan, SSR, SSAO en volumetrische mist uit, glow aan, alleen de eerste 3 lichten met `schaduw` werpen schaduw. Terug naar `vol` herstelt alles; wisselen zonder herstart; de keuze staat na herstart nog in `user://instellingen.cfg`. |
-| KW-15 | Budget, headless, in beide standen: `ch01_kantoor` heeft ≤ 300 MeshInstance3D, ≤ 16 Light3D, ≤ 6 (vol) of ≤ 3 (licht) lichten met schaduw. |
+| KW-15 | Budget, headless, in beide standen: `ch01_kantoor` heeft ≤ 300 MeshInstance3D, ≤ 16 kamerlichten (zonder maanlicht en randlicht), ≤ 6 (vol) of ≤ 3 (licht) lichten met schaduw. |
 | KW-16 | `--meet ch01_kantoor --stand licht` schrijft een JSON met alle velden uit W24. QA meet op de referentielaptop (Iris Xe) ≥ 30 fps licht, en op een middenklasse-gpu ≥ 60 fps vol. |
 | KW-17 | KW-01 t/m KW-15 draaien in `godot --headless` via GUT; de tests voor KW-01, KW-05 (afstand), KW-06 en KW-07 maken geen enkele Node3D. |
 | KW-18 | De validator: `geblokkeerd` of een licht buiten de afmeting faalt op V11; een dubbel licht-id in een kamer faalt op V01; een camera met FOV buiten 15–20 faalt op het schema (`tests/python/test_validator.py`). |

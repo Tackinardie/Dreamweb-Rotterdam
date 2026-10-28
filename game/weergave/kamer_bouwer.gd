@@ -30,10 +30,9 @@ static func bouw(spel: Spel, kamer_id: String) -> KamerRoot:
 		handwerk.name = "handwerk"
 		root.add_child(handwerk)
 	for u: Dictionary in root.kamer.get("uitgangen", []):
-		root.add_child(KamerVorm.uitgang(root, u, u["id"]))
+		root.add_child(KamerVorm.uitgang(root, u, spel.tekst(u.get("naam", u["id"]))))
 	zet_objecten(root, spel)
-	for n: Dictionary in spel.npcs_in_kamer(kamer_id):
-		root.add_child(KamerInhoud.npc(root, n, spel.tekst(n.get("naam", n["id"]))))
+	zet_npcs(root, spel)
 	root.add_child(KamerInhoud.richard(root))
 	KamerLicht.bouw(root, spel, root)
 	obstakels_bijwerken(root, spel)
@@ -50,9 +49,9 @@ static func zet_objecten(root: KamerRoot, spel: Spel) -> void:
 	for item: String in nu:
 		if not root.ding(item).is_empty() or not spel.objecten.positie.has(item):
 			continue
-		var plaatsing: Dictionary = {}
+		var plaatsing: Dictionary = {}     # stand alleen zolang het object op zijn beginvak ligt (M2)
 		for pl: Dictionary in root.kamer.get("objecten", []):
-			if pl["object"] == item:
+			if pl["object"] == item and Vak.uit_positie(pl["positie"]) == spel.objecten.positie[item]:
 				plaatsing = pl
 		var node: Node3D = KamerInhoud.object(root, spel, item, spel.objecten.positie[item], plaatsing)
 		root.add_child(node)
@@ -61,3 +60,23 @@ static func zet_objecten(root: KamerRoot, spel: Spel) -> void:
 
 static func obstakels_bijwerken(root: KamerRoot, spel: Spel) -> void:
 	root.raster.zet_obstakels(KamerRaster.obstakels_van(root.kamer_id, spel.content, spel.objecten, spel.npcs_in_kamer(root.kamer_id)))
+
+
+## Zet NPC-nodes gelijk met wie nu aanwezig is (`aanwezig`). Geeft true als er iets veranderde (M3).
+static func zet_npcs(root: KamerRoot, spel: Spel) -> bool:
+	var nu: Array = spel.npcs_in_kamer(root.kamer_id)
+	var ids: Array = nu.map(func(n: Dictionary) -> String: return n["id"])
+	var veranderd: bool = false
+	for p in root.pickbaar.duplicate():
+		if p["soort"] == "npc" and not ids.has(p["id"]):
+			root.vergeet(p["id"], "npc")
+			(p["node"] as Node).free()
+			veranderd = true
+	for n: Dictionary in nu:
+		var bestaat: bool = false
+		for p in root.pickbaar:
+			bestaat = bestaat or (p["soort"] == "npc" and p["id"] == n["id"])
+		if not bestaat:
+			root.add_child(KamerInhoud.npc(root, n, spel.tekst(n.get("naam", n["id"]))))
+			veranderd = true
+	return veranderd

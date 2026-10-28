@@ -6,6 +6,7 @@ from pathlib import Path
 from . import regels_basis as basis
 from . import regels_graaf as graaf
 from . import regels_objecten as objecten
+from . import regels_ruimte as ruimte
 from .inhoud import Inhoud, laad_inhoud, valideer_schemas
 from .wereld import Wereld
 
@@ -16,7 +17,7 @@ REGELS = [
     objecten.v17_automatisch, objecten.v18_merkbaar, objecten.v19_niveau_zonder_regel,
     graaf.v20_effecten, graaf.v21_doel, graaf.v22_hints, graaf.v23_verkrijgbaar, graaf.v24_ongebruikt,
     graaf.v25_kringen, graaf.v27_dubbele_triggers, graaf.v28_aanname, graaf.v29_gesprekken,
-    graaf.v30_dialoog_gebruikt, graaf.v31_apparaat_object,
+    graaf.v30_dialoog_gebruikt, graaf.v31_apparaat_object, ruimte.v32_beloopbaar, ruimte.v33_schaduwbudget,
 ]
 
 

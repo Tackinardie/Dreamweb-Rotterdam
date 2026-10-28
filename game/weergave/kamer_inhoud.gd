@@ -21,6 +21,7 @@ static func object(root: KamerRoot, spel: Spel, item_id: String, vak: Vector2i, 
 		hoogte = root.aabb_van(model, model).size.y
 	else:
 		hoogte = _placeholder(n, item, stand)
+		Placeholder.label(n, spel.tekst(item.get("naam", item_id)), hoogte + 0.25)
 	var detail_id: String = str(item.get("closeup", {}).get("model", ""))
 	if detail_id != "":
 		var detail: Node3D = ModelLader.laad(detail_id, log_fn)
@@ -31,7 +32,6 @@ static func object(root: KamerRoot, spel: Spel, item_id: String, vak: Vector2i, 
 			for k in n.get_children():
 				if k != detail:
 					Placeholder.zet_lagen(k, KamerRoot.LAAG_GEWOON)
-	Placeholder.label(n, item_id, hoogte + 0.25)
 	return n
 
 

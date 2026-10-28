@@ -32,6 +32,8 @@ var hover: Dictionary = {}
 var muis: Vector2 = Vector2.ZERO
 var _hover_tijd: float = 0.0
 var _doel: Dictionary = {}
+var _laatste_klik: Dictionary = {}     # {vak, doel}: voor het herberekenen van het pad (M3)
+var _npc_rest: float = 0.0
 
 
 func start(s: Spel, begin_stand: String = Kwaliteit.VOL, auto: bool = true) -> void:
@@ -53,6 +55,7 @@ func start(s: Spel, begin_stand: String = Kwaliteit.VOL, auto: bool = true) -> v
 	spel.objecten.object_verplaatst.connect(func(_i: String, _v: String, _n: String) -> void: _objecten_veranderd())
 	loper.vak_bereikt.connect(func(v: Vector2i) -> void: spel.positie = v)
 	loper.aangekomen.connect(_aangekomen)
+	spel.spel_geladen.connect(_herlaad)
 	set_process(auto)
 	bouw_kamer(spel.kamer)
 	camera.current = true
@@ -120,8 +123,9 @@ func zet_stand(nieuw: String, bewaar: bool = true) -> void:
 func _objecten_veranderd() -> void:
 	if root == null or staat == "opbouwen":
 		return
-	if not hover.is_empty() and not is_instance_valid(hover["node"]):
-		hover = {}
+	var nu: Array = spel.objecten.kamer_objecten(root.kamer_id)
+	if not hover.is_empty() and hover["soort"] == "object" and not nu.has(hover["id"]):
+		_wis_hover()       # vóór het vrijgeven van de node (B1)
 	KamerBouwer.zet_objecten(root, spel)
 	KamerBouwer.obstakels_bijwerken(root, spel)
 	if spatie:
@@ -129,15 +133,55 @@ func _objecten_veranderd() -> void:
 			Contour.zet(p["node"], true)
 
 
+## Hover wissen zonder naar een node te wijzen die weg kan zijn.
+func _wis_hover() -> void:
+	if not hover.is_empty() and is_instance_valid(hover["node"]) and not spatie:
+		Contour.zet(hover["node"], false)
+	hover = {}
+	_hover_tijd = 0.0
+	glas.verberg()
+	ui.toon_naam("", muis)
+
+
+## NPC's die verschijnen of verdwijnen (`aanwezig`): nodes en raster bijwerken, lopend pad opnieuw berekenen (M3).
+func _npcs_controleren() -> void:
+	if KamerBouwer.zet_npcs(root, spel):
+		if not hover.is_empty() and hover["soort"] == "npc" and not is_instance_valid(hover["node"]):
+			_wis_hover()
+		KamerBouwer.obstakels_bijwerken(root, spel)
+		if loper.bezig and not _laatste_klik.is_empty():
+			klik_vak(_laatste_klik["vak"], _laatste_klik["doel"])
+
+
+## Een save is geladen: alles opnieuw opbouwen vanuit de nieuwe spelstaat (M1).
+func _herlaad() -> void:
+	closeup.open = false
+	closeup.sluitend = false
+	spel.blokkades.erase("closeup")
+	camera.current = true
+	spatie = false
+	_doel = {}
+	_laatste_klik = {}
+	hover = {}
+	overgang.actief = false
+	bouw_kamer(spel.kamer)
+
+
 # ---------------------------------------------------------------- tijd
 
 func tik(dt: float) -> void:
 	overgang.tik(dt)
 	if staat == "spelen":
+		_npc_rest -= dt
+		if _npc_rest <= 0.0:
+			_npc_rest = 0.25
+			_npcs_controleren()
 		loper.tik(dt)
 		root.richard.position = loper.positie
 		if loper.bezig:
 			root.richard.rotation.y = atan2(loper.richting.x, loper.richting.z)
+		if not hover.is_empty() and not is_instance_valid(hover["node"]):
+			_wis_hover()
 		if not hover.is_empty() and not glas.zichtbaar:
 			_hover_tijd += dt
 			if _hover_tijd >= HOVER_WACHT_S:
@@ -184,6 +228,7 @@ func klik_vak(v: Vector2i, doel: Dictionary = {}) -> void:
 	if staat != "spelen" or spel.blokkades.has("gesprek") or spel.blokkades.has("titelkaart"):
 		return
 	var ding: bool = not doel.is_empty()
+	_laatste_klik = {"vak": v, "doel": doel}
 	var van: Vector2i = loper.eerstvolgend_vak() if loper.bezig else loper.vak
 	var r: Dictionary = root.raster.loop_doel(van, v, ding)
 	_doel = doel if ding and r["dichtbij"] else {}

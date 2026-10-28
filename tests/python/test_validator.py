@@ -169,3 +169,32 @@ def test_cli_kapotte_variant_geeft_exitcode_1_met_nederlandse_melding():
     r = _draai("--content", str(PROEF), "--overlay", str(KAPOT / "onbekend_object"), "--cues", str(CUES))
     assert r.returncode == 1
     assert "FOUT [V02]" in r.stdout and "onbekend item" in r.stdout and "ch01_dak.json" in r.stdout and "$.objecten" in r.stdout
+
+
+def test_v32_uitgang_op_geblokkeerd_vak(tmp_path):
+    def wijzig(d):
+        d["geblokkeerd"].append({"x": 0, "y": 3})
+    assert any(m.regel == "V32" and "deur_hal" in m.tekst for m in _kantoor_overlay(tmp_path, wijzig))
+
+
+def test_v32_afgesloten_uitgang_en_object(tmp_path):
+    def wijzig(d):    # muur van geblokkeerde vakken om de lift op (7,3)
+        d["geblokkeerd"] += [{"x": 6, "y": 2, "breedte": 2}, {"x": 6, "y": 3}, {"x": 6, "y": 4}, {"x": 7, "y": 4}]
+    tekst = " ".join(m.tekst for m in _kantoor_overlay(tmp_path, wijzig) if m.regel == "V32")
+    assert "lift_kantoor" in tekst and "niet bereikbaar" in tekst
+
+
+def test_v32_twee_niet_pakbare_objecten_op_een_vak(tmp_path):
+    def wijzig(d):
+        d["objecten"][2]["positie"] = {"x": 6, "y": 1}    # prullenbak op het kluisje
+    assert any(m.regel == "V32" and "hetzelfde vak" in m.tekst for m in _kantoor_overlay(tmp_path, wijzig))
+
+
+def test_v32_fixture_is_groen(tmp_path):
+    assert [m for m in _kantoor_overlay(tmp_path, lambda d: None) if m.regel in ("V32", "V33")] == []
+
+
+def test_v33_meer_dan_zes_schaduwlichten(tmp_path):
+    def wijzig(d):
+        d["lichten"] = [{"id": f"l{i}", "soort": "punt", "positie": {"x": 1, "y": 1}, "kleur": "#FFFFFF", "energie": 1, "schaduw": True} for i in range(7)]
+    assert any(m.regel == "V33" for m in _kantoor_overlay(tmp_path, wijzig))

@@ -279,7 +279,7 @@ func test_kw15_budget_in_beide_standen() -> void:
 	for stand in ["vol", "licht"]:
 		w.zet_stand(stand)
 		assert_lte(w.root.tel_meshes(), 300, stand)
-		assert_lte(w.root.tel_lichten(), 16, stand)
+		assert_lte(w.root.licht_nodes.size(), 16, stand)
 		assert_lte(w.root.tel_schaduwlichten(), 6 if stand == "vol" else 3, stand)
 
 

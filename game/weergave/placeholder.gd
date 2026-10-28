@@ -50,8 +50,11 @@ static func capsule(parent: Node3D, naam: String, hex: String) -> MeshInstance3D
 	return mi
 
 
-## Id-label boven een placeholder (kleine tekst die de camera volgt).
+## Naamlabel boven een placeholder (kleine tekst die de camera volgt).
+## Alleen in ontwikkelbuilds (M4): de speler ziet de naam bij hover, geen ruwe labels.
 static func label(parent: Node3D, tekst: String, hoogte: float) -> Label3D:
+	if not Ontwikkel.actief():
+		return null
 	var l := Label3D.new()
 	l.name = "label"
 	l.text = tekst

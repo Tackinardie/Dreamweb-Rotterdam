@@ -65,6 +65,10 @@ static func bouw(root: KamerRoot, spel: Spel, parent: Node3D) -> void:
 	var lichten: Array = root.kamer.get("lichten", [])
 	if lichten.is_empty():
 		spel.log_fout("kamer '%s' heeft geen lichten: alleen ambient en maanlicht" % root.kamer_id)
+	var met_schaduw: int = lichten.filter(func(l: Dictionary) -> bool: return l.get("schaduw", false)).size()
+	if met_schaduw > Kwaliteit.instellingen(Kwaliteit.VOL)["max_schaduw"]:
+		spel.log_fout("kamer '%s': %d lichten met schaduw; alleen de eerste %d werpen schaduw (licht: %d)" % [root.kamer_id,
+				met_schaduw, Kwaliteit.instellingen(Kwaliteit.VOL)["max_schaduw"], Kwaliteit.instellingen(Kwaliteit.LICHT)["max_schaduw"]])
 	var n: int = 0
 	for l: Dictionary in lichten:
 		if n >= 16:

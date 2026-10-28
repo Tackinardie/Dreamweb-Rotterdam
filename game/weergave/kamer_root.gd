@@ -25,9 +25,9 @@ func registreer(soort: String, id: String, node: Node3D) -> void:
 	pickbaar.append({"soort": soort, "id": id, "node": node})
 
 
-func vergeet(id: String) -> void:
+func vergeet(id: String, soort: String = "object") -> void:
 	for i in range(pickbaar.size() - 1, -1, -1):
-		if pickbaar[i]["id"] == id and pickbaar[i]["soort"] == "object":
+		if pickbaar[i]["id"] == id and pickbaar[i]["soort"] == soort:
 			pickbaar.remove_at(i)
 
 
