@@ -90,7 +90,7 @@ Het verhaal volgt zeven nachten en zeven doelwitten voordat Het Hart live gaat, 
 1. **Opzet**: de jaarwisseling. Hij zit alleen op zijn studentenkamer; buiten knalt illegaal vuurwerk boven de daken. Student met een bijbaan als flitsbezorger, slaapt slecht. In een droom ziet hij Rotterdam waarin Het Hart klopt: stille straten, iedereen gestuurd, niemand die nog nee zegt. Een gestalte zonder hart geeft hem een naam.
 2. **Eerste nacht**: een bezorgorder naar precies die naam: de projectontwikkelaar. In zijn loft ziet hij voor het eerst de plannen van Het Hart.
 3. **Escalatie**: elke nacht een nieuwe order, een nieuw doelwit, een nieuw stuk van het netwerk (wie, hoe, wanneer het live gaat). Het Hart groeit intussen: camera's, de app en de mensen om hem heen lijken hem steeds beter te zien.
-4. **Kantelpunt (Erasmus MC-level)**: de slaaponderzoeker levert de technologie die mensen aan Het Hart koppelt. Hij vindt zijn eigen dossier: hij wist dat hij proefpersoon was, maar niet waarvoor.
+4. **Kantelpunt (Maasstad Medisch Centrum)**: de slaaponderzoeker levert de technologie die mensen aan Het Hart koppelt. Hij vindt zijn eigen dossier: hij wist dat hij proefpersoon was, maar niet waarvoor.
 5. **Persoonlijk (Delfshaven)**: het zesde doelwit is iemand uit zijn eigen verleden die ook aan Het Hart meewerkt.
 6. **Finale (vliegveld)**: Het Hart gaat bij zonsopgang live. Het laatste doelwit, de bestuurder, vlucht met de eerste privévlucht.
 
@@ -115,6 +115,7 @@ Het spel begint net na middernacht in de nieuwjaarsnacht. De hoofdpersoon is all
 | Het Hart | Stadsproject: toren aan de Maas + datanetwerk | De dreiging; groeit elke nacht |
 | Buurvrouw | Oudere Rotterdamse in de hub | Anker in de realiteit, kent hem van vroeger |
 | Barman | Witte de Withstraat; zijn bar is dicht door de lockdown, hij woont erboven en klust 's avonds alleen in de zaak | Informatiebron, geruchten, roddel; laat Richard via de zijdeur binnen |
+| Kroegbazin | Katendrecht, 66; houdt haar kroeg achterom illegaal open voor vaste klanten; kende de vader van doelwit 1; haar pand is van zijn bedrijf | Hoofdstuk 1: toegang tot de verjaardagsfoto; menselijk tegenwicht van de oude Kaap |
 | Zeven doelwitten | De bouwers van Het Hart (zie hieronder) | Samen één netwerk; elk hoofdstuk legt een stuk bloot |
 
 **De zeven bouwers van Het Hart**
@@ -684,13 +685,14 @@ De vertical slice is 20 à 30 minuten speeltijd van hub tot eerste droom, met de
 **Verloop**
 
 1. **Kamer (hub)**: nieuwjaarsnacht, alleen op zijn studentenkamer, illegaal vuurwerk boven de daken. Verken de kamer; het vuurwerk gaat over in de eerste droom. Daarna wakker: leer pakken en gebruiken. Pak bezorgtas en jas.
-2. **Order**: Richard slaapt de dag door. Zaterdagavond rond 21:00 toont de app een order naar een adres in Katendrecht, op een naam uit de droom.
-3. **Katendrecht, buiten**: verbouwd pakhuis met bouwhekken. Bij een bankje ligt een verloren telefoon.
-4. **Telefoon kraken**: de pincode staat niet op het toestel maar volgt uit een foto in een bar (verjaardagstaart op een social-post). Door de lockdown is die bar officieel dicht; achterom draait hij in het geheim door, alleen voor genodigden. Binnenkomen is zelf een kleine toegangspuzzel.
-5. **Toegang**: via berichten op de telefoon vind je de toegangscode van de bouwlift en het tijdstip waarop de beveiliger pauzeert.
-6. **Binnen**: loft van de ontwikkelaar; maquettes van de nieuwe wijk, een foto van zijn vader in de haven (de menselijke kant).
-7. **Confrontatie**: kort, buiten beeld, geluid valt weg.
-8. **Droom**: in de onderstad komt één gebouw terug.
+2. **Order**: Richard slaapt de dag door. Zaterdagavond rond 21:00 toont de app een order naar een adres in Katendrecht, op een naam uit de droom: Daan Heijsteeg (werknaam).
+3. **Hub, de bar**: op weg naar buiten laat de barman van de dichte bar aan de Witte de Withstraat Richard via de zijdeur binnen. Bij het noemen van de naam roddelt hij: "die van het pakhuis op de Kaap", en hij laat iets los over een bar achterom op Katendrecht.
+4. **Katendrecht, buiten**: het verbouwde pakhuis is zelf de bouwplaats. Daan woont al in de afgebouwde loft; de verdiepingen erboven zijn nog in aanbouw, met bouwhekken, een bouwlift en bewaking. Er geldt een bouwstop van kerst tot en met 9 januari, maar de bewaking draait door. Richard belt aan, maar niemand doet open. Het pakket blijft in zijn tas: een object met een bon op Daans naam en adres. Wie het bestelde, blijft open (zie waarheid.md). Bij een bankje ligt een verloren telefoon: die van de uitvoerder, die hem die dag zelf verloor.
+5. **Telefoon kraken**: de pincode staat niet op het toestel; het is de verjaardag van het dochtertje van de uitvoerder. Die verjaardag is na 19 december 2021 gevierd in de illegale bar achterom, en de foto daar toont de datum (op de taart of een kaart). Door de lockdown is de bar officieel dicht; achterom draait hij in het geheim door, alleen voor genodigden. Richard komt binnen via een tweede order vóór 23:00: de kroegbazin heeft via de bezorgapp boodschappen besteld (citroenen, ijs, chips, geen drank in bulk), en hij levert aan de achterdeur.
+6. **Toegang**: in de groepsapp van de bouw op de telefoon van de uitvoerder staat de toegangscode van de bouwlift. Die is al gedeeld omdat de bouwlift maandag 3 januari vroeg wordt gekeurd, een uitzondering op de bouwstop. In dezelfde app staat het tijdstip waarop de beveiliger pauzeert.
+7. **Binnen**: de loft van de ontwikkelaar. Er staan maquettes van de nieuwe wijk, met op de oude kade een klein mannetje (zijn vader), vaders havenpas onder glas en een foto van zijn vader in de haven (de menselijke kant). Daar liggen ook de plannen die laten zien dat hij meer van het netwerk weet dan hij zegt. Daan komt 's nachts zelf kijken op zijn bouw.
+8. **Confrontatie**: kort, buiten beeld, geluid valt weg.
+9. **Droom**: in de onderstad komt één gebouw terug.
 
 **Wat de slice moet bewijzen**
 
@@ -701,7 +703,7 @@ De vertical slice is 20 à 30 minuten speeltijd van hub tot eerste droom, met de
 - [ ] Sfeer: testers beschrijven de game spontaan als "donker", "Rotterdam" of "eenzaam"
 - [ ] Oplosser en headless playthrough draaien groen
 
-**Content-omvang**: 6 kamers (studentenkamer, trappenhuis, bar, Katendrecht-plein, pakhuis-lobby, loft), 1 droomkamer, ongeveer 30 objecten, 4 NPC's, 2 apparaten, 5 puzzelknopen.
+**Content-omvang**: 7 kamers (studentenkamer, trappenhuis, bar Witte de Withstraat, Katendrecht-kade/plein, illegale bar, pakhuis-lobby/bouw, loft), 1 droomkamer, ongeveer 30 objecten, 5 NPC's (buurvrouw, barman, kroegbazin, beveiliger, Daan), 2 apparaten, 5 puzzelknopen.
 
 ## Roadmap
 
