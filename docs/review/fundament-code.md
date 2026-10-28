@@ -39,3 +39,43 @@ Gedraaid: pytest 69 groen, GUT 65/65 groen, `validate.py --all` groen, `solve.py
 ## Oordeel
 
 Drie blokkerende punten. Niet mergen voordat B1–B3 zijn opgelost.
+
+---
+
+# Hercontrole na reviewronde 1 (HEAD dde92a7)
+
+Gedraaid: `python tools/test_godot.py` groen (GUT 78/78), pytest 93 groen, `validate.py --all` groen, `solve.py` op de fixture groen met beperkingenblok.
+
+| Punt | Oordeel |
+| --- | --- |
+| B1 autosave | Opgelost (`begin_actie`/`einde_actie`; `test_sf21`) |
+| B2 geweigerde scènewissel | Opgelost, engine en oplosser gelijk (`test_oi14_*`, `test_sf19`) |
+| B3 knoopscope | Opgelost (`actieve_knopen`; `test_sf20`) |
+| M1 laden valideren | Grotendeels opgelost (rest: N3, N6) |
+| M2 signaal na laden | Opgelost (rest: N1) |
+| M3 gebeurtenisstatus | Opgelost (`test_sf25`) |
+| M4 scènewissel via uitgang | Opgelost (`test_m4`) |
+| M5 oplosserbeperkingen | Opgelost (`test_sf23_*`) |
+| M6 V15 | Opgelost (zie N7) |
+| M7 validatortests | Opgelost; V28 aangescherpt (zie N8) |
+| M8 pariteit condities | Opgelost |
+
+## Nieuwe bevindingen
+
+**Blokkerend**: geen.
+
+**Moet**
+- **N1.** Mompel-wachtrij wordt bij laden en `nieuw_spel` niet geleegd (`opslaan.gd:178-188`, `spel_tekst.gd:30-40`): een mompel uit de vorige sessie verschijnt na het volgende gesprek.
+- **N2.** Autosave verdwijnt als aan het eind van een actie een blokkade staat (`spel.gd:183-187`): een `dialoog`-knoop met `naar_kamer` tijdens een gesprek geeft nooit een autosave.
+- **N3.** `slot_titel` crasht op een kapotte save (`opslaan.gd:196-197`).
+
+**Kan**
+- **N4.** Een geweigerde `gebeurtenis`-knoop wordt pas bij een volgende statuswijziging opnieuw geprobeerd.
+- **N6.** Positie in een save wordt niet gevalideerd.
+- **N7.** V15 met `all` is conservatief zonder `scene`-atoom; leg in de spec vast dat auteurs een `scene`-atoom gebruiken, en voeg een test toe met een vroege en een late bron.
+- **N8.** V28 kijkt alleen naar `verwijder_object`, niet naar `verplaats_object` naar `nergens` of `geef_object` aan een NPC.
+- Nog open uit ronde 1: oplosserprestaties, bestandsgrootte `klok.gd`/`spel.gd`, ongetypeerde lussen, migratiepad saveversies.
+
+## Oordeel
+
+Geen blokkerende punten. N1–N3 oplossen vóór de merge.
