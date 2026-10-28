@@ -16,7 +16,7 @@
 | Setting | Rotterdam, nu; plus een droomwereld: het vooroorlogse Rotterdam |
 | Speelduur | 4 à 6 uur (7 hoofdstukken + hub) |
 | Engine | Godot 4 |
-| Platform | PC eerst; web-export als demo |
+| Platform | PC (Windows eerst); demo alleen als download, geen webversie |
 | Taal | Nederlands, met Rotterdamse directheid |
 | Inspiratie | DreamWeb, Her Story, Hacknet, Disco Elysium (toon) |
 
@@ -35,7 +35,7 @@ Vier pillars bepalen elke ontwerpbeslissing. Een feature die geen pillar verster
 
 ## Setting en thema
 
-Het thema is **de stad zonder hart**: Rotterdam verloor op 14 mei 1940 zijn oude centrum en bouwde zich opnieuw op. Zadkines *De Verwoeste Stad*, een figuur met een gat waar het hart zit, is het centrale beeld van de game.
+Het thema is **de stad zonder hart**: Rotterdam verloor op 14 mei 1940 zijn oude centrum en bouwde zich opnieuw op. Zadkines *De Verwoeste Stad*, een figuur met een gat waar het hart zit, is het centrale beeld van de game. Martijn heeft akkoord om het beeld en het Markthal-plafond te gebruiken; leg dat schriftelijk vast in docs/rechten.md.
 
 **Het Hart.** De stad zonder hart krijgt een nieuw middelpunt: een toren aan de Maas met daaronder een netwerk dat alles koppelt. Camera's, verkeer, haven, energie, zorgdata, bezorgapps, socials: alle data van Rotterdam vloeit ernaartoe. Officieel heet het efficiëntie en veiligheid. In werkelijkheid geeft het de zeven mensen die het bouwen absolute macht over de stad: zij zien alles, sturen alles en kunnen iedereen raken. Het Hart gaat aan het einde van de game live; de speler heeft zeven nachten.
 
@@ -448,7 +448,7 @@ De look is low-poly 3D met vlakke kleuren (geen texturen) en sterk realtime lich
 - Resolutie: native 1080p en 1440p, geen lage interne resolutie. De lichte kwaliteitsstand mag de render scale verlagen.
 - Schaal: 1 unit = 1 m. Een tile is een vak van 1×1 m in de content (looproutes, collision, plaatsing). Personages zijn circa 1,80 m en altijd minstens 80 px hoog op 1080p.
 - Vormtaal: eenvoudige low-poly vormen in vlakke kleuren uit het palet; geen foto's, geen fotomaterialen. Detail komt uit vorm, licht en reflectie.
-- Palet bovenstad: koud blauw en natriumoranje, neon-accenten (magenta, cyaan). Palet onderstad: sepia/grijs met één rode kleur.
+- Palet bovenstad: koud blauw en natriumoranje, neon-accenten (magenta, cyaan). Palet onderstad: sepia/grijs met één rode kleur. Dat droomrood verschijnt hooguit één keer per hoofdstuk in de bovenstad, als bewust twijfelsignaal (pillar 4).
 - Licht: realtime Godot 3D-lichten met schaduw; glow alleen op lichtbronnen; nat via lage roughness, reflectieprobes en SSR; lichtkegels via lokale mist; regen als particle-laag; de Erasmusbrug als lichtlijn in de verte waar het past.
 - Herkenbaarheid: elke locatie heeft 1 icoon-element (Markthal-boog, Katendrechtse pakhuizen, containerkranen, terminalgebouw).
 
@@ -469,7 +469,7 @@ Het spel moet ook op een gewone laptop draaien. De stijltest haalde 170 fps alle
 
 - Budget per scène, beide standen: hooguit 300 losse meshes (kleine dingen samenvoegen), hooguit 16 lichten in beeld, hooguit 6 levende lichtbronnen per kamer.
 - Bij de eerste start meet de game kort en kiest een stand; wisselen kan in het menu.
-- QA meet per kamer de fps in beide standen op een vaste referentielaptop.
+- QA meet per kamer de fps in beide standen. Referentie voor de lichte stand: een gewone laptop met Intel Iris Xe.
 
 **Kadrering en detail: beklemmend én rijk**
 
@@ -715,7 +715,7 @@ Vijf fases, elk afgesloten met een poort. Pas na de vertical slice beslis je of 
 | 3 · Hoofdstukken 5–7 | Erasmus MC, Delfshaven, vliegveld; het einde | Volledige playthrough van begin tot einde |
 | 4 · Afronding | Definitieve art en audio, externe testers, bugfixes, release-build | — |
 
-De fases hebben nog geen data; die volgen zodra je weet hoeveel uur per week je erin steekt.
+Martijn steekt er 2 à 4 uur per week in; een hoofdstuk-iteratie duurt daardoor eerder 3 à 4 weken dan 1 à 2. De fases hebben bewust geen data.
 
 **Startpakket** (aan te leveren door Martijn vóór of tijdens Fase 0)
 
@@ -724,14 +724,14 @@ Nodig vóór de eerste iteratie:
 - [ ] Hoofdpersoon in de basis: naam, leeftijd, studie, waarom alleen met oud en nieuw, wat er in het ongeopende bericht van thuis staat
 - [ ] Eerste personageblad van doelwit 1 (projectontwikkelaar) en korte schetsen van buurvrouw, barman en beveiliger van de bouwplaats
 - [ ] Stemvoorbeeld: één pagina eigen dialoog en objectbeschrijvingen als anker voor de schrijver
-- [ ] 5 à 10 visuele referenties (games, Rotterdam bij nacht, palet) als basis voor de stijlgids
-- [ ] Technische keuzes: Godot- en Blender-versie, naam van de GitHub-repository, ontwikkelmachine, wel of geen CI
-- [ ] Fictief universum: namen van bezorgapp, vervoerder, snackbarketen, energiedrank en de branding van Het Hart
+- [x] 5 à 10 visuele referenties (games, Rotterdam bij nacht, palet) als basis voor de stijlgids
+- [x] Technische keuzes: Godot 4.7.2, Blender 5.2.3, repo Tackinardie/Dreamweb-Rotterdam, Windows 11, CI ja
+- [x] Fictief universum: Bringbroh (bezorgapp), VrachtGo (vervoerder), MaasLijn (openbaar vervoer), Crispy & Co (snackbar), BB-drink (energiedrank), Havenlicht (sigaretten), Kardia (officiële naam van Het Hart)
 
 Nodig voor de planning (kan in iteratie 1):
 
-- [ ] Tijdsbudget in uren per week
-- [ ] Releasedoel (hobby, itch.io of Steam), bepalend voor licenties
+- [x] Tijdsbudget: 2 à 4 uur per week
+- [x] Releasedoel: hobby (zie Risico's: wie later wil uitbrengen, moet bronnen en licenties opnieuw nalopen)
 - [ ] Vijf testers voor de vertical slice
 
 Kan bewust wachten: waan of waarheid, wie de orders stuurt, titel, Engelse versie, definitieve art, details van hoofdstuk 2 tot en met 7.
@@ -1032,7 +1032,7 @@ Je bent de art-director van Onderstad. Je maakt zelf geen assets.
 
 ## Iteratieloop en definition of done
 
-Een iteratie is één hoofdstuk of één systeem, afgerond in 1 à 2 weken, en eindigt altijd met jouw eigen speelsessie.
+Een iteratie is één hoofdstuk of één systeem, afgerond in 3 à 4 weken bij 2 à 4 uur per week, en eindigt altijd met jouw eigen speelsessie.
 
 **Commando voor de hoofdsessie** (`.claude/commands/iteratie.md`, plak-klaar)
 
@@ -1075,7 +1075,7 @@ Het grootste risico is art: agents leveren goede systemen en tekst, maar sfeervo
 | Risico | Gevolg | Maatregel |
 | --- | --- | --- |
 | Art haalt het sfeerniveau niet | Pillar 1 faalt | Stijltest als maatstaf; licht, regen en audio dragen de sfeer al met placeholders; vlakke kleuren en gedeelde paletmaterialen houden het consistent; art-review op 1080p-screenshots; handwerk op hoofdpersoon en sleutelobjecten pas na de slice |
-| 3D te zwaar voor een gewone laptop | Spelers haken af, web-demo onhaalbaar | Lichte kwaliteitsstand zonder SSR, SSAO en volumetrische mist; budget per scène; fps-meting per kamer in QA op een referentielaptop |
+| 3D te zwaar voor een gewone laptop | Spelers haken af | Lichte kwaliteitsstand zonder SSR, SSAO en volumetrische mist; budget per scène; fps-meting per kamer in QA op een referentielaptop |
 | Agent-content wordt generiek | Vlakke tekst, voorspelbare puzzels | Lore-bijbel, stijlregels per agent, playtest-criticus met frisse ogen, jij als eindredacteur |
 | Puzzels te makkelijk of te vaag | Verveling of frustratie | Oplosser + hints uit de graaf + 5 echte testers per hoofdstuk |
 | Scope groeit | Nooit af | Vaste hoofdstukstructuur, max 8 kamers, anti-pillars |
@@ -1088,7 +1088,7 @@ Het grootste risico is art: agents leveren goede systemen en tekst, maar sfeervo
 - [ ] Wie stuurt de bezorgorders naar de doelwitten?
 - [ ] Achtergrond van Richard verder uitwerken (wat er thuis speelt, wat er in het slaaponderzoek gebeurde)
 - [ ] Definitieve titel (Onderstad is werktitel)
-- [ ] Hoeveel handwerk bovenop de 3D-modellen van de pipeline (hoofdpersoon, sleutelobjecten, Rotterdam-elementen, close-ups): zelf, een 3D-artist of illustrator, of een mix?
+- [x] Handwerk: personages door de agents (low-poly, geen gezichtstrekken in het kamerbeeld) met animaties uit een bibliotheek; close-ups als 3D-close-up met extra detail
 - [ ] Echte clubs, merken en vervoerders (zoals Feyenoord en de RET): licentie aanvragen of alleen herkenbaar via kleuren en vormen?
-- [ ] Releasedoel: hobbyproject, itch.io of Steam?
+- [x] Releasedoel: hobbyproject. Houd toch per bron de licentie bij, zodat een latere release haalbaar blijft.
 - [ ] Engels als tweede taal vanaf het begin of later?

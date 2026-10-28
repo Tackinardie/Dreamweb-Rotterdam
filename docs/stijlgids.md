@@ -1,4 +1,6 @@
-# Stijlgids Onderstad — v1
+# Stijlgids Onderstad — v1.1
+
+*v1.1 (2026-10-28): open punten van Martijn verwerkt. Bringbroh fel oranje in plaats van pistache; droomrood in de bovenstad vaste regel; MaasLijn en Havenlicht vormgegeven; Zadkine en Markthal-plafond herkenbaar toegestaan; overal smalle FOV; referentielaptop Iris Xe; geen webversie; personages, close-ups en groot water vastgelegd; gebakken licht blijft open.*
 
 Beheer: art-director · Bron: `docs/GDD.md` (Art direction en audio, Setting en thema, Interface) · Maatstaf: de stijltest in `proto/stijltest/` (issue #32)
 
@@ -37,6 +39,7 @@ Het palet bepaalt de **albedo** van materialen en de **kleur van lichten**. Er w
 | Bovenstad-rood | `#6A2018` `#A8382A` `#D04A32` | Achterlichten, rood-wit van de club, Crispy & Co, vuurwerkresten. Warm, oranje-getint |
 | Huid (drie ladders) | `#5A3A2C` `#8A5A40` `#B88462` · `#3A241C` `#5E3A2A` `#86563C` · `#7A5A48` `#B08868` `#D8B494` | Personages; in nachtlicht geen extra verzadiging |
 | Interactief-highlight | `#F4F1E6` | Contour van interactieve objecten en spatiebalk-markering. Gereserveerd: geen decor in deze kleur |
+| Bringbroh-oranje (signaal) | `#6E2A06` `#A63F08` `#D9520B` | Alleen Bringbroh: tas, schouderpas van de jas, app, fietsbord. Albedo, nooit lichtkleur. Gereserveerd: zie 2.3 |
 | UI | paneel `#0B0D14` (85 % dekking) · tekst `#D8D4C8` · tekst 2 `#8A8F9C` · selectie `#F08A30` · rand `#2A3040` | Klok, inventarisstrook, telefoon-chrome, notitieboek |
 
 ### 2.2 Onderstad (vooroorlogs Rotterdam, droom)
@@ -54,6 +57,8 @@ Het palet bepaalt de **albedo** van materialen en de **kleur van lichten**. Er w
 - Filter in Godot als nabewerking: desaturatie naar de sepialadder (behalve het rood), fijne korrel 6–10 % dekking die niet sneller verspringt dan 4 keer per seconde. Geen regen-particles in de onderstad; wel stilstaande waterdruppels in de lucht als dat de scène vraagt.
 - Geen hedendaagse objecten, geen neon, geen schermen. Licht komt van gaslantaarns (kleine warme sepia-plas) en van een diffuus, richtingloos schijnsel; geen glow behalve op het rood.
 
+**Referenties (werkwijze).** De locatie-onderzoeker selecteert 10 à 15 vooroorlogse foto's van Rotterdam uit het Stadsarchief (straatbeeld, gevels, kades, licht bij avond), met per beeld vindplaats, inventarisnummer en gebruiksvoorwaarden. Martijn kiest daaruit de basis. Die beelden zijn sfeer- en vormbron: we modelleren gevelritme, maat en licht, nooit de foto zelf. Art-briefs voor de onderstad verwijzen naar de gekozen beelden.
+
 ### 2.3 Regels voor accentkleur
 
 | Kleur | Mag | Mag niet |
@@ -61,10 +66,12 @@ Het palet bepaalt de **albedo** van materialen en de **kleur van lichten**. Er w
 | Neon magenta/cyaan | Lichtbronnen (neonbuis, reclamebord, scherm), hun licht en hun reflectie in plassen, glas, nat asfalt | Albedo van kleding, meubels, merken, UI |
 | Natrium | Buitenlampen, hun lichtplas en reflectie | Binnenverlichting (dat is warm lamplicht) |
 | Onderstad-rood `#A01028` | In de onderstad: precies één element per scène (wat de droom hem wil laten zien), plus de reflectie daarvan | Meer dan één element; in de UI |
-| Onderstad-rood in de bovenstad | Alleen als bewust twijfelsignaal, hooguit één keer per hoofdstuk, vastgelegd in de levelbrief | Als gewoon decor; elk gewoon rood in de bovenstad gebruikt de bovenstad-ladder |
+| Onderstad-rood in de bovenstad (vaste regel, GDD Art direction) | Hooguit één keer per hoofdstuk, als bewust twijfelsignaal (pillar 4); plek en moment vastgelegd in de levelbrief en de art-brief | Als gewoon decor; vaker dan één keer per hoofdstuk; zonder vermelding in de levelbrief. Elk gewoon rood in de bovenstad gebruikt de bovenstad-ladder |
 | Interactief-highlight | Contour, spatiebalk-markering | Alles anders |
+| Bringbroh-oranje | Bringbroh-tas, schouderpas van de Bringbroh-jas, app-scherm, fietsbord of sticker van Bringbroh | Ander decor of kleding; als lichtkleur. Geen enkel ander groot vlak (> 20 cm) in verzadigd oranje (HSV-tint 15–35°, verzadiging > 60 %) in de bovenstad, zodat de tas het enige oranje vlak blijft. Uitgezonderd: lichtbronnen en hun licht, kleine merkdetails (< 20 cm). Baksteenrood van Crispy & Co (tint 12°) en het bovenstad-rood (tint 7–9°) vallen erbuiten |
 | Verzadiging albedo decor | HSV-verzadiging ≤ 40 % | — |
 | Verzadiging albedo interactieve objecten | ≤ 60 % | Feller dan lichtbronnen |
+| Verzadiging signaalkleuren | Tot 95 %: alleen Bringbroh-oranje en het fluorgele hesje van de bouwvakker (8.2) | Op iets anders dan die twee rollen |
 | Verzadiging lichtbronnen | tot 100 % | — |
 
 **Waardeopbouw** (helderheid, gemeten op het 1080p-screenshot): kader 0–5 %, schaduwzone 5–20 %, lichtplas 35–75 %, lichtbron zelf 85–100 %. Niets buiten een lichtplas komt boven 30 %. Geen interactief object en geen looproute onder 15 %.
@@ -83,7 +90,7 @@ Het palet bepaalt de **albedo** van materialen en de **kleur van lichten**. Er w
 | Beweging | Vast per kamer. Alleen buitenruimtes die groter zijn dan het eiland schuiven traag mee met Richard (zelfde hoek, geen zoom, geen rotatie) |
 | Clipping | `near` 0,5 m, `far` zo kort als de scène toelaat |
 
-**Afweging ortho of smalle FOV (uit de stijltest).** Orthografisch houdt verticalen strak en oogt rustig, maar leest als diorama en vulde in de kamertest het hele scherm (`b_kamer.png`: geen kader onderaan). De smalle FOV geeft net genoeg diepte om de straat te laten leven (`a_straat_perspectief.png`) en toont de kamer als verlicht doosje in het donker (`b_kamer_perspectief.png`), precies het eiland-in-kader uit het GDD. Daarom: overal smalle FOV, één regel voor het hele spel. Orthografisch blijft alleen over voor de metrokaart en UI-vensters met 3D-inhoud.
+**Vaste regel: overal smalle FOV (besluit Martijn).** Elke spelscène, buiten en binnen, gebruikt perspectief met smalle FOV volgens de tabel hierboven. Geen orthografische camera in kamers. Reden uit de stijltest: orthografisch leest als diorama en vulde in de kamertest het hele scherm (`b_kamer.png`: geen kader onderaan); de smalle FOV geeft de straat diepte (`a_straat_perspectief.png`) en toont de kamer als verlicht doosje in het donker (`b_kamer_perspectief.png`), precies het eiland-in-kader uit het GDD. Orthografisch mag alleen in UI-vensters met 3D-inhoud (de metrokaart is 2D).
 
 **Doorsnede.** De camera kijkt van de voorkant in de kamer. Voorwanden en de zijwand dichtbij de camera zijn weggesneden tot een lage donkere rand (0,3–0,5 m, kleur diepe schaduw), zodat je ziet waar de kamer ophoudt. De achterwand en de verre zijwand staan volledig; daar mag een Rotterdam-element hangen.
 
@@ -100,7 +107,7 @@ Het palet bepaalt de **albedo** van materialen en de **kleur van lichten**. Er w
 | Maximale eilandgrootte | 24×14 m voor open lege ruimtes (containerterrein, platform) |
 | Kleinste interactieve object | Minstens 16×16 px op 1080p. Een klein ding (sleutel, pasje) mag daarvoor tot 1,5× ware grootte, en ligt op een vlak dat er in tint van verschilt |
 | Vergrootglas (hover) | Tweede camera (SubViewport) op het object, 2,5× vergroot, venster 256×256 px in een hoek; zelfde licht, zelfde materialen |
-| Close-up panelen | Handwerk, maximaal 1920×1080, zelfde palet en vormtaal (vlakke kleur, harde schaduwranden). Een 3D-close-up met dezelfde assets en een eigen camera mag als basis |
+| Close-up panelen | 3D-close-up (besluit Martijn): een tweede camera op de echte scène, met een detailversie van het object (meer segmenten, afgeschuinde randen, kleine onderdelen zoals knoppen, schroeven, tekst op een scherm) die alleen in de close-up zichtbaar is. Zelfde palet, gedeelde materialen en vormtaal; eigen sleutellicht toegestaan, in de kleur van het licht in de kamer. Maximaal 1920×1080. Handen en ogen (GDD, Regiestijl) krijgen in de close-up een eigen detailmodel, nog steeds low-poly en vlak gekleurd, zonder fotorealisme. Sleutelobjecten blijven kandidaat voor handwerk |
 | Metrokaart (UI) | Eigen schematische kaart, 2D, op een raster van 24 px bij 1080p; alleen 0°, 45° en 90°; lijndikte 8 px; stations als open rondjes van 16 px; overstappen als langgerekt rondje; echte lijnkleuren (door de locatie-onderzoeker te bevestigen), iets ontzadigd naar het palet; geen logo, lettertype of kaartontwerp van de vervoerder |
 
 ### 3.3 Vormtaal en poly-budget
@@ -144,6 +151,7 @@ Het palet bepaalt de **albedo** van materialen en de **kleur van lichten**. Er w
 | Nat asfalt, natte klinkers | 0,15–0,3 | 0 | Albedo één ladderstap donkerder dan droog |
 | Natte gevelvoet | 0,4–0,5 | 0 | Onderste 0,3–0,5 m, één stap donkerder |
 | Plas, natte voetstap | 0,02–0,05 | 0 | Zie 6.3 |
+| Groot water (Maas, haven, gracht) | 0,02–0,08 | 0 | Zie 6.4 |
 | Lichtbron (lampkern, kerstlampje, neon) | — | — | Emissief, energie 4–12: komt boven de glow-drempel |
 | Scherm (laptop, tv, telefoon) | 0,2 | 0 | Emissief, energie 1,5–3: gloeit zacht maar inhoud blijft leesbaar |
 
@@ -245,6 +253,14 @@ Les uit de test: plassen waren blauwe ellipsen die vooral de blauwe lucht spiege
 | Regenringen: procedurele verstoring van de normaal in de plas-shader, 3–6 ringen per m² per seconde, geen textuur | Zonder ringen staat het water stil en oogt het als glas |
 | Toets: in elke plas binnen 6 m van een lichtbron is die bron op het 1080p-screenshot te herkennen | Anders voelt het droog |
 
+### 6.4 Groot water
+
+Maas, havenbekkens en de grachten van Delfshaven (besluit Martijn):
+- **Volle stand:** echte spiegeling via een planaire reflectie (een gespiegelde tweede camera in een SubViewport, alleen voor het watervlak, op halve resolutie). Kades, kranen, gevels en de lichtlijn van de Erasmusbrug spiegelen echt. Lichte golfvervorming in de shader, geen regenringen op afstand.
+- **Lichte stand:** geen extra render-pass. Het water gebruikt de ReflectionProbe van het kadedeel plus een reflectiestreep per lichtbron (`streep.gdshader`, langer dan op asfalt: 8–20 m, met meer rimpeling). Albedo `#0E1220`, zodat water zonder licht in het kader wegzakt.
+- Toets: in beide standen staan de lichtbronnen op dezelfde plek in het water, en de kade leest in de lichte stand nog als rand tussen land en water.
+- Onderstad: dezelfde twee standen, maar het water staat stil (geen golfvervorming, geen regen) en spiegelt in de sepialadder.
+
 ## 7. Gevels en straat
 
 Les uit de test: de gevel was te schoon en te regelmatig.
@@ -260,15 +276,19 @@ Les uit de test: de gevel was te schoon en te regelmatig.
 
 | Laag | Vorm | Kleur en materiaal |
 | --- | --- | --- |
-| Bezorgtas (Bringbroh) | Blok van circa 0,40 × 0,40 × 0,25 m op de rug, steekt 10–15 cm boven de schouders uit en iets opzij; het belangrijkste silhouet-kenmerk | Zie Bringbroh (11); de lichtste vorm aan Richard |
-| Jas | Parka tot halverwege de dij, capuchon als bult in de nek of op het hoofd, mouwen los van het lijf | `#2E3848` (lichter dan in v0, zodat hij in het donker als jas leest), capuchonrand één tint lichter; reflecterende strook `#C9C2AE` op beide mouwen en op de rug |
+| Bezorgtas (Bringbroh) | Blok van circa 0,40 × 0,40 × 0,25 m op de rug, steekt 10–15 cm boven de schouders uit en iets opzij; het belangrijkste silhouet-kenmerk | Bringbroh-oranje `#D9520B` (bovenkant en zijkanten; de camera ziet vooral de bovenkant), zijvlakken in de schaduw `#A63F08`. Vaste antraciet band `#1E2228` van 8 cm rondom, op een derde van de hoogte, met daarboven een reflecterende strook `#C9C2AE` van 2 cm. Beeldmerk (>>) in antraciet op de bovenkant. De lichtste en verzadigdste vorm aan Richard |
+| Jas | Parka tot halverwege de dij, capuchon als bult in de nek of op het hoofd, mouwen los van het lijf | `#2E3848` (lichter dan in v0, zodat hij in het donker als jas leest), capuchonrand één tint lichter; schouderpas in Bringbroh-oranje (bovenkant schouders, van boven goed te zien); reflecterende strook `#C9C2AE` op beide mouwen en op de rug |
 | Broek, schoenen | Smal, donker | `#1A1E26`; schoenen één tint lichter zodat het lopen leest |
-| Hoofd | Kort donker haar of capuchon; geen gezichtstrekken in het kamerbeeld | Huidladder naar keuze bij handwerk |
+| Hoofd | Kort donker haar of capuchon; geen gezichtstrekken in het kamerbeeld | Huidladder naar keuze |
+
+**Vindbaarheid onder natriumlicht.** In een natriumplas wordt alles oranje, dus de kleur alleen draagt de tas daar niet. Richard blijft vindbaar door drie dingen die niet van de tint afhangen: (1) de antraciet band, die in elk licht een donkere streep in een licht blok geeft; (2) de reflecterende strook, die het koel witte randlicht vangt; (3) het randlicht zelf (`#C8D8F0`), dat koel afsteekt tegen warm natrium. Toets per kamer en straat: zet het 1080p-screenshot op grijswaarden; de tas moet daar nog als het lichtste blok met een donkere band in Richards silhouet lezen, minstens 15 % helderheidsverschil met de achtergrond direct eromheen. Onder tl en in de nacht-ambient draagt de kleur het zelf.
+
+**Waarom deze oranje.** `#D9520B` (HSV-tint circa 21°, verzadiging 95 %, waarde 85 %) is roder en verzadigder dan natrium `#F08A30` (tint 28°, verzadiging 80 %) en dieper en minder roze dan het koraal van BB-drink `#F0603A` (tint 12°, verzadiging 76 %, waarde 94 %). Het ligt ook bewust roder dan het gangbare oranje van bestaande bezorgapps; samen met de antraciet band en het eigen beeldmerk lijkt de tas niet op een bestaand merk (11).
 
 - **Randlicht (les uit de test: klein en donker op afstand).** Een volglicht dat met Richard meebeweegt: SpotLight van achter-boven, tegenover de camera, alleen op Richards renderlaag (cull mask), koel wit `#C8D8F0`, energie 0,6–1,2. Zo heeft hij in elke scène een lichte rand aan schouders, capuchon en tas, ook in de schaduw.
 - **Grootte.** Minstens 80 px hoog op 1080p, ook in de straat. De stijltest (ortho 38 m beeldhoogte, circa 50 px) is te ver weg.
 - Richard staat nooit langer dan een paar stappen in een zone onder 15 %.
-- Zonder tas en jas moet het silhouet merkbaar kleiner en gewoner ogen: dat is het onzichtbaarheidssysteem in beeld.
+- Zonder tas en jas moet het silhouet merkbaar kleiner en gewoner ogen, en zonder oranje: dat is het onzichtbaarheidssysteem in beeld.
 
 ### 8.2 Rollen (één vorm + één kleurvlak)
 
@@ -276,7 +296,7 @@ Een rol leest aan één vorm (hoofd of gedragen object) en één kleurvlak (bove
 
 | Rol | Vorm | Kleurvlak |
 | --- | --- | --- |
-| Bezorger | Blokvormige tas op de rug | Pistache van Bringbroh |
+| Bezorger | Blokvormige tas op de rug | Bringbroh-oranje `#D9520B` met antraciet band (de enige rol in oranje) |
 | Bouwvakker | Helm (lichte koepel, breder dan het hoofd) | Hesje fluorgeel `#D8E83A` met twee reflectiestrepen |
 | Beveiliger | Brede schouders, pet of kale kop, portofoon | Zwart `#14171E` met een kleine lichte badge |
 | Schoonmaker | Karretje naast zich | Lichtblauw jasje `#7A98B8` |
@@ -289,6 +309,8 @@ Een rol leest aan één vorm (hoofd of gedragen object) en één kleurvlak (bove
 Toets: herkenbaar op 1080p bij 80 px hoogte, in de schaduwzone, als zwarte vorm plus één kleur.
 
 ### 8.3 Lagen per slot
+
+**Maken en animeren (besluit Martijn).** Personages worden door de agents gemaakt: low-poly (budget 3.3), vlakke kleur, geen gezichtstrekken in het kamerbeeld (hoofd is vorm, haar en huidtint). Animaties komen uit een animatiebibliotheek en worden op het gedeelde skelet overgezet (retarget), niet met de hand gemaakt. Voor de hobby-release mag een gratis bibliotheek; noteer per bron naam, link, licentie en of commercieel gebruik is toegestaan, zodat een latere release haalbaar blijft (GDD, open vragen). Geen animatie in gebruik zonder vastgelegde licentie. Hoofdpersoon blijft kandidaat voor handwerk.
 
 - Eén basismodel met skelet. Kleding per slot (hoofd, bovenkleding, over-laag, handen, voeten, gedragen) is een losse mesh op hetzelfde skelet, met dezelfde animaties.
 - Elke laag ligt 0,5–1 cm buiten de laag eronder. Lichaamsdelen onder kleding worden verborgen (weggesneden of gemaskeerd), zodat er niets door kan steken.
@@ -314,7 +336,8 @@ Les uit de test: de parka aan de haak las als donkere vorm. Een kledingstuk dat 
 | Element | Hoe het leest in 3D | Waar het mag |
 | --- | --- | --- |
 | Erasmusbrug | Lichtlijn in de verte: geknikte pyloon en een waaier kabels als dunne emissieve lijnen `#C8D8F0` | Hoge verdieping of open zicht richting de Maas |
-| Markthal | Hoefijzerboog als plafondrand met een eigen, abstract bloem- en fruitpatroon in vlakke kleurvlakken; nooit het echte kunstwerk natekenen | Ch03 |
+| *De Verwoeste Stad* (Zadkine) | Herkenbaar toegestaan (akkoord Martijn, `docs/rechten.md`): de gestalte met opgeheven armen en het gat waar het hart zit, low-poly in donker brons (`#2E2924`–`#4A4239`, metallic 0,6, roughness 0,5), het gat als scherpe opening waar licht doorheen valt. Op de echte plek en sokkel. Niet in de onderstad: die is vooroorlogs en het beeld is van na de oorlog (een afwijking eerst in het GDD) | Centraal beeld van het thema: straat bij het Plein 1940, droom, titelkaart, close-up |
+| Markthal | Hoefijzerboog als plafondrand; het plafondkunstwerk mag herkenbaar (akkoord Martijn, `docs/rechten.md`): vertaald naar vlakke kleurvlakken en de grote vormen van het origineel, geen foto of textuur. Kleuren ontzadigd naar het palet (≤ 40 % verzadiging), het plafond belicht door de winterverlichting, niet zelf gloeiend | Ch03 |
 | Kubuswoningen | Gekantelde gele kubussen in een rij | Ver zicht, poster, maquette |
 | Havenkranen | Blauwgrijze portaalkranen met rode en witte lichtpunten, containers in rijen | Ch04, ver zicht vanaf de Maas |
 | Stadsvlag | Groen-wit-groen, drie horizontale banen | Bar, poster, wimpel |
@@ -322,9 +345,11 @@ Les uit de test: de parka aan de haak las als donkere vorm. Een kledingstuk dat 
 | Klinkers in keperverband | Rood-bruine klinkers in visgraat, gemodelleerd in 2–3 tinten | Katendrecht, Delfshaven |
 | Stoeptegels 30×30 | Grijs raster als geometrie of vloer-shader, tegels in 2–3 tinten, een paar scheef | Straten algemeen |
 | Bolders | Witte paddenstoelvorm op zwarte voet (zoals op de Rijnhavenkade) | Kades |
-| Metro-ingang | Eigen pictogram: ring met chevron naar beneden op een marineblauwe plaat, ijsblauw gloeiend (zoals in de test); geen echt metrobord, geen bestaande letter-M-huisstijl | Straat, perron |
+| Metro-ingang | MaasLijn-pictogram (11): golflijn boven een chevron naar beneden op een petrol lichtbak die koel wit doorschijnt (vervangt de marineblauwe ring uit de stijltest, die te veel op Kardia leek); geen echt metrobord, geen bestaande letter-M-huisstijl | Straat, perron |
 
 Regels uit het GDD blijven: 1–3 elementen per kamer, logisch voor eigenaar en plek, op horizontale vlakken of op de muren die de camera ziet (achterwand, verre zijwand).
+
+**Bestaande kunstwerken.** Alleen werken met een regel in `docs/rechten.md` mogen herkenbaar voorkomen (nu: Zadkine en het Markthal-plafond). Ook die worden in de vormtaal van het spel vertaald (low-poly, vlakke kleur), nooit als foto of textuur. Elk ander kunstwerk, gevelkunst of beeld blijft eigen ontwerp of een verwijzing (sokkel, schaduw); wil een brief een nieuw werk herkenbaar gebruiken, dan eerst een regel in `docs/rechten.md`.
 
 ### 9.2 Januari 2022 in beeld
 
@@ -355,8 +380,9 @@ Uitgangspunt is `make_env` in `proto/stijltest/lib.gd`. Elk beeld moet in de lic
 | Schaduwen | Atlas 4096, zachte schaduw medium, hooguit 6 lichten met schaduw in beeld | Atlas 2048, zacht laag, hooguit 3 |
 | Regen | Circa 6000 deeltjes | Circa 2000 |
 | Vignet | Aan | Aan |
+| Groot water | Planaire reflectie (6.4) | Probes en reflectiestrepen (6.4) |
 
-Doel: volle stand 60 fps op 1080p op een middenklasse-gpu (GTX 1660, RTX 3050 laptop); lichte stand minstens 30 fps op 1080p op een laptop met geïntegreerde gpu (Iris Xe, Radeon 680M). Budget per scène: hooguit 300 losse meshes, 16 lichten in beeld, 6 levende lichtbronnen per kamer.
+Doel: volle stand 60 fps op 1080p op een middenklasse-gpu (GTX 1660, RTX 3050 laptop); lichte stand minstens 30 fps op 1080p op een laptop met geïntegreerde gpu. **Referentie voor de lichte stand: een gewone laptop met Intel Iris Xe**; QA meet daar per kamer de fps. Er zijn twee standen en geen derde: de demo is een download, er is geen webversie. Budget per scène: hooguit 300 losse meshes, 16 lichten in beeld, 6 levende lichtbronnen per kamer.
 
 ## 11. Merkenuniversum
 
@@ -364,10 +390,12 @@ Eigen vormgeving, één regel per merk. Toets per merk: lijkt het op een bestaan
 
 | Merk | Wat | Vormgeving | Vermijdt |
 | --- | --- | --- | --- |
-| **Bringbroh** | Bezorgapp van Richard (tas, jas, app) | Pistache `#8FCB7A` met antraciet `#1E2228`; beeldmerk twee gestapelde afgeronde punthaken (>>) in een rondje; reflecterende strook gebroken wit | Magenta, oranje, turquoise, paars-geel, zwart met felgroen |
+| **Bringbroh** | Bezorgapp van Richard (tas, jas, app) | Fel vermiljoen-oranje `#D9520B` met antraciet `#1E2228`: tas oranje met vaste antraciet band rondom, jas antraciet-blauw met oranje schouderpas, app oranje op antraciet; beeldmerk twee gestapelde afgeronde punthaken (>>) in een rondje; reflecterende strook gebroken wit | Geel-oranje of oranje-wit (zoals bestaande bezorgapps), huisje of bestek als beeldmerk, magenta, turquoise, paars-geel, zwart met felgroen |
 | **VrachtGo** | Vervoerder (busjes, vrachtwagens, vrachtbrieven) | Donker staalblauw `#34495C` met één diagonale okerstrook `#C89B3C`; woordmerk in smalle blokletters | Geel, rood-geel, bruin, oranje, lichtblauw met wit |
 | **Crispy & Co** | Snackbarketen (kapsalonbakjes, puntzakken, afhaalluiken) | Baksteenrood `#9A3B24` en crème `#EADBB8`, luifel in brede banen van die twee, beeldmerk een bakje van opzij met drie dampkrullen | Geel-rood, geel-wit, groen-geel |
 | **BB-drink** | Energiedrank (blikjes op bureaus, in afvalbakken) | Gebroken wit blik `#E6E1D3` met twee gestapelde koraaloranje stippen `#F0603A` en een zwarte rand bovenaan | Blauw (geen huisstijl van AA-drink), zilver-blauw, zwart met groen |
+| **MaasLijn** | Openbaar vervoer: metro, tram, bus (perronborden, ov-kaart, metro-ingang, haltepalen, voertuigen) | Donker petrol `#2E4A4C` met gebroken wit `#E6E1D3`; één witte golflijn als bies op voertuigen en borden; pictogram een golflijn boven een chevron naar beneden in een afgeronde rechthoek; stationsnamen in smalle schreefloze kapitalen, wit op petrol; bij de metro-ingang een lichtbak die koel wit `#EEF4FF` doorschijnt. Bewust geen marine en geen ring, zodat het naast Kardia-affiches op het perron niet als Kardia leest. De lijnkleuren op de metrokaart (3.2) staan los van de huisstijl | Rood-wit en rood met een letter M (huidige vervoerder), geel-blauw (spoorwegen), de echte lijnletters als logo, bestaande borden en lettertypes |
+| **Havenlicht** | Sigaretten (pakjes, peuken, asbak, regiedetail) | Neutrale verpakking zoals in Nederland verplicht sinds 2020: mat donker olijfbruin `#4A412A`, merknaam klein in een standaard schreefloze letter in grijs `#8A8F9C`, groot waarschuwingsvlak met eigen tekst en een vlakke grijze afbeelding (geen foto). Geen beeldmerk, geen kleur. Herkenbaar alleen aan de naam en aan waar het ligt | Elk kleurig pakje (rood-wit chevron, blauw, goud), oude Rotterdamse tabaksmerken, kameel of andere dieren, echte waarschuwingsfoto's |
 | **Kardia** | Officiële naam van Het Hart (affiches, bouwborden, app-scherm, toren) | Diep marine `#0E1A2C`, koel wit `#E8EEF2`, gloed ijsblauw `#BFE3FF`; beeldmerk een stip in een ring met één opening; schone schreefloze letters, veel lege ruimte | Medische beeldtaal: geen hartsymbool, hartslaglijn, kruis, rood |
 
 Kardia-affiches nemen per nacht toe op perrons en in de stad (GDD). De ring met opening is de enige vorm die in de onderstad terug mag komen, in sepia. Merken staan op beeldvlakken (4) of als kleurvlakken in de geometrie, nooit als foto.
@@ -388,7 +416,9 @@ Kardia-affiches nemen per nacht toe op perrons en in de stad (GDD). De ring met 
 | Gevels met gebroken ritme, sporen en verlichte ramen | Schone, regelmatige gevels |
 | Neon alleen als licht | Neonkleur op kleding, meubels of merken |
 | Rotterdam via kleur en vorm, 1–3 per kamer | Echte logo's, metroborden, clubemblemen, de huisstijl van de vervoerder |
-| Eigen tekst op briefjes, affiches, schermen | Echte merknamen, echte uitzendingen, echte kunstwerken nagemaakt |
+| Eigen tekst op briefjes, affiches, schermen | Echte merknamen, echte uitzendingen, kunstwerken nagemaakt zonder regel in `docs/rechten.md` |
+| Zadkine en het Markthal-plafond herkenbaar, vertaald naar low-poly en vlakke kleur | Foto's of texturen van kunstwerken |
+| Bringbroh-oranje alleen op Bringbroh | Ander groot oranje vlak in de bovenstad |
 | Lockdown en kerstresten als stille sporen | Feestelijke drukte, open terrassen |
 | Onderstad monochroom met één rood | Kleur, schermen of neon in de onderstad |
 
@@ -401,25 +431,16 @@ Een review gaat over een **3D-scène in Godot**, beoordeeld op screenshots van 1
 3. **Materiaal**: albedo uit het palet, gedeelde materialen, geen texturen behalve decal-maskers en beeldvlakken; roughness volgens tabel 4; emissie alleen op lichtbronnen; niets anders gloeit.
 4. **Waarde en verzadiging** binnen 2.3: kader 0–5 %, schaduw 5–20 %, plas 35–75 %; geen interactief object of looproute onder 15 %.
 5. **Licht**: opbouw volgens 5.1; 1–3 eilanden, één aan de donkere kant; raamlicht zichtbaar op vloer of muur; lichtkegels zichtbaar zonder grauw beeld; Richard heeft randlicht.
-6. **Nat** (buiten): elke lichtbron spiegelt; plassen donker, onregelmatig, op logische plekken, met regenringen; bron herkenbaar in elke plas binnen 6 m; nat werkt ook in de lichte stand.
+6. **Nat** (buiten): elke lichtbron spiegelt; plassen donker, onregelmatig, op logische plekken, met regenringen; bron herkenbaar in elke plas binnen 6 m; nat werkt ook in de lichte stand; groot water volgens 6.4, lichtbronnen in beide standen op dezelfde plek in het water.
 7. **Kamer als geheel**: kader en vignet, voorgrondlaag, doorsnede-rand; past bij de rest van de locatie (zelfde camera, ambient, detaildichtheid); herhalingstest (uitzoomen, zoeken naar strepen, patronen, eentonige vlakken in vloeren en muren, gevels volgens 7).
 8. **Interactieve objecten**: springen eruit zonder contour, en zeker met; contour 2 px in `#F4F1E6`; vergrootglas toont het object scherp; decor heeft geen contour en geen interactief ogende glans.
 9. **Levende lichtbronnen**: voelen als echte beelden; eigen seed, niet synchroon; hooguit 6; kamer blijft leesbaar bij de donkerste stand.
 10. **Rotterdam en januari 2022**: element logisch voor plek en eigenaar, geen echt logo of huisstijl, kerst- en lockdownresten passend bij de nacht.
-11. **Kleding**: contactvel zonder doorsteken; elke rol herkenbaar aan vorm en kleurvlak op 80 px; los kledingstuk volgens 8.4.
+11. **Kleding**: contactvel zonder doorsteken; elke rol herkenbaar aan vorm en kleurvlak op 80 px; los kledingstuk volgens 8.4; Richard vindbaar onder natriumlicht (grijswaardentoets 8.1); geen ander groot oranje vlak in beeld.
 12. **Prestaties**: scène binnen het budget (meshes, lichten, schaduwlichten); fps in beide standen gemeten door QA.
 
 ## 13. Open punten voor Martijn
 
-1. **Camera**: voorstel is overal perspectief met smalle FOV (15–20°), ook in kamers, omdat de orthografische kamer het scherm vulde. Akkoord, of toch orthografisch in kamers?
-2. **Referentielaptop**: welke machine is de meetlat voor de lichte stand (je eigen laptop, of een aan te schaffen machine met Iris Xe of Radeon 680M)? Zonder meting is 30 fps een gok.
-3. **Web-demo**: het GDD noemt een web-export als demo. In de browser draait Godot op de Compatibility-renderer, zonder SSR, SSAO en volumetrische mist en met minder lichten. Een derde, nog lichtere stand maken, of de demo als download aanbieden?
-4. **Personages en animatie**: zelf modelleren en animeren, een animatiebibliotheek met commerciële licentie gebruiken, of een 3D-artist? Voorstel: geen gezichtstrekken in het kamerbeeld, gezichten alleen in close-ups.
-5. **Close-ups**: 2D-illustratie in de vormtaal van het spel, of een 3D-close-up met dezelfde assets en een handgemaakte afwerking?
-6. **Groot water** (Maas, grachten in Delfshaven): een echte spiegeling vraagt een extra render-pass (planaire reflectie) die zwaar is. Alleen in de volle stand, of volstaan probes en reflectiestrepen?
-7. **Gebakken licht**: vast ambient- en kaatslicht kan gebakken worden (LightmapGI). Dat is mooier en goedkoper, maar maakt elke lichtwijziging een bakstap. Onderzoeken in een volgende stijltest?
-8. **Bringbroh-kleur**: pistache met antraciet. Akkoord, of een andere kleur? Het is Richards belangrijkste herkenningskleur.
-9. **Onderstad-rood als twijfelsignaal in de bovenstad** (2.3): een aanvulling op het GDD. Akkoord, en zo ja, opnemen in het GDD?
-10. **Fictieve naam van de ov-vervoerder** (voor perronborden, ov-kaart, metro-ingang) en het **sigarettenmerk** uit de Regiestijl: nog geen naam.
-11. **Echte bouwwerken en kunst**: De Verwoeste Stad van Zadkine en het Markthal-plafond zijn auteursrechtelijk beschermd. Panoramavrijheid dekt mogelijk afbeelden in de openbare ruimte, maar niet zeker in een commerciële game. Voorstel: de gestalte en het Markthal-patroon altijd als eigen ontwerp; voor Zadkine juridisch advies of alleen een verwijzing (een sokkel, een schaduw, een foto in de wereld).
-12. **Referentie voor de onderstad**: vooroorlogse foto's van Rotterdam (Stadsarchief) als sfeerbron; welke beelden wil je als basis? En een kleine stijltest van de onderstad in 3D (sepia, gaslicht, scheve gevels) voordat ch01 begint.
+1. **Gebakken licht** (afspraak): vast ambient- en kaatslicht bakken met LightmapGI is mooier en goedkoper, maar maakt elke lichtwijziging een bakstap. Wordt onderzocht in een volgende stijltest (beide standen, met meting op de Iris Xe-laptop); tot dan is alle licht realtime volgens 5 en 10.
+2. **Stijltest onderstad**: een kleine 3D-test van de onderstad (sepia, gaslicht, scheve gevels, één rood) op basis van de door Martijn gekozen Stadsarchief-beelden (2.2), voordat ch01 begint. Akkoord?
+3. **Stijltest bijwerken**: de stijltest in `proto/stijltest/` gebruikt nog pistache voor de tas en de marineblauwe ring voor de metro-ingang. Als maatstaf bijwerken naar v1.1, of alleen in nieuwe scènes toepassen?
