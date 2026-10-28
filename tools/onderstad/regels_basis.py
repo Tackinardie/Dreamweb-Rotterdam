@@ -75,6 +75,7 @@ def v01_uniek(ctx: Ctx) -> None:
         if doc.soort == "room":
             _uniek_lijst(ctx, doc, "uitgang", [(u["id"], f"$.uitgangen[{i}].id") for i, u in enumerate(data.get("uitgangen", []))])
             _uniek_lijst(ctx, doc, "NPC", [(n["id"], f"$.npcs[{i}].id") for i, n in enumerate(data.get("npcs", []))])
+            _uniek_lijst(ctx, doc, "licht", [(x["id"], f"$.lichten[{i}].id") for i, x in enumerate(data.get("lichten", []))])
         elif doc.soort == "dialogue":
             _uniek_lijst(ctx, doc, "regel", [(r["id"], f"$.regels[{i}].id") for i, r in enumerate(data["regels"])])
             for i, r in enumerate(data["regels"]):

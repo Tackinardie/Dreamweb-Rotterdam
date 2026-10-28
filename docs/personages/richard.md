@@ -11,6 +11,6 @@
 | Wond | (open) |
 | Geheim | (open) |
 | Relatie tot de stad | (open) |
-| Stem | (open — drie voorbeeldzinnen) |
+| Stem | Zie docs/stem/stemvoorbeeld.md. "Elf pijlen sinds twaalf uur. Niemand telt dat. Ik wel." / "Als het echt belangrijk was, hadden ze gebeld. Niet getypt." / "Er is niemand die morgen vraagt waar ik was. Dat is geen pech. Dat maakt me geschikt." |
 | Vindbaar | Studieboeken, bezorgtas, het ongeopende bericht, een kerstkaart van thuis. |
 | Twee lezingen | Uitverkoren: hij ziet wat anderen niet zien. Waan: een bijwerking van het slaaponderzoek. |

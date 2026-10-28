@@ -11,6 +11,7 @@ Specificaties van de spelsystemen van Onderstad. De godot-engineer bouwt alleen 
 | [state-en-flags.md](state-en-flags.md) | Flags, tokens, de puzzelgraaf, de gedeelde conditie- en effecttaal, doodlopende staat, de oplosser en opslaan. | 0 |
 | [klok-en-scenetijd.md](klok-en-scenetijd.md) | De klok staat stil op de scènetijd, springt per scène, en binnen een scène zijn er alleen gebeurtenissen. | 0 |
 | [audio-cues-en-geluidsvenster.md](audio-cues-en-geluidsvenster.md) | Overal een cue-id, nog geen geluid; F2 toont wat je had moeten horen en een logboek telt mee. | 0 |
+| [kamerweergave.md](kamerweergave.md) | Elke kamer is een verlicht 3D-eiland op een raster van vakken van 1×1 m, gezien door één vaste camera met smalle FOV. | 1 |
 
 Later (Fase 1+): telefoon en notitieboek-UI, droom, voetsporen en vocht, levende lichtbronnen, ramen en buitenwereld, elektrische apparaten, kleding en uitrusting, metro, hints-UI. De schema's laten daar ruimte voor (zie per spec "uitbreiding later").
 
@@ -18,11 +19,11 @@ Later (Fase 1+): telefoon en notitieboek-UI, droom, voetsporen en vocht, levende
 
 | Schema | Valideert |
 | --- | --- |
-| `common.schema.json` | niets zelf; gedeelde `$defs`: id-patronen, tekstsleutel, tekstvariant, cue-id, tijd, positie, **conditie**, **effect** |
+| `common.schema.json` | niets zelf; gedeelde `$defs`: id-patronen, tekstsleutel, tekstvariant, cue-id, tijd, positie (vak van 1×1 m), vakgebied, kleur, **conditie**, **effect** |
 | `spel.schema.json` | `content/spel.json`: startdatum, hoofdstukvolgorde, 8 slots, talen, personages, globale flags, globale condities |
 | `item.schema.json` | `content/items.json`: de objectcatalogus |
 | `chapter.schema.json` | `content/chapters/<chNN_naam>/chapter.json`: titel, start, doel, scènes, gebeurtenissen, lokale flags, tokens, gebouwen, lokale condities, `aanname_bij_start` |
-| `room.schema.json` | `content/chapters/<chNN_naam>/rooms/<kamer_id>.json`: objectboom, uitgangen, NPC's |
+| `room.schema.json` | `content/chapters/<chNN_naam>/rooms/<kamer_id>.json`: objectboom, uitgangen, NPC's, en voor de weergave plafond, model, camera, geblokkeerde vakken en lichten |
 | `puzzle.schema.json` | `content/chapters/<chNN_naam>/puzzles.json`: de puzzelgraaf |
 | `dialogue.schema.json` | `content/chapters/<chNN_naam>/dialogue/<dialoog_id>.json` |
 | `device.schema.json` | `content/chapters/<chNN_naam>/devices/<apparaat_id>.json`: vergrendeling en apps |
@@ -103,7 +104,7 @@ Bovenop het JSON Schema controleert `tools/validate.py --all`:
 
 **Bestaan en uniciteit**
 
-- V01. Geen dubbele ids per soort: objecten, tokens, personages, flags (globaal + alle hoofdstukken), condities, kamers, scènes, gebeurtenissen, knopen, dialogen, apparaten, cues, tekstsleutels (over alle bestanden van één taal). Uitgang- en NPC-ids uniek per kamer; regel-ids per gesprek; keuze-ids per regel; app-ids per apparaat; app-item-ids per app.
+- V01. Geen dubbele ids per soort: objecten, tokens, personages, flags (globaal + alle hoofdstukken), condities, kamers, scènes, gebeurtenissen, knopen, dialogen, apparaten, cues, tekstsleutels (over alle bestanden van één taal). Uitgang-, NPC- en licht-ids uniek per kamer; regel-ids per gesprek; keuze-ids per regel; app-ids per apparaat; app-item-ids per app.
 - V02. Elke verwijzing bestaat: items, tokens, personages, flags, benoemde condities, kamers, scènes, gebeurtenissen, knopen, dialogen, apparaten, apps en app-items (in triggers), gespreksregels (in triggers, `start`, `volgende`), gebouwen en niveaus (`gebouw.niveau`).
 - V03. Bestandsnaam = id voor kamers, gesprekken en apparaten; mapnaam = id voor hoofdstukken; elk hoofdstuk staat in `spel.json` → `hoofdstukken`.
 - V04. Scope: een id met `chNN_`-prefix wordt alleen gebruikt in content van hoofdstuk NN; het hoofdstuk van een kamer/scène/knoop/… komt overeen met de map waarin het staat. Uitzondering: scènes mogen hubkamers (`ch00_…`) in `kamers` hebben en uitgangen mogen naar hubkamers wijzen.
@@ -116,7 +117,7 @@ Bovenop het JSON Schema controleert `tools/validate.py --all`:
 - V08. Elk object heeft hoogstens één beginplek (kamerplaatsing of `aanname_bij_start.inventaris` van één hoofdstuk). Objecten zonder beginplek moeten ergens via `geef_object` ontstaan, anders waarschuwing.
 - V09. Begininhoud past: per container som van groottes ≤ `capaciteit`, elk object ≤ `max_grootte`; alleen pakbare objecten in containers; geen kringen. Niet-pakbare objecten alleen als kamerplaatsing op het hoogste niveau. `aanname_bij_start.inventaris` past in 8 slots.
 - V10. `acties` klopt: `bekijk` altijd; `pak` ⇔ `pakbaar`; `open` ⇔ `container`; `lees` ⇔ `leestekst`.
-- V11. Posities liggen binnen de `afmeting` van de kamer.
+- V11. Posities (objecten, uitgangen, NPC's, start, lichten) en `geblokkeerd`-gebieden liggen binnen de `afmeting` van de kamer, in vakken.
 - V12. Waarschuwing als de som van de groottes van alle onmisbare pakbare objecten van een hoofdstuk groter is dan 8 (ze passen dan alleen met containers).
 
 **Toegang en scènes**

@@ -17,7 +17,7 @@
       "container": { "capaciteit": 2, "max_grootte": 1, "open_vereist": { "token": "code_kluis" }, "geweigerd": "item.kluisje.geweigerd" },
       "acties": ["bekijk", "open"] },
     { "id": "laptop", "naam": "item.laptop.naam", "beschrijving": "item.laptop.beschrijving", "pakbaar": false,
-      "gebruik_tekst": "item.laptop.gebruik", "acties": ["bekijk", "gebruik"] },
+      "gebruik_tekst": "item.laptop.gebruik", "acties": ["bekijk", "gebruik"], "closeup": { "afstand": 0.8 } },
     { "id": "prullenbak", "naam": "item.prullenbak.naam", "beschrijving": "item.prullenbak.beschrijving", "pakbaar": false,
       "gebruik_tekst": "item.prullenbak.gebruik", "acties": ["bekijk", "gebruik"] },
     { "id": "koffiekop", "naam": "item.koffiekop.naam", "beschrijving": "item.koffiekop.beschrijving", "pakbaar": true, "grootte": 1,
