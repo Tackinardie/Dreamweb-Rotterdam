@@ -49,3 +49,41 @@ Opbouw klopt met de spec: Vak, KamerRaster, Loper, CameraStand, Kwaliteit en Int
 ## Oordeel
 
 Eén blokkerend punt (B1), acht "moet". Architectuur (logica los van rendering, statische types in de nieuwe bestanden, 300-regelgrens, content uit JSON, headless testbaar) en de vak-/camerawiskunde zijn goed; er is geen regressie in de bestaande systemen. Niet mergen voordat B1 is opgelost en M1-M3 zijn opgepakt of bewust uitgesteld met een issue.
+
+---
+
+# Ronde 1 (HEAD 56aed43)
+
+Gedraaid: `python tools/test_godot.py` groen (GUT 126/126), `validate.py --all` groen. Diff `d9f67a7..56aed43` gelezen.
+
+| Punt | Opgelost | Opmerking |
+| --- | --- | --- |
+| B1 hover op gepakt object | Ja | `_objecten_veranderd` wist hover vóór het vrijgeven (`_wis_hover`), plus vangnet in `tik`; `test_b1_hover_op_gepakt_object_geeft_geen_fout` |
+| M1 `spel_geladen` | Ja | `_herlaad` bouwt de kamer opnieuw en reset closeup, hover, doel; `test_m1_*` |
+| M2 stand na neerleggen | Ja | Plaatsing telt alleen als het object op het beginvak ligt; `test_m2_*` |
+| M3 NPC `aanwezig` | Ja | `zet_npcs` elke 0,25 s, raster bijgewerkt, pad herberekend; `test_m3_*` (zie N1) |
+| M4 id-labels | Ja | Labels alleen in ontwikkelbuilds, met naam-tekst; uitgangen met `naam` |
+| M5 schaduwbudget | Ja | Validatorregel V33 en logregel in `KamerLicht.bouw` |
+| M6 ruimtelijke validatie | Ja | V32 in `regels_ruimte.py` (geblokkeerd, dubbele vakken, bereikbaarheid) |
+| M7 testgaten | Gedeeltelijk | Nieuw: B1, M1-M3, klik buiten kamer, `Meting`, `Voorlader`. Nog open: `Overgang`/`Voorlader` met echt model, `StartOpties` met `=`-vorm, `Kwaliteit.bewaar` bij eerste start |
+| M8 CI-checksum | Gedeeltelijk | `sha512sum -c` toegevoegd; acties staan nog op tag, niet op commit-SHA |
+
+Van de "kan"-punten zijn niet opgepakt (bewust uitgesteld): voorlader-filter per kamer, `--meet` standaard `vol`, constanten naar JSON, `camera.volgt`, ongetypeerde lussen, basis/afgeleide splitsing, lambda-koppelingen.
+
+**Nieuwe blokkerende punten:** geen.
+
+**Nieuw, moet**
+- **N1.** `kamer_weergave_basis.gd` (`_npcs_controleren`, `klik_vak`): `_laatste_klik["doel"]` houdt de node van een NPC vast. Verdwijnt precies die NPC terwijl Richard erheen loopt, dan wordt `klik_vak` opnieuw aangeroepen met een vrijgegeven node en `_aangekomen` roept `vak_van` op een vrijgegeven node aan (scriptfout). Voorstel: in `_npcs_controleren` het doel laten vallen als `is_instance_valid(doel["node"])` niet meer klopt, en een test met een NPC die tijdens het lopen verdwijnt.
+
+## Pillars (bijgesteld)
+
+| Pillar | Score |
+| --- | --- |
+| 1. Sfeer is het product | 4/5 |
+| 2. Een fysieke wereld | 4/5 |
+| 3. Informatie is de sleutel | 4/5 |
+| 4. Twijfel tot het einde | 4/5 |
+
+## Oordeel ronde 1
+
+Niet langer blokkerend. B1 en M1-M6 zijn opgelost, M7-M8 deels; N1 is een randgeval dat vóór het eerste hoofdstuk met bewegende NPC's moet zijn opgelost.

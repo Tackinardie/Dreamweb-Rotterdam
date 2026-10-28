@@ -25,14 +25,14 @@ Niet in deze iteratie: verhaal, locaties, puzzels, art-assets (behalve placehold
 
 ## Definition of done
 
-- [ ] Schema en specs spreken van vakken van 1×1 m; vak→3D-positie (x/z, oorsprong, vloerhoogte) is vastgelegd en getest
-- [ ] `docs/systemen/kamerweergave.md` heeft doel, pillar, regels, edge cases, UX-flow en acceptatiecriteria
-- [ ] Een kamer uit content verschijnt als 3D-scène met vaste camera (smalle FOV), klik-om-te-lopen, highlight, spatiebalk, 3D-close-up en scènewissel zonder laadscherm
-- [ ] Volle en lichte kwaliteitsstand schakelbaar; logica headless testbaar
-- [ ] CI draait validator, pytest, oplosser en GUT op elke push en PR
-- [ ] `content/spel.json` en `algemeen.json` valideren; `python tools/validate.py --all` groen
-- [ ] `python tools/test_godot.py` groen
-- [ ] QA eindigt op KLAAR VOOR REVIEW; code-review zonder blokkerende punten
+- [x] Schema en specs spreken van vakken van 1×1 m; vak→3D-positie (x/z, oorsprong, vloerhoogte) is vastgelegd en getest
+- [x] `docs/systemen/kamerweergave.md` heeft doel, pillar, regels, edge cases, UX-flow en acceptatiecriteria
+- [x] Een kamer uit content verschijnt als 3D-scène met vaste camera (smalle FOV), klik-om-te-lopen, highlight, spatiebalk, 3D-close-up en scènewissel zonder laadscherm
+- [x] Volle en lichte kwaliteitsstand schakelbaar; logica headless testbaar
+- [x] CI draait validator, pytest, oplosser en GUT op elke push en PR
+- [ ] `content/spel.json` en `algemeen.json` valideren (verschoven naar `/iteratie ch01`, zie #30); `python tools/validate.py --all` groen
+- [x] `python tools/test_godot.py` groen
+- [x] QA eindigt op KLAAR VOOR REVIEW; code-review zonder blokkerende punten
 - [ ] Martijn heeft de testkamer gestart en gezien
 
 ## Starten
