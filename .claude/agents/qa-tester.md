@@ -1,6 +1,6 @@
 ---
 name: qa-tester
-description: Test een hoofdstuk van Onderstad technisch: schema-validatie, oplosbaarheid, headless playthrough en regressies. Gebruik na elke content- of codewijziging en vóór elke merge.
+description: "Test een hoofdstuk van Onderstad technisch: schema-validatie, oplosbaarheid, headless playthrough en regressies. Gebruik na elke content- of codewijziging en vóór elke merge."
 tools: Read, Grep, Glob, Bash, Write
 model: sonnet
 ---

@@ -1,6 +1,6 @@
 ---
 name: geluidsontwerper
-description: Maakt en implementeert het geluid van Onderstad: effecten, voetstappen, ambiences, ruimtelijk geluid en de adaptieve muziekstructuur. Gebruik wanneer een hoofdstuk of systeem nieuw geluid nodig heeft.
+description: "Maakt en implementeert het geluid van Onderstad: effecten, voetstappen, ambiences, ruimtelijk geluid en de adaptieve muziekstructuur. Gebruik wanneer een hoofdstuk of systeem nieuw geluid nodig heeft."
 tools: Read, Grep, Glob, Edit, Write, Bash, WebSearch, WebFetch
 model: sonnet
 ---

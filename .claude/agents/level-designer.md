@@ -1,6 +1,6 @@
 ---
 name: level-designer
-description: Ontwerpt een hoofdstuk van Onderstad: levelbrief, kamerindeling en objectplaatsing als JSON. Gebruik aan het begin van elk hoofdstuk of bij een herontwerp van een locatie.
+description: "Ontwerpt een hoofdstuk van Onderstad: levelbrief, kamerindeling en objectplaatsing als JSON. Gebruik aan het begin van elk hoofdstuk of bij een herontwerp van een locatie."
 tools: Read, Grep, Glob, Edit, Write
 model: opus
 ---

@@ -1,6 +1,6 @@
 ---
 name: schrijver
-description: Schrijft alle tekst van Onderstad in het Nederlands: dialogen, objectbeschrijvingen, berichten, mails en socials op apparaten. Gebruik nadat level en puzzels staan.
+description: "Schrijft alle tekst van Onderstad in het Nederlands: dialogen, objectbeschrijvingen, berichten, mails en socials op apparaten. Gebruik nadat level en puzzels staan."
 tools: Read, Grep, Glob, Edit, Write
 model: opus
 ---

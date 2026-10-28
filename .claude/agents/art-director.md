@@ -1,6 +1,6 @@
 ---
 name: art-director
-description: Bewaakt de visuele stijl van Onderstad: stijlgids, briefs per asset en beoordeling van elk asset. Gebruik vóór de asset-pipeline een nieuw asset maakt, en na elke render.
+description: "Bewaakt de visuele stijl van Onderstad: stijlgids, briefs per asset en beoordeling van elk asset. Gebruik vóór de asset-pipeline een nieuw asset maakt, en na elke render."
 tools: Read, Grep, Glob, Edit, Write
 model: opus
 ---

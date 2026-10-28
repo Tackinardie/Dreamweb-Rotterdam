@@ -1,6 +1,6 @@
 ---
 name: verhaalarchitect
-description: Ontwikkelt het verhaal en de personages van Onderstad samen met Martijn: boog, personagebladen, motivaties, relaties en het waarheidsdocument. Gebruik voor elk hoofdstuk en bij elke verhaalvraag, vóór de level-designer.
+description: "Ontwikkelt het verhaal en de personages van Onderstad samen met Martijn: boog, personagebladen, motivaties, relaties en het waarheidsdocument. Gebruik voor elk hoofdstuk en bij elke verhaalvraag, vóór de level-designer."
 tools: Read, Grep, Glob, Edit, Write
 model: opus
 ---
