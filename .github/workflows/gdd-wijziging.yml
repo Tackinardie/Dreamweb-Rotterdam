@@ -1,0 +1,37 @@
+name: GDD-wijziging
+# Elke push die docs/GDD.md wijzigt, opent een issue "Ontwerpwijziging" met de diff.
+# De producer pakt dit op met /iteratie impact en zet er een impactanalyse bij.
+on:
+  push:
+    branches: [main]
+    paths: [docs/GDD.md]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  issue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Issue openen
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "Het GDD is gewijzigd in ${GITHUB_SHA::7}: ${{ github.event.head_commit.message }}"
+            echo
+            echo "De producer maakt hiervan een impactanalyse: welke hoofdstukken, systemen, content en agents worden geraakt, en welke taken er nodig zijn."
+            echo
+            echo '<details><summary>Wijzigingen in docs/GDD.md</summary>'
+            echo
+            echo '```diff'
+            git diff HEAD~1 HEAD -- docs/GDD.md | head -c 60000
+            echo '```'
+            echo '</details>'
+          } > body.md
+          gh issue create --title "Ontwerpwijziging: $(git log -1 --format=%s | cut -c1-80)" \
+            --label "type:wijziging" --label "agent:producer" --body-file body.md

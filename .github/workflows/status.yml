@@ -1,0 +1,43 @@
+name: Statusbord
+# Bouwt het statusbord opnieuw bij elke wijziging in issues, bij elke push naar main en elk uur.
+on:
+  push:
+    branches: [main]
+  issues:
+    types: [opened, closed, reopened, labeled, unlabeled, milestoned, demilestoned, edited]
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: statusbord
+  cancel-in-progress: true
+
+jobs:
+  bouw:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Statusbord bouwen
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/build_status.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/status
+      - id: deploy
+        uses: actions/deploy-pages@v4

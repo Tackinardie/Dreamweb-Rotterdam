@@ -1,0 +1,19 @@
+name: Bug
+description: Iets werkt niet zoals het GDD of de specificatie zegt
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: wat
+    attributes:
+      label: Wat gebeurt er?
+    validations:
+      required: true
+  - type: textarea
+    id: verwacht
+    attributes:
+      label: Wat had er moeten gebeuren?
+  - type: textarea
+    id: stappen
+    attributes:
+      label: Hoe reproduceer je het?
+      description: Hoofdstuk, kamer, scènetijd, wat je deed

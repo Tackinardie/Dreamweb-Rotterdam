@@ -1,0 +1,20 @@
+name: Taak
+description: Een stuk werk voor een agent of voor Martijn
+labels: ["type:taak"]
+body:
+  - type: textarea
+    id: wat
+    attributes:
+      label: Wat moet er gebeuren?
+    validations:
+      required: true
+  - type: textarea
+    id: klaar
+    attributes:
+      label: Wanneer is het klaar?
+      description: Concrete acceptatiecriteria
+  - type: input
+    id: gdd
+    attributes:
+      label: GDD-sectie
+      description: Bijvoorbeeld "Systemen > 6. Voetsporen- en vochtsysteem"

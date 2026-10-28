@@ -1,0 +1,15 @@
+name: Ontwerpwijziging
+description: Een wijziging in het ontwerp (GDD) die door de content en code moet doorwerken
+labels: ["type:wijziging"]
+body:
+  - type: textarea
+    id: wat
+    attributes:
+      label: Wat verandert er in het ontwerp?
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Wat raakt het?
+      description: Hoofdstukken, systemen, agents. De producer vult dit aan met een impactanalyse.
