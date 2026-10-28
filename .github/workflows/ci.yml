@@ -1,0 +1,62 @@
+name: CI
+# Rood = niet mergen. Draait bij elke pull request en bij push naar main.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSIE: "4.7.2"
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/requirements.txt
+      - run: python -m pip install -r tools/requirements.txt
+      - name: Content valideren
+        run: python tools/validate.py --all
+      - name: Python-tests
+        run: python -m pytest tests/python -q
+      - name: Oplosser op de fixture
+        run: python tools/solve.py ch01_proef --content tests/fixtures/proef
+
+  godot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Godot-build cachen
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot-bin
+          key: godot-${{ env.GODOT_VERSIE }}-stable-linux-x86_64
+      - name: Godot downloaden
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot-bin
+          curl -fsSL -o "$RUNNER_TEMP/godot.zip" "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSIE}-stable/Godot_v${GODOT_VERSIE}-stable_linux.x86_64.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d ~/godot-bin
+          mv ~/godot-bin/Godot_v${GODOT_VERSIE}-stable_linux.x86_64 ~/godot-bin/godot
+          chmod +x ~/godot-bin/godot
+      - name: Godot op het PATH zetten
+        run: echo "$HOME/godot-bin" >> "$GITHUB_PATH"
+      - name: Godot-tests (import, rooktest, GUT)
+        run: python tools/test_godot.py
