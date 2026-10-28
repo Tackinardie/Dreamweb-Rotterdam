@@ -2,7 +2,7 @@
 
 | Veld | Inhoud |
 | --- | --- |
-| Basis | Een oudere Rotterdamse in de hub. Ze kent Richard van vroeger. |
+| Basis | Een oudere Rotterdamse in de hub. Ze was conciërge op Richards oude middelbare school en herkende hem in het trappenhuis. |
 | Wil | (open) |
 | Nodig | (open) |
 | Wond | (open) |
@@ -13,5 +13,5 @@
 | Twee lezingen | Ze is de stem van de waanlezing: ze ziet een jongen die slecht slaapt en niet naar huis belt. |
 
 ## Open
-- Naam, leeftijd, en hoe ze Richard "van vroeger" kent, als hij een student is die op kamers woont.
+- Naam en leeftijd.
 - Weet ze wat er thuis speelt?

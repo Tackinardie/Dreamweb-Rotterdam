@@ -1,6 +1,4 @@
-# De uitvoerder (bijfiguur hoofdstuk 1)
-
-Werknaam: **Jordy Spaan** (voorstel van de verhaalarchitect, nog niet door Martijn gekozen).
+# Jordy Spaan (uitvoerder, bijfiguur hoofdstuk 1)
 
 | Veld | Inhoud |
 | --- | --- |
@@ -11,10 +9,10 @@ Werknaam: **Jordy Spaan** (voorstel van de verhaalarchitect, nog niet door Marti
 | Geheim | (open) |
 | Relatie tot de stad | Een buurtjongen van de Kaap (de precieze buurt is open), en de bouw is zijn kans. |
 | Stem | (open) |
-| Vindbaar | Zijn telefoon, die hij op 1 januari zelf verloor, bij een bankje in Katendrecht. De pincode is de verjaardag van zijn dochtertje. Die is na 19 december 2021 gevierd in de illegale bar, en de foto daar toont de datum (op de taart of een kaart). In de groepsapp van de bouw staat de liftcode, al gedeeld omdat de bouwlift maandag 3 januari vroeg wordt gekeurd, een uitzondering op de bouwstop. In dezelfde app staat de pauze van de beveiliger. |
-| Twee lezingen | Uitverkoren of gestuurd: de telefoon ligt precies daar waar Richard hem nodig heeft. Waan: iemand verloor zijn telefoon toen hij tijdens de bouwstop even ging kijken. |
+| 1 januari | Tijdens de bouwstop gaat hij naar de bouw om de bouwlift klaar te zetten voor de keuring van maandag 3 januari. Daarna gaat hij nog langs de bar achterom en verliest zijn telefoon daar of onderweg. |
+| Vindbaar | Zijn telefoon bij een bankje in Katendrecht. De pincode is de verjaardag van zijn dochtertje. Die is na 19 december 2021 gevierd in de illegale bar, en de foto daar toont de datum (op de taart of een kaart). In de groepsapp van de bouw staat de liftcode, al gedeeld omdat een onderaannemer maandag 3 januari vroeg begint. In dezelfde app staat de pauze van de beveiliger. |
+| Twee lezingen | Uitverkoren of gestuurd: de telefoon ligt precies daar waar Richard hem nodig heeft. Waan: een man die na een dag werken en een borrel zijn telefoon kwijtraakte. |
 
 ## Open
-- De exacte datum van de verjaardag (na 19 december 2021) en dus de pincode.
-- Waarom hij op 1 januari bij de bouw was.
+- De exacte datum van de verjaardag en dus de pincode (kiest de puzzle-designer, na 19 december 2021).
 - Komt hij zelf in beeld (op zoek naar zijn telefoon)?

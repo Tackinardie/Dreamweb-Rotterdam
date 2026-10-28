@@ -198,7 +198,7 @@ De game heeft een hub en zeven hoofdstukken. Elk hoofdstuk heeft één locatie, 
 5. **Confrontatie**: kort en hard, zonder vechtsysteem.
 6. **Droom**: de onderstad verandert; nieuw stukje van het grotere verhaal.
 
-**Erasmus MC-level**: nachtdienst met lege gangen en tl-licht. Je komt binnen als bezorger bij de avondploeg. Puzzels: personeelspassen, dienstroosters, een vergeten ingelogde werkplek, liften met beperkte toegang. Climax op het helikopterplatform. Hier vindt de speler een dossier met de naam van de hoofdpersoon en wordt de onderstad tastbaar via het slaaplab.
+**Maasstad MC-level**: nachtdienst met lege gangen en tl-licht. Je komt binnen als bezorger bij de avondploeg. Puzzels: personeelspassen, dienstroosters, een vergeten ingelogde werkplek, liften met beperkte toegang. Climax op het helikopterplatform. Hier vindt de speler een dossier met de naam van de hoofdpersoon en wordt de onderstad tastbaar via het slaaplab.
 
 **Vliegveld-level**: het vliegveld is 's nachts dicht; het doelwit vertrekt met de eerste privévlucht. Lege terminal, beveiligingsstraat, airside-grens, hangar met businessjet, platform in de regen. Toegang via crewbadge of cateringlevering. Eindigt bij zonsopgang op de baan.
 
@@ -393,7 +393,7 @@ De hoofdpersoon reist tussen locaties met de Rotterdamse metro, op de echte lijn
 | Woontoren aan de Maas | Wilhelminaplein | D, E | Lopen |
 | Markthal / Centraal | Blaak of Rotterdam Centraal | A, B, C / D, E | Lopen |
 | Maasvlakte | Geen metro | — | Lijn B naar het westen, daarna bus of meerijden; uit te zoeken |
-| Erasmus MC | Dijkzigt | A, B, C | Lopen; één halte van de hub |
+| Maasstad MC | Dijkzigt | A, B, C | Lopen; één halte van de hub |
 | Delfshaven | Delfshaven | A, B, C | Lopen |
 | Vliegveld | Meijersplein / Airport | E | Bus of fiets; de metro stopt niet bij de terminal |
 
@@ -506,7 +506,7 @@ Van bovenaf zie je vooral vloeren, bedden, tafels en daken, en weinig gevels. Da
 | Woontoren aan de Maas | Uitzicht op de rivier en de brug vanaf het penthouse, design-vloerkleed met een abstracte plattegrond van de stad |
 | Markthal / Centraal | De beschilderde boog van de Markthal als plafondrand, het dak van Centraal als herkenbare vorm, kapsalon-tentje |
 | Maasvlakte | Containers in rijen, kranen, de lijnen op het asfalt, schepen aan de kade |
-| Erasmus MC | Bijna niets: een stadsposter in de wachtruimte, het uitzicht vanaf het dak over de stad |
+| Maasstad MC | Bijna niets: een stadsposter in de wachtruimte, het uitzicht vanaf het dak over de stad |
 | Delfshaven | Grachten, oude pakhuizen, de molen en kerk van bovenaf |
 | Vliegveld | Stadsposter in de vertrekhal, de skyline als lichtlijn in de verte bij zonsopgang |
 
@@ -532,7 +532,7 @@ De game speelt in de eerste week van januari. Kerst is net voorbij, en dat zie j
 | Woontoren aan de Maas | Strakke designboom in de lobby, verdwijnt halverwege de week |
 | Markthal / Centraal | Grote winterverlichting die nog brandt, wordt in de loop van de week afgebroken |
 | Maasvlakte | Een snoer lampjes in de kantine of het portiershokje, verder niets |
-| Erasmus MC | Bescheiden: een klein boompje bij de balie, papieren sterren op het raam van een afdeling |
+| Maasstad MC | Bescheiden: een klein boompje bij de balie, papieren sterren op het raam van een afdeling |
 | Delfshaven | Lichtjes in de oude huizen langs het water |
 | Vliegveld | Een boom in de vertrekhal; op de zevende ochtend weg |
 
@@ -685,12 +685,12 @@ De vertical slice is 20 à 30 minuten speeltijd van hub tot eerste droom, met de
 **Verloop**
 
 1. **Kamer (hub)**: nieuwjaarsnacht, alleen op zijn studentenkamer, illegaal vuurwerk boven de daken. Verken de kamer; het vuurwerk gaat over in de eerste droom. Daarna wakker: leer pakken en gebruiken. Pak bezorgtas en jas.
-2. **Order**: Richard slaapt de dag door. Zaterdagavond rond 21:00 toont de app een order naar een adres in Katendrecht, op een naam uit de droom: Daan Heijsteeg (werknaam).
+2. **Order**: Richard slaapt de dag door. Zaterdagavond rond 21:00 toont de app een order naar een adres in Katendrecht, op een naam uit de droom: Daan Heijsteeg.
 3. **Hub, de bar**: op weg naar buiten laat de barman van de dichte bar aan de Witte de Withstraat Richard via de zijdeur binnen. Bij het noemen van de naam roddelt hij: "die van het pakhuis op de Kaap", en hij laat iets los over een bar achterom op Katendrecht.
-4. **Katendrecht, buiten**: het verbouwde pakhuis is zelf de bouwplaats. Daan woont al in de afgebouwde loft; de verdiepingen erboven zijn nog in aanbouw, met bouwhekken, een bouwlift en bewaking. Er geldt een bouwstop van kerst tot en met 9 januari, maar de bewaking draait door. Richard belt aan, maar niemand doet open. Het pakket blijft in zijn tas: een object met een bon op Daans naam en adres. Wie het bestelde, blijft open (zie waarheid.md). Bij een bankje ligt een verloren telefoon: die van de uitvoerder, die hem die dag zelf verloor.
+4. **Katendrecht, buiten**: het verbouwde pakhuis is zelf de bouwplaats. Daan woont al in de afgebouwde loft; de verdiepingen erboven zijn nog in aanbouw, met bouwhekken, een bouwlift en bewaking. Er geldt een bouwstop van kerst tot en met 9 januari, maar de bewaking draait door. Richard belt aan, maar niemand doet open, hoewel het licht in de loft brandt en er een schaduw achter het raam beweegt. Later blijkt Daan thuis te zijn geweest. Het pakket blijft in zijn tas: boodschappen voor één (een fles wijn, crackers, een kaars), besteld via Daans account, met een bon op zijn naam en adres. Wie het echt bestelde, blijft open (zie waarheid.md). Bij een bankje ligt een verloren telefoon: die van de uitvoerder. Hij was die dag op de bouw om de bouwlift klaar te zetten voor de keuring van maandag 3 januari, ging daarna nog langs de bar achterom, en verloor de telefoon daar of onderweg.
 5. **Telefoon kraken**: de pincode staat niet op het toestel; het is de verjaardag van het dochtertje van de uitvoerder. Die verjaardag is na 19 december 2021 gevierd in de illegale bar achterom, en de foto daar toont de datum (op de taart of een kaart). Door de lockdown is de bar officieel dicht; achterom draait hij in het geheim door, alleen voor genodigden. Richard komt binnen via een tweede order vóór 23:00: de kroegbazin heeft via de bezorgapp boodschappen besteld (citroenen, ijs, chips, geen drank in bulk), en hij levert aan de achterdeur.
 6. **Toegang**: in de groepsapp van de bouw op de telefoon van de uitvoerder staat de toegangscode van de bouwlift. Die is al gedeeld omdat de bouwlift maandag 3 januari vroeg wordt gekeurd, een uitzondering op de bouwstop. In dezelfde app staat het tijdstip waarop de beveiliger pauzeert.
-7. **Binnen**: de loft van de ontwikkelaar. Er staan maquettes van de nieuwe wijk, met op de oude kade een klein mannetje (zijn vader), vaders havenpas onder glas en een foto van zijn vader in de haven (de menselijke kant). Daar liggen ook de plannen die laten zien dat hij meer van het netwerk weet dan hij zegt. Daan komt 's nachts zelf kijken op zijn bouw.
+7. **Binnen**: de loft van de ontwikkelaar. Er staan maquettes van de nieuwe wijk, met op de oude kade een klein mannetje (zijn vader), vaders havenpas onder glas en een foto van zijn vader in de haven (de menselijke kant). Daar liggen ook de plannen die laten zien dat hij meer van het netwerk weet dan hij zegt. Op een planningsbord staat "livegang vr 7 jan 08:45" (rond zonsopgang): de deadline, of gewoon de opleverdatum van een fase. Er liggen ook stukken waaruit blijkt dat het pand van de kroegbazin al verkocht is aan Kardia. Daan komt 's nachts zelf kijken op zijn bouw.
 8. **Confrontatie**: kort, buiten beeld, geluid valt weg.
 9. **Droom**: in de onderstad komt één gebouw terug.
 
@@ -714,7 +714,7 @@ Vijf fases, elk afgesloten met een poort. Pas na de vertical slice beslis je of 
 | 0 · Fundament | Repo, JSON-schema's, agents, objecten/toegang/state, validator en oplosser | Systemen getest, oplosser draait |
 | 1 · Vertical slice | Hub + hoofdstuk 1 Katendrecht, telefoon-puzzel, eerste droom | Slice-checklist groen, 5 testers hebben gespeeld |
 | 2 · Hoofdstukken 2–4 | Woontoren, Markthal/Centraal, Maasvlakte; hintsysteem | Elk hoofdstuk door de definition of done |
-| 3 · Hoofdstukken 5–7 | Erasmus MC, Delfshaven, vliegveld; het einde | Volledige playthrough van begin tot einde |
+| 3 · Hoofdstukken 5–7 | Maasstad MC, Delfshaven, vliegveld; het einde | Volledige playthrough van begin tot einde |
 | 4 · Afronding | Definitieve art en audio, externe testers, bugfixes, release-build | — |
 
 Martijn steekt er 2 à 4 uur per week in; een hoofdstuk-iteratie duurt daardoor eerder 3 à 4 weken dan 1 à 2. De fases hebben bewust geen data.
